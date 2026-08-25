@@ -1,0 +1,261 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Warm sand — clearly not gray */
+    --background: 34 46% 91%;
+    --foreground: 192 35% 10%;
+    --card: 40 60% 99.5%;
+    --card-foreground: 192 35% 10%;
+    --popover: 40 60% 99.5%;
+    --popover-foreground: 192 35% 10%;
+    --muted: 33 36% 86%;
+    --muted-foreground: 192 14% 34%;
+    --border: 33 30% 80%;
+    --input: 33 30% 80%;
+    --ring: 173 68% 28%;
+
+    /* Vivid gulf teal */
+    --primary: 173 72% 27%;
+    --primary-foreground: 40 50% 99%;
+    --primary-hover: 173 78% 21%;
+    --brand-soft: 168 48% 88%;
+    --brand-subtle: 40 38% 95%;
+
+    /* Saffron accent */
+    --accent: 22 94% 52%;
+    --accent-foreground: 0 0% 100%;
+    --accent-hover: 20 90% 44%;
+    --accent-soft: 28 100% 93%;
+
+    --secondary: 34 30% 90%;
+    --secondary-foreground: 192 35% 12%;
+
+    --destructive: 0 68% 48%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 158 58% 32%;
+    --success-foreground: 0 0% 100%;
+    --success-soft: 152 40% 92%;
+    --warning: 38 92% 44%;
+    --warning-foreground: 0 0% 100%;
+    --warning-soft: 40 100% 94%;
+    --info: 198 72% 38%;
+    --info-foreground: 0 0% 100%;
+    --info-soft: 198 55% 93%;
+
+    --radius: 1rem;
+    --shadow-sm: 0 1px 2px rgba(28, 48, 44, 0.04), 0 2px 6px rgba(28, 48, 44, 0.05);
+    --shadow-md: 0 8px 24px rgba(28, 48, 44, 0.1), 0 2px 8px rgba(28, 48, 44, 0.05);
+    --shadow-lg: 0 18px 44px rgba(28, 48, 44, 0.14), 0 6px 16px rgba(28, 48, 44, 0.06);
+  }
+
+  .dark {
+    --background: 192 32% 6%;
+    --foreground: 36 28% 95%;
+    --card: 192 26% 9%;
+    --card-foreground: 36 28% 95%;
+    --popover: 192 24% 11%;
+    --popover-foreground: 36 28% 95%;
+    --muted: 192 18% 13%;
+    --muted-foreground: 36 14% 68%;
+    --border: 192 16% 17%;
+    --input: 192 16% 17%;
+    --ring: 170 58% 48%;
+
+    --primary: 170 58% 48%;
+    --primary-foreground: 192 32% 7%;
+    --primary-hover: 170 62% 56%;
+    --brand-soft: 170 28% 14%;
+    --brand-subtle: 192 26% 8%;
+
+    --accent: 24 95% 58%;
+    --accent-foreground: 192 32% 7%;
+    --accent-hover: 26 95% 66%;
+    --accent-soft: 24 40% 14%;
+
+    --secondary: 192 16% 14%;
+    --secondary-foreground: 36 28% 95%;
+
+    --destructive: 0 62% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 158 48% 45%;
+    --success-foreground: 0 0% 100%;
+    --success-soft: 158 28% 14%;
+    --warning: 38 85% 52%;
+    --warning-foreground: 192 32% 7%;
+    --warning-soft: 38 35% 14%;
+    --info: 198 60% 52%;
+    --info-foreground: 192 32% 7%;
+    --info-soft: 198 30% 14%;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 24px 56px rgba(0, 0, 0, 0.6);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    @apply text-foreground antialiased;
+    font-family: var(--font-outfit), system-ui, sans-serif;
+    line-height: 1.55;
+    background-color: hsl(var(--background));
+    background-image:
+      radial-gradient(ellipse 120% 80% at 0% -10%, hsl(168 48% 88% / 0.55) 0%, transparent 50%),
+      radial-gradient(ellipse 90% 60% at 100% 0%, hsl(28 100% 93% / 0.45) 0%, transparent 42%),
+      linear-gradient(180deg, hsl(36 42% 95%) 0%, hsl(var(--background)) 28%, hsl(var(--background)) 100%);
+    background-attachment: fixed;
+  }
+
+  .dark body {
+    background-image:
+      radial-gradient(ellipse 100% 70% at 10% -5%, hsl(170 40% 18% / 0.45) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 50% at 100% 0%, hsl(24 50% 20% / 0.25) 0%, transparent 40%),
+      linear-gradient(180deg, hsl(192 32% 7%) 0%, hsl(var(--background)) 40%);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-syne), var(--font-outfit), system-ui, sans-serif;
+    @apply tracking-tight text-foreground;
+    line-height: 1.15;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  .text-display {
+    font-family: var(--font-syne), var(--font-outfit), system-ui, sans-serif;
+    @apply text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl;
+  }
+
+  .text-brand {
+    font-family: var(--font-syne), var(--font-outfit), system-ui, sans-serif;
+    @apply text-4xl font-bold tracking-tight text-primary sm:text-5xl lg:text-6xl;
+  }
+
+  .text-page-title {
+    font-family: var(--font-syne), var(--font-outfit), system-ui, sans-serif;
+    @apply text-2xl font-bold tracking-tight text-foreground sm:text-3xl;
+  }
+
+  .text-section-title {
+    font-family: var(--font-syne), var(--font-outfit), system-ui, sans-serif;
+    @apply text-xl font-bold tracking-tight text-foreground sm:text-2xl;
+  }
+
+  .text-card-title {
+    font-family: var(--font-outfit), system-ui, sans-serif;
+    @apply text-[0.9375rem] font-semibold leading-snug tracking-tight text-foreground;
+  }
+
+  .text-price {
+    font-family: var(--font-syne), var(--font-outfit), system-ui, sans-serif;
+    @apply text-xl font-bold tabular-nums tracking-tight text-primary;
+  }
+
+  .text-meta {
+    @apply text-xs font-medium text-muted-foreground;
+  }
+
+  .page-eyebrow {
+    @apply text-[11px] font-bold uppercase tracking-[0.16em] text-primary;
+  }
+
+  .surface-hero {
+    background:
+      radial-gradient(ellipse 70% 55% at 8% 15%, hsl(168 55% 86% / 0.95) 0%, transparent 55%),
+      radial-gradient(ellipse 55% 45% at 92% 8%, hsl(28 100% 90% / 0.9) 0%, transparent 48%),
+      linear-gradient(160deg, hsl(40 45% 96%) 0%, hsl(36 42% 93%) 55%, hsl(168 30% 92% / 0.5) 100%);
+  }
+
+  .dark .surface-hero {
+    background:
+      radial-gradient(ellipse 70% 55% at 8% 15%, hsl(170 40% 18% / 0.8) 0%, transparent 55%),
+      radial-gradient(ellipse 55% 45% at 92% 8%, hsl(24 50% 18% / 0.5) 0%, transparent 48%),
+      linear-gradient(160deg, hsl(192 32% 8%) 0%, hsl(192 32% 6%) 100%);
+  }
+
+  .field-control {
+    @apply flex h-11 w-full rounded-xl border border-input bg-card px-3 py-2 text-sm text-foreground shadow-soft transition-colors duration-fast placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .listing-card {
+    @apply relative flex flex-col overflow-hidden rounded-2xl border border-border/80 bg-card shadow-soft transition duration-slow;
+  }
+
+  .listing-card:hover {
+    @apply -translate-y-1.5 border-primary/25 shadow-premium;
+  }
+
+  .listing-card--featured {
+    box-shadow:
+      inset 3px 0 0 0 hsl(var(--accent)),
+      var(--shadow-sm);
+  }
+
+  .listing-card--featured:hover {
+    box-shadow:
+      inset 3px 0 0 0 hsl(var(--accent)),
+      var(--shadow-lg);
+  }
+}
+
+@layer utilities {
+  .container-app {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .shadow-elevated {
+    box-shadow: var(--shadow-md);
+  }
+
+  .shadow-premium {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Override stale Tailwind font tokens until full rebuild */
+  .font-sans {
+    font-family: var(--font-outfit), system-ui, sans-serif !important;
+  }
+
+  .font-display,
+  .font-editorial {
+    font-family: var(--font-syne), var(--font-outfit), system-ui, sans-serif !important;
+  }
+}
