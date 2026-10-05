@@ -20,6 +20,15 @@ const apiProxyTarget = (process.env.API_PROXY_TARGET || 'http://127.0.0.1:5000/a
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Keep tracing rooted at this package (standalone client repo / Vercel).
+  outputFileTracingRoot: path.join(__dirname),
+  // Don't fail production builds on ESLint warnings (types still checked).
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  typescript: {
+    ignoreBuildErrors: false,
+  },
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || '/api',
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
