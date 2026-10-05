@@ -39,8 +39,17 @@ export interface PaymentTransaction {
 export interface RevenueStats {
   totalRevenue: number;
   monthlyRevenue: number;
+  weeklyRevenue: number;
   totalTransactions: number;
   monthlyTransactions: number;
+  weeklyTransactions: number;
+  averageOrderValue: number;
+  refundedAmount: number;
+  refundedCount: number;
+  pendingCount: number;
+  failedCount: number;
   byPlan: Array<{ plan: string; total: number; count: number }>;
+  byStatus: Array<{ status: string; total: number; count: number }>;
+  revenueTrend: Array<{ date: string; total: number; count: number }>;
   recentTransactions: PaymentTransaction[];
 }

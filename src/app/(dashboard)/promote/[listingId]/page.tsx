@@ -185,23 +185,56 @@ export default function PromoteListingPage() {
               {intent.mock ? (
                 <div className="space-y-3">
                   <p className="text-sm text-muted-foreground">
-                    Stripe is not configured locally. Complete a mock payment to apply the
-                    promotion (same path as a successful webhook).
+                    Stripe is not fully configured. Complete the test payment to apply bump/feature
+                    immediately (no webhook needed).
                   </p>
-                  <Button
-                    type="button"
-                    disabled={applying}
-                    onClick={() => void applyPromotionFromPayment(intent.paymentIntentId)}
-                  >
-                    {applying ? 'Confirming...' : 'Complete test payment'}
-                  </Button>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      type="button"
+                      disabled={applying}
+                      onClick={() => void applyPromotionFromPayment(intent.paymentIntentId)}
+                    >
+                      {applying ? 'Confirming...' : 'Complete test payment'}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={applying}
+                      onClick={() => {
+                        void paymentApi.cancelPending(intent.paymentIntentId).then(async () => {
+                          setIntent(null);
+                          setSelectedPlan(null);
+                          await invalidateAfterPromotion();
+                        });
+                      }}
+                    >
+                      Cancel checkout
+                    </Button>
+                  </div>
                 </div>
               ) : (
-                <StripeCheckout
-                  clientSecret={intent.clientSecret}
-                  onSuccess={(paymentIntentId) => void applyPromotionFromPayment(paymentIntentId)}
-                  onError={setError}
-                />
+                <div className="space-y-3">
+                  <StripeCheckout
+                    clientSecret={intent.clientSecret}
+                    onSuccess={(paymentIntentId) => void applyPromotionFromPayment(paymentIntentId)}
+                    onError={setError}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={applying}
+                    onClick={() => {
+                      void paymentApi.cancelPending(intent.paymentIntentId).then(async () => {
+                        setIntent(null);
+                        setSelectedPlan(null);
+                        await invalidateAfterPromotion();
+                      });
+                    }}
+                  >
+                    Cancel checkout
+                  </Button>
+                </div>
               )}
             </section>
           )}

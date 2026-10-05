@@ -1,18 +1,27 @@
 'use client';
 
-import type { UseFormRegister, FieldErrors, UseFormWatch } from 'react-hook-form';
+import { useEffect, useMemo, useState } from 'react';
+import type {
+  FieldErrors,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+} from 'react-hook-form';
 
 import { CategoryDropdown } from '@/components/categories/category-dropdown';
 import { ListingAttributeFields } from '@/components/listings/listing-attribute-fields';
+import { ListingImageUpload } from '@/components/listings/listing-image-upload';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { LISTING_CURRENCIES } from '@/lib/location-currency';
 import {
-  CITIES_BY_COUNTRY,
+  getCitiesForState,
+  getStatesForCountry,
+  isStructuredCountry,
   LISTING_COUNTRIES,
-  LISTING_CURRENCIES,
-} from '@/lib/location-currency';
+} from '@/lib/location-data';
 import type { ListingFormValues } from '@/lib/listing-validators';
 import type { CategoryAttribute, CategoryTreeNode } from '@/types/category';
 import type { Listing } from '@/types/listing';
@@ -22,7 +31,26 @@ interface SharedProps {
   errors: FieldErrors<ListingFormValues>;
 }
 
+function useCurrencyLabels(): Record<string, string> {
+  const [labels, setLabels] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (typeof Intl === 'undefined' || !('DisplayNames' in Intl)) return;
+    const display = new Intl.DisplayNames(['en'], { type: 'currency' });
+    const next: Record<string, string> = {};
+    for (const code of LISTING_CURRENCIES) {
+      const name = display.of(code);
+      if (name) next[code] = name;
+    }
+    setLabels(next);
+  }, []);
+
+  return labels;
+}
+
 export function ListingDetailsStep({ register, errors }: SharedProps) {
+  const currencyLabels = useCurrencyLabels();
+
   return (
     <div className="space-y-4">
       <div className="space-y-2">
@@ -47,7 +75,7 @@ export function ListingDetailsStep({ register, errors }: SharedProps) {
           <Select id="currency" {...register('currency')}>
             {LISTING_CURRENCIES.map((code) => (
               <option key={code} value={code}>
-                {code}
+                {currencyLabels[code] ? `${code} — ${currencyLabels[code]}` : code}
               </option>
             ))}
           </Select>
@@ -93,6 +121,7 @@ interface CategoryStepProps extends SharedProps {
   selectedRootName?: string;
   onCategoryChange: (id: string) => void;
   watch: UseFormWatch<ListingFormValues>;
+  setValue: UseFormSetValue<ListingFormValues>;
 }
 
 export function ListingCategoryStep({
@@ -104,9 +133,17 @@ export function ListingCategoryStep({
   selectedRootName,
   onCategoryChange,
   watch,
+  setValue,
 }: CategoryStepProps) {
   const country = watch('country');
-  const citySuggestions = CITIES_BY_COUNTRY[country] ?? [];
+  const state = watch('state') ?? '';
+  const city = watch('city') ?? '';
+  const structured = isStructuredCountry(country);
+  const states = useMemo(() => getStatesForCountry(country), [country]);
+  const cities = useMemo(
+    () => (state ? getCitiesForState(country, state) : []),
+    [country, state],
+  );
 
   return (
     <div className="space-y-4">
@@ -125,46 +162,80 @@ export function ListingCategoryStep({
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="space-y-2">
           <Label htmlFor="country">Country</Label>
-          <Input
+          <Select
             id="country"
-            list="listing-countries"
-            placeholder="e.g. Qatar"
-            {...register('country')}
-          />
-          <datalist id="listing-countries">
+            value={country}
+            onChange={(e) => {
+              setValue('country', e.target.value, { shouldValidate: true, shouldDirty: true });
+              setValue('state', '');
+              setValue('city', '');
+            }}
+          >
             {LISTING_COUNTRIES.map((item) => (
-              <option key={item} value={item} />
+              <option key={item} value={item}>
+                {item}
+              </option>
             ))}
-          </datalist>
+          </Select>
           {errors.country && <p className="text-sm text-destructive">{errors.country.message}</p>}
         </div>
         <div className="space-y-2">
           <Label htmlFor="state">State / Region</Label>
-          <Input
-            id="state"
-            placeholder="Optional — any state or municipality"
-            {...register('state')}
-          />
+          {structured ? (
+            <Select
+              id="state"
+              value={state}
+              onChange={(e) => {
+                setValue('state', e.target.value, { shouldValidate: true, shouldDirty: true });
+                setValue('city', '');
+              }}
+            >
+              <option value="">Select state / region</option>
+              {states.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </Select>
+          ) : (
+            <Input id="state" placeholder="State or region (optional)" {...register('state')} />
+          )}
+          {errors.state && <p className="text-sm text-destructive">{errors.state.message}</p>}
         </div>
         <div className="space-y-2">
           <Label htmlFor="city">City</Label>
-          <Input
-            id="city"
-            list="listing-cities"
-            placeholder="Any city worldwide"
-            {...register('city')}
-          />
-          <datalist id="listing-cities">
-            {citySuggestions.map((city) => (
-              <option key={city} value={city} />
-            ))}
-          </datalist>
+          {structured && cities.length > 0 ? (
+            <Select
+              id="city"
+              value={city}
+              disabled={!state}
+              onChange={(e) =>
+                setValue('city', e.target.value, { shouldValidate: true, shouldDirty: true })
+              }
+            >
+              <option value="">{state ? 'Select city' : 'Select state first'}</option>
+              {cities.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </Select>
+          ) : structured ? (
+            <Input
+              id="city"
+              placeholder={state ? 'Enter city' : 'Select state first'}
+              disabled={!state}
+              {...register('city')}
+            />
+          ) : (
+            <Input id="city" placeholder="City" {...register('city')} />
+          )}
           {errors.city && <p className="text-sm text-destructive">{errors.city.message}</p>}
         </div>
       </div>
       <p className="text-xs text-muted-foreground">
-        Choose any country, optional state/region, and any city. Suggestions appear for common
-        markets (Qatar first).
+        Pick a country to load its states/regions, then choose a city. Use &quot;Other&quot; for
+        free-text locations outside this list.
       </p>
     </div>
   );
@@ -174,8 +245,8 @@ interface AttributesStepProps {
   attributes: CategoryAttribute[];
   attrValues: Record<string, string>;
   onAttrChange: (name: string, value: string) => void;
+  files: File[];
   onFilesChange: (files: File[]) => void;
-  fileCount: number;
   mode: 'create' | 'edit';
   existingImageCount?: number;
 }
@@ -184,32 +255,20 @@ export function ListingAttributesStep({
   attributes,
   attrValues,
   onAttrChange,
+  files,
   onFilesChange,
-  fileCount,
   mode,
   existingImageCount = 0,
 }: AttributesStepProps) {
   return (
     <div className="space-y-4">
       <ListingAttributeFields attributes={attributes} values={attrValues} onChange={onAttrChange} />
-      <div className="space-y-2">
-        <Label htmlFor="images">Images (up to 10)</Label>
-        <Input
-          id="images"
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={(e) => onFilesChange(Array.from(e.target.files ?? []).slice(0, 10))}
-        />
-        {fileCount > 0 && (
-          <p className="text-xs text-muted-foreground">{fileCount} file(s) selected</p>
-        )}
-        {mode === 'edit' && existingImageCount > 0 && (
-          <p className="text-xs text-muted-foreground">
-            Existing images: {existingImageCount} (new uploads are appended)
-          </p>
-        )}
-      </div>
+      <ListingImageUpload
+        files={files}
+        onFilesChange={onFilesChange}
+        mode={mode}
+        existingImageCount={existingImageCount}
+      />
     </div>
   );
 }

@@ -1,0 +1,25 @@
+{
+  "password": "Password123!",
+  "admin": {
+    "email": "e2e-admin@suqora.test",
+    "name": "E2E Admin"
+  },
+  "moderators": [
+    { "email": "e2e-moderator-1@suqora.test", "name": "E2E Moderator 1" },
+    { "email": "e2e-moderator-2@suqora.test", "name": "E2E Moderator 2" }
+  ],
+  "sellers": [
+    { "email": "e2e-seller-1@suqora.test", "name": "E2E Seller 1" },
+    { "email": "e2e-seller-2@suqora.test", "name": "E2E Seller 2" },
+    { "email": "e2e-seller-3@suqora.test", "name": "E2E Seller 3" },
+    { "email": "e2e-seller-4@suqora.test", "name": "E2E Seller 4" },
+    { "email": "e2e-seller-5@suqora.test", "name": "E2E Seller 5" }
+  ],
+  "buyers": [
+    { "email": "e2e-buyer-1@suqora.test", "name": "E2E Buyer 1" },
+    { "email": "e2e-buyer-2@suqora.test", "name": "E2E Buyer 2" },
+    { "email": "e2e-buyer-3@suqora.test", "name": "E2E Buyer 3" },
+    { "email": "e2e-buyer-4@suqora.test", "name": "E2E Buyer 4" },
+    { "email": "e2e-buyer-5@suqora.test", "name": "E2E Buyer 5" }
+  ]
+}

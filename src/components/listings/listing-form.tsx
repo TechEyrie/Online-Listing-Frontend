@@ -133,7 +133,7 @@ export function ListingForm({ mode, listing }: ListingFormProps) {
   const nextStep = async () => {
     const fieldsByStep: Array<(keyof ListingFormValues)[]> = [
       ['title', 'description', 'price', 'currency', 'priceType', 'type', 'condition'],
-      ['category', 'city', 'country'],
+      ['category', 'city', 'country', 'state'],
       [],
       [],
     ];
@@ -199,6 +199,7 @@ export function ListingForm({ mode, listing }: ListingFormProps) {
           selectedRootName={selectedRoot?.name}
           onCategoryChange={onCategoryChange}
           watch={watch}
+          setValue={setValue}
         />
       )}
       {step === 2 && (
@@ -206,8 +207,8 @@ export function ListingForm({ mode, listing }: ListingFormProps) {
           attributes={dynamicAttributes}
           attrValues={attrValues}
           onAttrChange={(name, value) => setAttrValues((prev) => ({ ...prev, [name]: value }))}
+          files={files}
           onFilesChange={setFiles}
-          fileCount={files.length}
           mode={mode}
           existingImageCount={listing?.images.length}
         />

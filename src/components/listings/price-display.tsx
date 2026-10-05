@@ -1,6 +1,6 @@
 import {
-  CURRENCY_LOCALES,
   DEFAULT_LISTING_CURRENCY,
+  getCurrencyLocale,
   isListingCurrency,
   type ListingCurrency,
 } from '@/lib/location-currency';
@@ -28,7 +28,7 @@ export function PriceDisplay({ price, priceType, currency, className }: PriceDis
 
   const code: ListingCurrency =
     currency && isListingCurrency(currency) ? currency : DEFAULT_LISTING_CURRENCY;
-  const locale = CURRENCY_LOCALES[code];
+  const locale = getCurrencyLocale(code);
 
   const formatted = new Intl.NumberFormat(locale, {
     style: 'currency',

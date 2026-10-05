@@ -55,14 +55,68 @@ export interface AdminTransaction {
   listing?: { _id: string; title: string; slug: string };
 }
 
+export interface TrendPoint {
+  date: string;
+  total: number;
+  count: number;
+}
+
 export interface DashboardStats {
   totalUsers: number;
   users: Record<string, number>;
+  userHealth: {
+    banned: number;
+    inactive: number;
+    unverified: number;
+    newLast7Days: number;
+    newLast30Days: number;
+  };
+  usersTrend: TrendPoint[];
   totalListings: number;
   listings: Record<string, number>;
-  revenue: { total: number; transactions: number };
+  listingsByType: Record<string, number>;
+  listingsByCategory: Array<{ name: string; count: number }>;
+  listingEngagement: {
+    totalViews: number;
+    totalFavorites: number;
+    avgViews: number;
+    avgPrice: number;
+    featuredActive: number;
+  };
+  listingsTrend: TrendPoint[];
+  revenue: {
+    total: number;
+    transactions: number;
+    averageOrderValue: number;
+    arpu: number;
+  };
+  revenueByStatus: Array<{ status: string; total: number; count: number }>;
+  revenueTrend: TrendPoint[];
   pendingReports: number;
-  revenueTrend: Array<{ date: string; total: number; count: number }>;
+  reports: Record<string, number>;
+  reviews: {
+    total: number;
+    pending: number;
+    averageRating: number;
+  };
+  topListings: Array<{
+    _id: string;
+    title: string;
+    slug: string;
+    status: string;
+    viewCount: number;
+    favoriteCount: number;
+    price: number;
+    currency: string;
+    isFeatured: boolean;
+  }>;
+  topSellers: Array<{
+    _id: string;
+    name: string;
+    email: string;
+    listings: number;
+    views: number;
+  }>;
 }
 
 export interface AdminListMeta {

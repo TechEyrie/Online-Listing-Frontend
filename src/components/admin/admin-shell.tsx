@@ -18,6 +18,7 @@ const NAV = [
   { href: '/admin/reviews', label: 'Reviews', roles: ['admin'] },
   { href: '/admin/categories', label: 'Categories', roles: ['admin'] },
   { href: '/admin/transactions', label: 'Revenue', roles: ['admin'] },
+  { href: '/admin/assistant', label: 'Assistant', roles: ['admin'] },
 ];
 
 interface AdminShellProps {

@@ -56,4 +56,24 @@ export const paymentApi = {
     const { data } = await api.get<ApiSuccessResponse<RevenueStats>>('/payments/admin/revenue');
     return data.data;
   },
+  refundTransaction: async (id: string) => {
+    const { data } = await api.post<ApiSuccessResponse<PaymentTransaction>>(
+      `/payments/admin/refund/${id}`,
+    );
+    return data.data;
+  },
+  cancelPending: async (paymentIntentId: string) => {
+    const { data } = await api.post<ApiSuccessResponse<PaymentTransaction>>(
+      '/payments/cancel-pending',
+      { paymentIntentId },
+    );
+    return data.data;
+  },
+  resolvePending: async (id: string, action: 'complete' | 'cancel') => {
+    const { data } = await api.post<ApiSuccessResponse<PaymentTransaction>>(
+      `/payments/admin/resolve-pending/${id}`,
+      { action },
+    );
+    return data.data;
+  },
 };

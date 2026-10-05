@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
+import { CategoryIconPicker } from '@/components/admin/category-icon-picker';
 import { CategoryDropdown } from '@/components/categories/category-dropdown';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,6 +23,8 @@ export default function AdminCategoriesPage() {
   const [description, setDescription] = useState('');
   const [parent, setParent] = useState('');
   const [order, setOrder] = useState('0');
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editIcon, setEditIcon] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
@@ -60,6 +63,22 @@ export default function AdminCategoriesPage() {
     },
   });
 
+  const updateMutation = useMutation({
+    mutationFn: ({ id, nextIcon }: { id: string; nextIcon: string }) =>
+      categoryApi.update(id, { icon: nextIcon || undefined }),
+    onSuccess: async () => {
+      setMessage('Category icon updated');
+      setError(null);
+      setEditingId(null);
+      await queryClient.invalidateQueries({ queryKey: ['categories'] });
+    },
+    onError: (err: unknown) => {
+      const axiosError = err as AxiosError<ApiErrorResponse>;
+      setError(axiosError.response?.data?.message || 'Update failed');
+      setMessage(null);
+    },
+  });
+
   const deleteMutation = useMutation({
     mutationFn: (id: string) => categoryApi.remove(id),
     onSuccess: async () => {
@@ -75,12 +94,18 @@ export default function AdminCategoriesPage() {
   });
 
   const flatLeaves = useMemo(() => {
-    const out: Array<{ id: string; label: string; canDelete: boolean }> = [];
+    const out: Array<{
+      id: string;
+      label: string;
+      icon?: string;
+      canDelete: boolean;
+    }> = [];
     const walk = (nodes: CategoryTreeNode[], prefix = '') => {
       for (const node of nodes) {
         out.push({
           id: node._id,
-          label: `${prefix}${node.icon ? `${node.icon} ` : ''}${node.name}`,
+          label: `${prefix}${node.name}`,
+          icon: node.icon,
           canDelete: node.children.length === 0,
         });
         walk(node.children, `${prefix}${node.name} > `);
@@ -98,7 +123,9 @@ export default function AdminCategoriesPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-page-title">Categories</h1>
-        <p className="text-sm text-muted-foreground">Create and delete marketplace categories</p>
+        <p className="text-sm text-muted-foreground">
+          Create categories with icons, and update icons on existing ones
+        </p>
       </div>
 
       <Card>
@@ -107,20 +134,13 @@ export default function AdminCategoriesPage() {
           <CardDescription>Admins can add roots or subcategories.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="icon">Icon</Label>
-              <Input
-                id="icon"
-                value={icon}
-                onChange={(e) => setIcon(e.target.value)}
-                placeholder="🚗"
-              />
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="name">Name</Label>
+            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
+          </div>
+          <div className="space-y-2">
+            <Label>Icon</Label>
+            <CategoryIconPicker value={icon} onChange={setIcon} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="description">Description</Label>
@@ -166,26 +186,56 @@ export default function AdminCategoriesPage() {
       <Card>
         <CardHeader>
           <CardTitle>Existing categories</CardTitle>
-          <CardDescription>Delete only works for leaf categories without listings.</CardDescription>
+          <CardDescription>
+            Change icons anytime. Delete only works for leaf categories without listings.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           {treeQuery.isLoading && <p className="text-sm">Loading...</p>}
-          <ul className="space-y-2">
+          <ul className="space-y-3">
             {flatLeaves.map((item) => (
-              <li
-                key={item.id}
-                className="flex items-center justify-between gap-3 rounded border px-3 py-2 text-sm"
-              >
-                <span>{item.label}</span>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="destructive"
-                  disabled={!item.canDelete || deleteMutation.isPending}
-                  onClick={() => deleteMutation.mutate(item.id)}
-                >
-                  Delete
-                </Button>
+              <li key={item.id} className="rounded border px-3 py-3 text-sm">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <span className="font-medium">
+                    <span className="mr-2 text-lg">{item.icon || '•'}</span>
+                    {item.label}
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        setEditingId(editingId === item.id ? null : item.id);
+                        setEditIcon(item.icon || '');
+                      }}
+                    >
+                      {editingId === item.id ? 'Close' : 'Edit icon'}
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="destructive"
+                      disabled={!item.canDelete || deleteMutation.isPending}
+                      onClick={() => deleteMutation.mutate(item.id)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+                {editingId === item.id && (
+                  <div className="mt-3 space-y-3 border-t pt-3">
+                    <CategoryIconPicker value={editIcon} onChange={setEditIcon} />
+                    <Button
+                      type="button"
+                      size="sm"
+                      disabled={updateMutation.isPending}
+                      onClick={() => updateMutation.mutate({ id: item.id, nextIcon: editIcon })}
+                    >
+                      {updateMutation.isPending ? 'Saving...' : 'Save icon'}
+                    </Button>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
