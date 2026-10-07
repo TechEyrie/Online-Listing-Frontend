@@ -1,3 +1,43 @@
+@font-face {
+  font-family: 'Amazon Ember';
+  src: url('/fonts/AmazonEmber_W_Rg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Amazon Ember';
+  src: url('/fonts/AmazonEmber_W_Rg.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Amazon Ember';
+  src: url('/fonts/AmazonEmber_W_Bd.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Amazon Ember';
+  src: url('/fonts/AmazonEmber_W_Bd.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Amazon Ember';
+  src: url('/fonts/AmazonEmber_W_Lt.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -119,7 +159,7 @@
 
   body {
     @apply text-foreground antialiased;
-    font-family: var(--font-outfit), system-ui, sans-serif;
+    font-family: 'Amazon Ember', Arial, sans-serif;
     line-height: 1.55;
     background-color: hsl(var(--background));
     background-image:
@@ -140,7 +180,7 @@
   h2,
   h3,
   h4 {
-    font-family: var(--font-syne), var(--font-outfit), system-ui, sans-serif;
+    font-family: 'Amazon Ember', Arial, sans-serif;
     @apply tracking-tight text-foreground;
     line-height: 1.15;
   }
@@ -152,32 +192,32 @@
 
 @layer components {
   .text-display {
-    font-family: var(--font-syne), var(--font-outfit), system-ui, sans-serif;
+    font-family: 'Amazon Ember', Arial, sans-serif;
     @apply text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl;
   }
 
   .text-brand {
-    font-family: var(--font-syne), var(--font-outfit), system-ui, sans-serif;
+    font-family: 'Amazon Ember', Arial, sans-serif;
     @apply text-4xl font-bold tracking-tight text-primary sm:text-5xl lg:text-6xl;
   }
 
   .text-page-title {
-    font-family: var(--font-syne), var(--font-outfit), system-ui, sans-serif;
+    font-family: 'Amazon Ember', Arial, sans-serif;
     @apply text-2xl font-bold tracking-tight text-foreground sm:text-3xl;
   }
 
   .text-section-title {
-    font-family: var(--font-syne), var(--font-outfit), system-ui, sans-serif;
+    font-family: 'Amazon Ember', Arial, sans-serif;
     @apply text-xl font-bold tracking-tight text-foreground sm:text-2xl;
   }
 
   .text-card-title {
-    font-family: var(--font-outfit), system-ui, sans-serif;
+    font-family: 'Amazon Ember', Arial, sans-serif;
     @apply text-[0.9375rem] font-semibold leading-snug tracking-tight text-foreground;
   }
 
   .text-price {
-    font-family: var(--font-syne), var(--font-outfit), system-ui, sans-serif;
+    font-family: 'Amazon Ember', Arial, sans-serif;
     @apply text-xl font-bold tabular-nums tracking-tight text-primary;
   }
 
@@ -249,13 +289,27 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* Override stale Tailwind font tokens until full rebuild */
+  /* Amazon Ember font tokens */
   .font-sans {
-    font-family: var(--font-outfit), system-ui, sans-serif !important;
+    font-family: 'Amazon Ember', Arial, sans-serif !important;
   }
 
   .font-display,
   .font-editorial {
-    font-family: var(--font-syne), var(--font-outfit), system-ui, sans-serif !important;
+    font-family: 'Amazon Ember', Arial, sans-serif !important;
+  }
+
+  .hero-search-input,
+  .hero-search-input:focus,
+  .hero-search-input:active,
+  .hero-search-input:focus-visible,
+  .hero-search-input:focus-within {
+    outline: none !important;
+    outline-width: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-color: transparent !important;
+    --tw-ring-shadow: 0 0 #0000 !important;
+    --tw-ring-offset-shadow: 0 0 #0000 !important;
   }
 }

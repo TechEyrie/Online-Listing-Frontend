@@ -2,13 +2,11 @@
 
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import { ShieldCheck, Sparkles, Store } from 'lucide-react';
 
-import { CategoryNav } from '@/components/categories/category-nav';
-import { BrandLogo } from '@/components/layout/brand-logo';
+import { CategorySlider } from '@/components/categories/category-slider';
+import { HeroBanner } from '@/components/layout/hero-banner';
 import { Container } from '@/components/layout/container';
 import { ListingCard } from '@/components/listings/listing-card';
-import { SearchBar } from '@/components/search/search-bar';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -51,65 +49,10 @@ export default function Home() {
   });
 
   return (
-    <main>
-      <section className="relative overflow-hidden border-b border-border surface-hero">
-        <Container className="relative py-14 sm:py-16 lg:py-24">
-          <div className="mx-auto max-w-3xl text-center animate-fade-up">
-            <div className="flex justify-center">
-              <BrandLogo href={null} size="xl" priority />
-            </div>
-            <h1 className="mt-5 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-[2.5rem]">
-              Buy, sell, and rent with confidence
-            </h1>
-            <p className="mx-auto mt-3 max-w-lg text-base text-muted-foreground">
-              Qatar-first marketplace for vehicles, property, electronics, and services.
-            </p>
-            <div className="mx-auto mt-8 max-w-2xl text-left">
-              <SearchBar />
-            </div>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-              <Button asChild size="lg" variant="accent">
-                <Link href="/search">Browse listings</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link href="/post">Post a listing</Link>
-              </Button>
-            </div>
-          </div>
-        </Container>
-      </section>
+    <main className="min-h-screen">
+      <HeroBanner />
 
-      <Container className="space-y-16 py-14 sm:py-16">
-        <section className="grid gap-5 sm:grid-cols-3">
-          {[
-            {
-              icon: ShieldCheck,
-              title: 'Trusted moderation',
-              body: 'Listings and reports are reviewed so buyers and sellers can trade with clarity.',
-            },
-            {
-              icon: Sparkles,
-              title: 'Optional promotions',
-              body: 'Bump or feature your ad when you need reach — never required to sell.',
-            },
-            {
-              icon: Store,
-              title: 'Built for local trade',
-              body: 'Search by category, price, and location to find what matters nearby.',
-            },
-          ].map((item) => (
-            <div
-              key={item.title}
-              className="rounded-2xl border border-border/80 bg-card/90 p-6 shadow-soft transition duration-normal hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-elevated"
-            >
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-soft text-primary">
-                <item.icon className="h-5 w-5" aria-hidden />
-              </span>
-              <h2 className="mt-4 font-display text-base font-bold">{item.title}</h2>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
-            </div>
-          ))}
-        </section>
+      <Container className="space-y-16 py-10 sm:py-12">
 
         <section className="space-y-6">
           <div className="flex items-end justify-between gap-4">
@@ -122,7 +65,7 @@ export default function Home() {
               <Link href="/search">View all</Link>
             </Button>
           </div>
-          <CategoryNav />
+          <CategorySlider />
         </section>
 
         {featured.data && featured.data.length > 0 && (

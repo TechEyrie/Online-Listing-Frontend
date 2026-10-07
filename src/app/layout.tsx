@@ -1,23 +1,8 @@
 import type { Metadata } from 'next';
-import { Outfit, Syne } from 'next/font/google';
-
 import { AssistantWidget } from '@/components/assistant/assistant-widget';
 import { AppProviders } from '@/providers/app-providers';
 
 import './globals.css';
-
-const outfit = Outfit({
-  variable: '--font-outfit',
-  subsets: ['latin'],
-  display: 'swap',
-});
-
-const syne = Syne({
-  variable: '--font-syne',
-  subsets: ['latin'],
-  display: 'swap',
-  weight: ['600', '700', '800'],
-});
 
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 const appName = process.env.NEXT_PUBLIC_APP_NAME || 'Suqora';
@@ -59,7 +44,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${outfit.variable} ${syne.variable} min-h-screen antialiased`}>
+      <body className="min-h-screen antialiased">
         <AppProviders>
           {children}
           <AssistantWidget />

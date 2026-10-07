@@ -11,9 +11,9 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-syne)', 'var(--font-outfit)', 'system-ui', 'sans-serif'],
-        editorial: ['var(--font-syne)', 'var(--font-outfit)', 'system-ui', 'sans-serif'],
+        sans: ['"Amazon Ember"', 'Arial', 'sans-serif'],
+        display: ['"Amazon Ember"', 'Arial', 'sans-serif'],
+        editorial: ['"Amazon Ember"', 'Arial', 'sans-serif'],
       },
       colors: {
         border: 'hsl(var(--border))',

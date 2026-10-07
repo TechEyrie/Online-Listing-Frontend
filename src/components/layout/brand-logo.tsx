@@ -15,6 +15,7 @@ interface BrandLogoProps {
   /** `header` is denser for the nav bar. */
   variant?: 'default' | 'header';
   priority?: boolean;
+  forceDark?: boolean;
 }
 
 /** Transparent cropped mark — icon + wordmark only (no black plate). */
@@ -44,6 +45,7 @@ export function BrandLogo({
   size = 'md',
   variant = 'default',
   priority = false,
+  forceDark = false,
 }: BrandLogoProps) {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -52,7 +54,7 @@ export function BrandLogo({
     setMounted(true);
   }, []);
 
-  const useDark = mounted && resolvedTheme === 'dark';
+  const useDark = forceDark || (mounted && resolvedTheme === 'dark');
   const asset = useDark ? MARK.dark : MARK.light;
 
   const image = (
