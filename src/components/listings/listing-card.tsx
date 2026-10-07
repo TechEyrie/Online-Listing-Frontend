@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Images, MapPin } from 'lucide-react';
 
+import { MOSQUE_ARCH_CLIP_PATH } from '@/components/common/mosque-arch-clip';
 import { ListingStatusBadge } from '@/components/listings/listing-status-badge';
 import { PriceDisplay } from '@/components/listings/price-display';
 import { PromotionBadge } from '@/components/payments/promotion-badge';
@@ -23,41 +24,53 @@ export function ListingCard({ listing, showStatus = false, className }: ListingC
   const category =
     typeof listing.category === 'object' ? (listing.category as ListingCategoryRef) : null;
   const location = [listing.location?.city, listing.location?.state].filter(Boolean).join(', ');
+  const metaParts = [
+    location || null,
+    category?.name || null,
+    listing.condition ? listing.condition : null,
+  ].filter(Boolean);
 
   return (
     <Link
       href={`/listings/${listing.slug}`}
       className={cn(
-        'listing-card group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'listing-card group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
         listing.isFeatured && 'listing-card--featured',
         className,
       )}
+      aria-label={listing.title}
     >
-      <div className="relative aspect-[5/4] overflow-hidden bg-muted">
+      <div
+        className="listing-card__arch relative overflow-hidden transition-transform duration-500 ease-out will-change-transform group-hover:-translate-y-3"
+        style={{
+          clipPath: MOSQUE_ARCH_CLIP_PATH,
+          aspectRatio: '3 / 4.25',
+        }}
+      >
         {image ? (
           <Image
             src={cloudinaryImageUrl(image, { width: 800 })}
             alt={listing.title}
             fill
-            className="object-cover transition duration-slow group-hover:scale-[1.05]"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+          <div className="absolute inset-0 flex items-center justify-center bg-muted text-sm text-muted-foreground">
             No image
           </div>
         )}
 
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
-
-        <PromotionBadge
-          isFeatured={listing.isFeatured}
-          featuredUntil={listing.featuredUntil}
-          className="absolute left-3 top-3 z-10"
+        <div
+          className="pointer-events-none absolute inset-0 transition-opacity duration-500 group-hover:opacity-90"
+          style={{
+            background:
+              'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.42) 48%, rgba(0,0,0,0.06) 100%)',
+          }}
         />
 
         {showStatus && (
-          <div className="absolute right-3 top-3 z-10">
+          <div className="absolute right-5 top-[50%] z-10 sm:right-6">
             <ListingStatusBadge status={listing.status} />
           </div>
         )}
@@ -65,8 +78,8 @@ export function ListingCard({ listing, showStatus = false, className }: ListingC
         {imageCount > 1 && (
           <span
             className={cn(
-              'absolute z-10 inline-flex items-center gap-1 rounded-lg bg-card/95 px-2 py-1 text-[11px] font-semibold text-foreground shadow-soft backdrop-blur-sm',
-              showStatus ? 'bottom-[3.25rem] right-3' : 'right-3 top-3',
+              'absolute z-10 inline-flex items-center gap-1 rounded-lg bg-black/55 px-2 py-1 text-[11px] font-semibold text-white backdrop-blur-sm',
+              showStatus ? 'right-5 top-[60%] sm:right-6' : 'right-5 top-[50%] sm:right-6',
             )}
           >
             <Images className="h-3 w-3" aria-hidden />
@@ -74,38 +87,37 @@ export function ListingCard({ listing, showStatus = false, className }: ListingC
           </span>
         )}
 
-        <div className="absolute inset-x-0 bottom-0 z-10 p-3.5">
+        <div className="absolute inset-x-0 bottom-0 z-10 px-4 pb-7 pt-14 sm:px-5 sm:pb-8">
+          <PromotionBadge
+            isFeatured={listing.isFeatured}
+            featuredUntil={listing.featuredUntil}
+            className="mb-2"
+          />
+
           <PriceDisplay
             price={listing.price}
             priceType={listing.priceType}
             currency={listing.currency}
-            className="!text-lg !font-bold !text-white drop-shadow-sm [&_span]:!text-white/85"
+            className="!text-lg !font-bold !text-white drop-shadow-sm sm:!text-xl [&_span]:!text-white/85"
           />
-        </div>
-      </div>
 
-      <div className="flex flex-1 flex-col gap-1.5 p-3.5 pt-3">
-        <h3 className="text-card-title line-clamp-2 group-hover:text-primary">{listing.title}</h3>
+          <h3 className="mt-1.5 line-clamp-2 text-base font-bold leading-snug text-white drop-shadow-sm sm:text-lg">
+            {listing.title}
+          </h3>
 
-        <div className="mt-auto flex items-center gap-1.5 pt-0.5 text-meta">
-          {location ? (
-            <span className="inline-flex min-w-0 items-center gap-1 truncate">
-              <MapPin className="h-3 w-3 shrink-0 text-primary/70" aria-hidden />
-              <span className="truncate">{location}</span>
+          {metaParts.length > 0 ? (
+            <p className="mt-2 flex min-w-0 items-center gap-1 text-[11px] font-normal leading-snug text-white/75 sm:text-xs">
+              {location ? <MapPin className="h-3 w-3 shrink-0 text-white/70" aria-hidden /> : null}
+              <span className="truncate capitalize">{metaParts.join(' · ')}</span>
+            </p>
+          ) : null}
+
+          <div className="mt-3 flex items-center gap-2 overflow-hidden">
+            <span className="block h-0.5 w-6 rounded-full bg-primary transition-all duration-500 group-hover:w-12" />
+            <span className="translate-x-4 text-xs font-semibold text-white opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
+              View →
             </span>
-          ) : null}
-          {location && category ? <span className="text-border" aria-hidden>
-            ·
-          </span> : null}
-          {category ? <span className="truncate">{category.name}</span> : null}
-          {listing.condition ? (
-            <>
-              <span className="text-border" aria-hidden>
-                ·
-              </span>
-              <span className="capitalize truncate">{listing.condition}</span>
-            </>
-          ) : null}
+          </div>
         </div>
       </div>
     </Link>

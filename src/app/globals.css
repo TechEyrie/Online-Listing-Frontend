@@ -247,24 +247,19 @@
     @apply flex h-11 w-full rounded-xl border border-input bg-card px-3 py-2 text-sm text-foreground shadow-soft transition-colors duration-fast placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50;
   }
 
+  /* Mosque-arch product cards — shape comes from shared SVG clip-path */
   .listing-card {
-    @apply relative flex flex-col overflow-hidden rounded-2xl border border-border/80 bg-card shadow-soft transition duration-slow;
+    @apply relative block w-full select-none;
   }
 
-  .listing-card:hover {
-    @apply -translate-y-1.5 border-primary/25 shadow-premium;
+  .listing-card__arch {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22);
   }
 
-  .listing-card--featured {
+  .listing-card--featured .listing-card__arch {
     box-shadow:
-      inset 3px 0 0 0 hsl(var(--accent)),
-      var(--shadow-sm);
-  }
-
-  .listing-card--featured:hover {
-    box-shadow:
-      inset 3px 0 0 0 hsl(var(--accent)),
-      var(--shadow-lg);
+      0 0 0 2px hsl(var(--accent) / 0.55),
+      0 10px 36px rgba(0, 0, 0, 0.28);
   }
 }
 

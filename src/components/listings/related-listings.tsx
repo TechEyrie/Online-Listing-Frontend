@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 
+import { MOSQUE_ARCH_CLIP_PATH } from '@/components/common/mosque-arch-clip';
 import { ListingCard } from '@/components/listings/listing-card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -63,14 +64,16 @@ export function RelatedListings({
     return (
       <section className="space-y-5">
         <RelatedHeader browseHref={browseHref} />
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="listing-card">
-              <Skeleton className="aspect-[5/4] w-full rounded-none" />
-              <div className="space-y-2 p-3.5">
-                <Skeleton className="h-4 w-4/5" />
-                <Skeleton className="h-3 w-28" />
-              </div>
+              <Skeleton
+                className="listing-card__arch w-full rounded-none"
+                style={{
+                  clipPath: MOSQUE_ARCH_CLIP_PATH,
+                  aspectRatio: '3 / 4.25',
+                }}
+              />
             </div>
           ))}
         </div>
@@ -84,7 +87,7 @@ export function RelatedListings({
   return (
     <section className="space-y-5">
       <RelatedHeader browseHref={browseHref} />
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {items.map((listing) => (
           <ListingCard key={listing._id} listing={listing} />
         ))}

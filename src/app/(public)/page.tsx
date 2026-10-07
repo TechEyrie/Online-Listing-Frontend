@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 
 import { CategorySlider } from '@/components/categories/category-slider';
+import { MOSQUE_ARCH_CLIP_PATH } from '@/components/common/mosque-arch-clip';
 import { HeroBanner } from '@/components/layout/hero-banner';
 import { Container } from '@/components/layout/container';
 import { ListingCard } from '@/components/listings/listing-card';
@@ -15,14 +16,16 @@ import { searchApi } from '@/lib/search-api';
 
 function ListingSkeletonGrid() {
   return (
-    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {Array.from({ length: 4 }).map((_, i) => (
         <div key={i} className="listing-card">
-          <Skeleton className="aspect-[5/4] w-full rounded-none" />
-          <div className="space-y-2 p-3.5">
-            <Skeleton className="h-4 w-4/5 max-w-[85%]" />
-            <Skeleton className="h-3 w-32" />
-          </div>
+          <Skeleton
+            className="listing-card__arch w-full rounded-none"
+            style={{
+              clipPath: MOSQUE_ARCH_CLIP_PATH,
+              aspectRatio: '3 / 4.25',
+            }}
+          />
         </div>
       ))}
     </div>
@@ -77,7 +80,7 @@ export default function Home() {
                 Highlighted by sellers for extra visibility.
               </p>
             </div>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {featured.data.map((listing) => (
                 <ListingCard key={listing._id} listing={listing} />
               ))}
@@ -116,7 +119,7 @@ export default function Home() {
             />
           )}
           {recent.data && recent.data.length > 0 && (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {recent.data.map((listing) => (
                 <ListingCard key={listing._id} listing={listing} />
               ))}

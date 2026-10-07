@@ -91,7 +91,7 @@ export default function MyListingsPage() {
       {error && <p className="text-sm text-destructive">{error}</p>}
       {isLoading && <p className="text-sm">Loading...</p>}
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {data?.data?.map((listing) => (
           <div key={listing._id} className="space-y-2">
             <ListingCard listing={listing} showStatus />

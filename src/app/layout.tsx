@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
+
 import { AssistantWidget } from '@/components/assistant/assistant-widget';
+import { MosqueArchClip } from '@/components/common/mosque-arch-clip';
 import { AppProviders } from '@/providers/app-providers';
 
 import './globals.css';
@@ -45,6 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen antialiased">
+        <MosqueArchClip />
         <AppProviders>
           {children}
           <AssistantWidget />

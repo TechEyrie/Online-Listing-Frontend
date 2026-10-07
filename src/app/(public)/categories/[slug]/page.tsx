@@ -108,7 +108,7 @@ export default function CategoryPage() {
             {listingsQuery.isLoading && (
               <p className="text-sm text-muted-foreground">Loading listings...</p>
             )}
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {listingsQuery.data?.data?.map((listing) => (
                 <ListingCard key={listing._id} listing={listing} />
               ))}
