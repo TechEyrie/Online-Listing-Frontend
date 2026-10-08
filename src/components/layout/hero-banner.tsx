@@ -117,7 +117,7 @@ export function HeroBanner() {
 
               {/* Subheading */}
               <p className="mt-4 text-lg font-medium text-[#374151] sm:text-xl">
-                Post your ad <span className="font-bold text-[#00875a]">FREE</span>
+                Post your ad <span className="font-bold text-[#febd69]">FREE</span>
                 <br />
                 <span className="text-base text-[#4b5563] sm:text-lg">fast, easy, no cost.</span>
               </p>
@@ -126,7 +126,7 @@ export function HeroBanner() {
               <div className="mt-7">
                 <Link
                   href="/post"
-                  className="inline-flex items-center gap-2 rounded-xl bg-black px-6 py-3.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-neutral-800 hover:shadow-lg active:scale-[0.98]"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#febd69] px-6 py-3.5 text-sm font-semibold text-[#131921] shadow-md transition-all duration-200 hover:bg-[#f3a847] hover:shadow-lg active:scale-[0.98] active:bg-[#e77600]"
                 >
                   <span>Post Free Ad</span>
                   <ArrowRight className="h-4 w-4 stroke-[2.5]" />
@@ -144,7 +144,7 @@ export function HeroBanner() {
           >
             {/* 1. Keyword search input with prompt icon */}
             <div ref={searchBoxRef} className="relative flex w-full flex-1 items-center px-3 py-2">
-              <Search className="mr-3 h-5 w-5 shrink-0 text-[#00875a]" />
+              <Search className="mr-3 h-5 w-5 shrink-0 text-[#febd69]" />
               <input
                 type="text"
                 value={searchTerm}
@@ -172,7 +172,7 @@ export function HeroBanner() {
                     <li key={item}>
                       <button
                         type="button"
-                        className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-gray-800 transition hover:bg-gray-50 hover:text-[#00875a]"
+                        className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-gray-800 transition hover:bg-[#fff6e8] hover:text-[#131921]"
                         onClick={() => {
                           setSearchTerm(item);
                           setSuggestionsOpen(false);
@@ -206,7 +206,7 @@ export function HeroBanner() {
                 className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left text-sm text-[#374151] hover:text-[#111827] md:w-48"
               >
                 <div className="flex items-center gap-2 truncate">
-                  <LayoutGrid className="h-4 w-4 shrink-0 text-[#00875a]" />
+                  <LayoutGrid className="h-4 w-4 shrink-0 text-[#febd69]" />
                   <span className="truncate font-medium">{selectedCat.name}</span>
                 </div>
                 <ChevronDown className="h-4 w-4 shrink-0 text-gray-400" />
@@ -223,9 +223,9 @@ export function HeroBanner() {
                         setCatOpen(false);
                       }}
                       className={cn(
-                        'flex w-full px-4 py-2 text-left text-xs font-medium transition hover:bg-emerald-50 hover:text-[#00875a]',
+                        'flex w-full px-4 py-2 text-left text-xs font-medium transition hover:bg-[#febd69] hover:text-[#131921]',
                         selectedCat.id === cat.id
-                          ? 'bg-emerald-50/80 font-bold text-[#00875a]'
+                          ? 'bg-[#febd69] font-bold text-[#131921]'
                           : 'text-gray-700',
                       )}
                     >
@@ -250,7 +250,7 @@ export function HeroBanner() {
                 className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left text-sm text-[#374151] hover:text-[#111827] md:w-44"
               >
                 <div className="flex items-center gap-2 truncate">
-                  <MapPin className="h-4 w-4 shrink-0 text-[#00875a]" />
+                  <MapPin className="h-4 w-4 shrink-0 text-[#febd69]" />
                   <span className="truncate font-medium">{selectedCity}</span>
                 </div>
                 <ChevronDown className="h-4 w-4 shrink-0 text-gray-400" />
@@ -267,9 +267,9 @@ export function HeroBanner() {
                         setCityOpen(false);
                       }}
                       className={cn(
-                        'flex w-full px-4 py-2 text-left text-xs font-medium transition hover:bg-emerald-50 hover:text-[#00875a]',
+                        'flex w-full px-4 py-2 text-left text-xs font-medium transition hover:bg-[#febd69] hover:text-[#131921]',
                         selectedCity === city
-                          ? 'bg-emerald-50/80 font-bold text-[#00875a]'
+                          ? 'bg-[#febd69] font-bold text-[#131921]'
                           : 'text-gray-700',
                       )}
                     >
@@ -280,11 +280,11 @@ export function HeroBanner() {
               )}
             </div>
 
-            {/* 4. Green Search Submit Button */}
+            {/* 4. Amber Search Submit Button */}
             <div className="w-full shrink-0 p-1 md:w-auto">
               <button
                 type="submit"
-                className="flex w-full items-center justify-center rounded-xl bg-[#00875a] px-7 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#00734c] active:bg-[#00603f] md:rounded-full"
+                className="flex w-full items-center justify-center rounded-xl bg-[#febd69] px-7 py-3 text-sm font-semibold text-[#131921] shadow-sm transition hover:bg-[#f3a847] active:bg-[#e77600] md:rounded-full"
               >
                 Search
               </button>

@@ -519,20 +519,6 @@ export function SiteHeader() {
               )}
             </div>
 
-            {/* Returns & Orders (Links to My Listings / Dashboard) */}
-            <Link
-              href={user ? '/my-listings' : '/login'}
-              className="hidden rounded-[2px] border border-transparent px-2 py-1.5 leading-tight transition-colors duration-fast hover:border-white sm:block"
-            >
-              <span className="block text-[11px] font-normal leading-tight text-[#cccccc]">
-                Returns
-              </span>
-              <span className="block text-[13px] font-bold leading-tight text-white">
-                & Orders
-              </span>
-            </Link>
-
-
             {/* Post Ad CTA Pill */}
             <Link
               href="/post"

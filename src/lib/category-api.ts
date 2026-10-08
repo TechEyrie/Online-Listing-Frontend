@@ -16,6 +16,10 @@ export const categoryApi = {
     const { data } = await api.get<ApiSuccessResponse<CategoryTreeNode[]>>('/categories/tree');
     return data;
   },
+  getListingCounts: async () => {
+    const { data } = await api.get<ApiSuccessResponse<Record<string, number>>>('/categories/counts');
+    return data;
+  },
   getById: async (id: string) => {
     const { data } = await api.get<ApiSuccessResponse<Category>>(`/categories/${id}`);
     return data;

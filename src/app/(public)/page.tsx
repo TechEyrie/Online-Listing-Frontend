@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 
+import { CategoryBrowseGrid } from '@/components/categories/category-browse-grid';
 import { CategorySlider } from '@/components/categories/category-slider';
 import { MOSQUE_ARCH_CLIP_PATH } from '@/components/common/mosque-arch-clip';
 import { HeroBanner } from '@/components/layout/hero-banner';
@@ -56,7 +57,6 @@ export default function Home() {
       <HeroBanner />
 
       <Container className="space-y-16 py-10 sm:py-12">
-
         <section className="space-y-6">
           <div className="flex items-end justify-between gap-4">
             <div>
@@ -70,6 +70,8 @@ export default function Home() {
           </div>
           <CategorySlider />
         </section>
+
+        <CategoryBrowseGrid />
 
         {featured.data && featured.data.length > 0 && (
           <section className="space-y-6">

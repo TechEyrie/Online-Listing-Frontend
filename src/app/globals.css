@@ -55,13 +55,13 @@
     --muted-foreground: 192 14% 34%;
     --border: 33 30% 80%;
     --input: 33 30% 80%;
-    --ring: 173 68% 28%;
+    --ring: 214 27% 10%;
 
-    /* Vivid gulf teal */
-    --primary: 173 72% 27%;
+    /* Header navy (#131921) — site primary */
+    --primary: 214 27% 10%;
     --primary-foreground: 40 50% 99%;
-    --primary-hover: 173 78% 21%;
-    --brand-soft: 168 48% 88%;
+    --primary-hover: 214 28% 19%;
+    --brand-soft: 214 18% 92%;
     --brand-subtle: 40 38% 95%;
 
     /* Saffron accent */
@@ -102,12 +102,12 @@
     --muted-foreground: 36 14% 68%;
     --border: 192 16% 17%;
     --input: 192 16% 17%;
-    --ring: 170 58% 48%;
+    --ring: 214 22% 68%;
 
-    --primary: 170 58% 48%;
-    --primary-foreground: 192 32% 7%;
-    --primary-hover: 170 62% 56%;
-    --brand-soft: 170 28% 14%;
+    --primary: 214 22% 68%;
+    --primary-foreground: 214 27% 10%;
+    --primary-hover: 214 24% 76%;
+    --brand-soft: 214 18% 16%;
     --brand-subtle: 192 26% 8%;
 
     --accent: 24 95% 58%;

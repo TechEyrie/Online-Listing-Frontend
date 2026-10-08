@@ -113,7 +113,7 @@ export function ListingCard({ listing, showStatus = false, className }: ListingC
           ) : null}
 
           <div className="mt-3 flex items-center gap-2 overflow-hidden">
-            <span className="block h-0.5 w-6 rounded-full bg-primary transition-all duration-500 group-hover:w-12" />
+            <span className="block h-0.5 w-6 rounded-full bg-[#febd69] transition-all duration-500 group-hover:w-12" />
             <span className="translate-x-4 text-xs font-semibold text-white opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
               View →
             </span>
