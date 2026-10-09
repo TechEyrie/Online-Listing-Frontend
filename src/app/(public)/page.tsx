@@ -57,20 +57,6 @@ export default function Home() {
       <HeroBanner />
 
       <Container className="space-y-16 py-10 sm:py-12">
-        <section className="space-y-6">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <p className="page-eyebrow">Categories</p>
-              <h2 className="text-section-title mt-1">Browse by need</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Start with what you need.</p>
-            </div>
-            <Button asChild variant="ghost" size="sm">
-              <Link href="/search">View all</Link>
-            </Button>
-          </div>
-          <CategorySlider />
-        </section>
-
         <CategoryBrowseGrid />
 
         {featured.data && featured.data.length > 0 && (
@@ -89,6 +75,20 @@ export default function Home() {
             </div>
           </section>
         )}
+
+        <section className="space-y-6">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="page-eyebrow">Categories</p>
+              <h2 className="text-section-title mt-1">Browse by need</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Start with what you need.</p>
+            </div>
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/search">View all</Link>
+            </Button>
+          </div>
+          <CategorySlider />
+        </section>
 
         <section className="space-y-6">
           <div className="flex items-end justify-between gap-4">

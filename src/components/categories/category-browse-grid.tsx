@@ -113,7 +113,7 @@ export function CategoryBrowseGrid() {
                 )}
               >
                 <span
-                  className="relative flex h-[3.35rem] w-[3.35rem] shrink-0 items-center justify-center rounded-2xl text-white shadow-[0_10px_22px_rgba(19,25,33,0.18)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[-4deg]"
+                  className="relative flex h-[3.35rem] w-[3.35rem] shrink-0 items-center justify-center rounded-2xl text-white transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[-4deg]"
                   style={{
                     background: `linear-gradient(145deg, ${visual.from} 0%, ${visual.to} 100%)`,
                   }}
