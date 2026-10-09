@@ -57,17 +57,23 @@ function formatAdCount(count: number): string {
 }
 
 export function CategoryBrowseGrid() {
-  const { data: tree, isLoading: treeLoading } = useCategoryTree();
-  const { data: counts, isLoading: countsLoading } = useQuery({
+  const { data: tree, isLoading: treeLoading, isError: treeError } = useCategoryTree();
+  const {
+    data: counts,
+    isPending: countsPending,
+    isSuccess: countsSuccess,
+  } = useQuery({
     queryKey: ['categories', 'counts'],
     queryFn: async () => {
       const res = await categoryApi.getListingCounts();
+      if (!res.success || !res.data || typeof res.data !== 'object' || Array.isArray(res.data)) {
+        throw new Error('Invalid category counts response');
+      }
       return res.data;
     },
     staleTime: 60_000,
+    retry: 1,
   });
-
-  const loading = treeLoading || countsLoading;
 
   return (
     <section className="py-12 sm:py-16 lg:py-20">
@@ -79,7 +85,7 @@ export function CategoryBrowseGrid() {
         </p>
       </header>
 
-      {loading ? (
+      {treeLoading ? (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
           {Array.from({ length: 12 }).map((_, i) => (
             <div
@@ -94,12 +100,12 @@ export function CategoryBrowseGrid() {
             </div>
           ))}
         </div>
-      ) : !tree?.length ? null : (
+      ) : treeError || !tree?.length ? null : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
           {tree.map((category) => {
             const visual = VISUALS[category.slug] ?? FALLBACK;
             const Icon = visual.icon;
-            const adCount = counts?.[category.slug] ?? 0;
+            const adCount = countsSuccess ? (counts[category.slug] ?? 0) : undefined;
 
             return (
               <Link
@@ -125,9 +131,13 @@ export function CategoryBrowseGrid() {
                   <span className="block truncate text-[15px] font-bold leading-snug text-foreground">
                     {category.name}
                   </span>
-                  <span className="mt-1 block text-[13px] font-medium tabular-nums leading-none text-muted-foreground">
-                    {formatAdCount(adCount)}
-                  </span>
+                  {countsPending ? (
+                    <span className="mt-1.5 block h-3 w-14 animate-pulse rounded bg-muted" />
+                  ) : adCount !== undefined ? (
+                    <span className="mt-1 block text-[13px] font-medium tabular-nums leading-none text-muted-foreground">
+                      {formatAdCount(adCount)}
+                    </span>
+                  ) : null}
                 </span>
                 <span
                   className="mr-0.5 text-xl font-light text-muted-foreground/40 transition-all duration-300 group-hover:translate-x-1 group-hover:text-foreground"
