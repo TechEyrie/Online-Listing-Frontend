@@ -7,6 +7,8 @@ import type {
   AdminTransaction,
   AdminUser,
   AdminUserDetail,
+  AdminVisitorRow,
+  AdminVisitorStats,
   DashboardStats,
   ReportReason,
   ReportTargetType,
@@ -91,6 +93,19 @@ export const adminApi = {
     const { data } = await api.get<ListResponse<AdminTransaction>>('/admin/transactions', {
       params,
     });
+    return data;
+  },
+  getVisitorStats: async () => {
+    const { data } = await api.get<ApiSuccessResponse<AdminVisitorStats>>('/admin/visitors/stats');
+    return data.data;
+  },
+  getVisitors: async (params: {
+    page?: number;
+    limit?: number;
+    sort?: 'recent' | 'hits' | '429';
+    search?: string;
+  } = {}) => {
+    const { data } = await api.get<ListResponse<AdminVisitorRow>>('/admin/visitors', { params });
     return data;
   },
 };

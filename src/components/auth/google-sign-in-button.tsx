@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { AxiosError } from 'axios';
 
 import { authApi } from '@/lib/auth-api';
+import { isGoogleSignInConfigured } from '@/lib/google-auth';
 import { useAuthStore } from '@/stores/auth-store';
 import type { ApiErrorResponse } from '@/types/api';
 
@@ -15,6 +16,7 @@ interface GoogleSignInButtonProps {
 
 const GOOGLE_SCRIPT_SRC = 'https://accounts.google.com/gsi/client';
 const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+const googleEnabled = isGoogleSignInConfigured();
 
 export function GoogleSignInButton({
   redirectTo = '/dashboard',
@@ -28,7 +30,7 @@ export function GoogleSignInButton({
   );
 
   useEffect(() => {
-    if (!CLIENT_ID || CLIENT_ID.includes('your-google')) {
+    if (!googleEnabled || !CLIENT_ID) {
       setStatus('unavailable');
       return;
     }
@@ -98,11 +100,7 @@ export function GoogleSignInButton({
   }, [onError, redirectTo, router, setAuth]);
 
   if (status === 'unavailable') {
-    return (
-      <p className="text-center text-xs text-muted-foreground">
-        Google sign-in is not configured. Set NEXT_PUBLIC_GOOGLE_CLIENT_ID in your env.
-      </p>
-    );
+    return null;
   }
 
   return (

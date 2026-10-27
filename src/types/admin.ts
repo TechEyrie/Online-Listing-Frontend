@@ -125,3 +125,35 @@ export interface AdminListMeta {
   total: number;
   totalPages: number;
 }
+
+export interface AdminVisitorRow {
+  _id: string;
+  visitorId: string;
+  ipAddress?: string;
+  ipPrefix?: string;
+  visitCount: number;
+  status429Count: number;
+  firstSeen: string;
+  lastSeen: string;
+  lastPath: string;
+  userAgent?: string;
+  user?: { _id: string; name: string; email: string; role?: string };
+}
+
+export interface AdminVisitorStats {
+  uniqueVisitors: number;
+  totalVisits: number;
+  status429Total: number;
+  activeLast24h: number;
+  visitsTrend: TrendPoint[];
+  topPaths: Array<{ path: string; count: number }>;
+  top429: Array<{
+    visitorId: string;
+    ipAddress?: string;
+    ipPrefix?: string;
+    status429Count: number;
+    visitCount: number;
+    lastSeen: string;
+  }>;
+  rateLimitHint: { windowMs: number; maxRequests: number };
+}

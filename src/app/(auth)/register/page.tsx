@@ -14,6 +14,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { authApi } from '@/lib/auth-api';
+import { isGoogleSignInConfigured } from '@/lib/google-auth';
 import { registerSchema, type RegisterFormValues } from '@/lib/validators';
 import { useAuthStore } from '@/stores/auth-store';
 import type { ApiErrorResponse } from '@/types/api';
@@ -126,12 +127,16 @@ export default function RegisterPage() {
             {isSubmitting ? 'Creating account...' : 'Create account'}
           </Button>
         </form>
-        <div className="my-4 flex items-center gap-3">
-          <div className="h-px flex-1 bg-border" />
-          <span className="text-xs uppercase text-muted-foreground">or</span>
-          <div className="h-px flex-1 bg-border" />
-        </div>
-        <GoogleSignInButton onError={setServerError} />
+        {isGoogleSignInConfigured() && (
+          <>
+            <div className="my-4 flex items-center gap-3">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-xs uppercase text-muted-foreground">or</span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+            <GoogleSignInButton onError={setServerError} />
+          </>
+        )}
         <p className="mt-4 text-sm text-muted-foreground">
           Already have an account?{' '}
           <Link href="/login" className="font-medium text-foreground hover:underline">
