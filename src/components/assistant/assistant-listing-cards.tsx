@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { cloudinaryImageUrl } from '@/lib/cloudinary';
+import { getListingCoverUrl, isListingPlaceholderSrc, LISTING_PLACEHOLDER_SRC } from '@/lib/listing-image';
 import type { AssistantListingCard } from '@/types/assistant';
 
 interface AssistantListingCardsProps {
@@ -14,22 +16,25 @@ export function AssistantListingCards({ listings }: AssistantListingCardsProps) 
 
   return (
     <ul className="mt-2 space-y-2">
-      {listings.map((listing) => (
+      {listings.map((listing) => {
+        const coverRaw = getListingCoverUrl(listing.imageUrl);
+        const thumbSrc = isListingPlaceholderSrc(coverRaw)
+          ? LISTING_PLACEHOLDER_SRC
+          : cloudinaryImageUrl(coverRaw, { width: 112, height: 112 });
+        return (
         <li key={listing.id}>
           <Link
             href={listing.href}
             className="flex gap-3 rounded-[12px] border border-border bg-background/80 p-2 transition hover:border-primary/40 hover:bg-muted/40"
           >
             <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-[8px] bg-muted">
-              {listing.imageUrl ? (
-                <Image
-                  src={listing.imageUrl}
-                  alt={listing.title}
-                  fill
-                  className="object-cover"
-                  sizes="56px"
-                />
-              ) : null}
+              <Image
+                src={thumbSrc}
+                alt={listing.imageUrl ? listing.title : `${listing.title} — no photo`}
+                fill
+                className={listing.imageUrl ? 'object-cover' : 'object-contain p-1'}
+                sizes="56px"
+              />
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-foreground">{listing.title}</p>
@@ -45,7 +50,8 @@ export function AssistantListingCards({ listings }: AssistantListingCardsProps) 
             </div>
           </Link>
         </li>
-      ))}
+        );
+      })}
     </ul>
   );
 }

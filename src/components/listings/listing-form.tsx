@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { useCategoryTree } from '@/hooks/use-categories';
 import { listingApi } from '@/lib/listing-api';
 import { DEFAULT_LISTING_CURRENCY } from '@/lib/location-currency';
+import { cn } from '@/lib/utils';
 import { listingFormSchema, type ListingFormValues } from '@/lib/listing-validators';
 import type { ApiErrorResponse } from '@/types/api';
 import type { CategoryAttribute } from '@/types/category';
@@ -216,6 +217,8 @@ export function ListingForm({ mode, listing }: ListingFormProps) {
   };
 
   const steps = ['Details', 'Category & location', 'Attributes & images', 'Preview'];
+  const lockedStepHint =
+    'Complete the current section fully before you can open this step.';
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -223,28 +226,38 @@ export function ListingForm({ mode, listing }: ListingFormProps) {
         {steps.map((label, index) => {
           const isLocked = index > unlockedStep;
           return (
-          <button
-            key={label}
-            type="button"
-            disabled={isLocked}
-            aria-disabled={isLocked}
-            title={isLocked ? 'Complete the previous steps first' : undefined}
-            className={`inline-flex items-center gap-2 rounded-[12px] px-3 py-2 text-sm font-semibold transition-colors ${
-              isLocked
-                ? 'cursor-not-allowed bg-muted/60 text-muted-foreground opacity-60'
-                : step === index
-                  ? 'bg-primary text-primary-foreground shadow-soft'
-                  : step > index
-                    ? 'bg-primary-soft text-primary'
-                    : 'bg-muted text-muted-foreground'
-            }`}
-            onClick={() => void goToStep(index)}
-          >
-            <span className="flex h-6 w-6 items-center justify-center rounded-[8px] bg-card/25 text-xs tabular-nums">
-              {index + 1}
-            </span>
-            {label}
-          </button>
+            <div key={label} className="group relative">
+              <button
+                type="button"
+                aria-disabled={isLocked}
+                className={cn(
+                  'inline-flex cursor-pointer items-center gap-2 rounded-[12px] px-3 py-2 text-sm font-semibold transition-colors',
+                  isLocked
+                    ? 'bg-muted/60 text-muted-foreground opacity-70'
+                    : step === index
+                      ? 'bg-primary text-primary-foreground shadow-soft'
+                      : step > index
+                        ? 'bg-primary-soft text-primary'
+                        : 'bg-muted text-muted-foreground',
+                )}
+                onClick={() => {
+                  if (!isLocked) void goToStep(index);
+                }}
+              >
+                <span className="flex h-6 w-6 items-center justify-center rounded-[8px] bg-card/25 text-xs tabular-nums">
+                  {index + 1}
+                </span>
+                {label}
+              </button>
+              {isLocked ? (
+                <span
+                  role="tooltip"
+                  className="pointer-events-none absolute bottom-[calc(100%+8px)] left-1/2 z-50 hidden w-max max-w-[min(100vw-2rem,280px)] -translate-x-1/2 rounded-[10px] border border-border bg-popover px-3 py-2 text-center text-xs font-normal leading-snug text-popover-foreground shadow-soft group-hover:block group-focus-within:block"
+                >
+                  {lockedStepHint}
+                </span>
+              ) : null}
+            </div>
           );
         })}
       </div>

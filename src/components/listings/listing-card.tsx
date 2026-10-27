@@ -9,6 +9,7 @@ import { ListingStatusBadge } from '@/components/listings/listing-status-badge';
 import { PriceDisplay } from '@/components/listings/price-display';
 import { PromotionBadge } from '@/components/payments/promotion-badge';
 import { cloudinaryImageUrl } from '@/lib/cloudinary';
+import { getListingCoverUrl, isListingPlaceholderSrc, LISTING_PLACEHOLDER_SRC } from '@/lib/listing-image';
 import { cn } from '@/lib/utils';
 import type { Listing, ListingCategoryRef } from '@/types/listing';
 
@@ -19,7 +20,10 @@ interface ListingCardProps {
 }
 
 export function ListingCard({ listing, showStatus = false, className }: ListingCardProps) {
-  const image = listing.images?.[0]?.url;
+  const coverRaw = getListingCoverUrl(listing.images?.[0]?.url);
+  const coverSrc = isListingPlaceholderSrc(coverRaw)
+    ? LISTING_PLACEHOLDER_SRC
+    : cloudinaryImageUrl(coverRaw, { width: 800 });
   const imageCount = listing.images?.length ?? 0;
   const category =
     typeof listing.category === 'object' ? (listing.category as ListingCategoryRef) : null;
@@ -47,19 +51,17 @@ export function ListingCard({ listing, showStatus = false, className }: ListingC
           aspectRatio: '3 / 4.25',
         }}
       >
-        {image ? (
-          <Image
-            src={cloudinaryImageUrl(image, { width: 800 })}
-            alt={listing.title}
-            fill
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-muted text-sm text-muted-foreground">
-            No image
-          </div>
-        )}
+        <Image
+          src={coverSrc}
+          alt={imageCount > 0 ? listing.title : `${listing.title} — no photo`}
+          fill
+          className={cn(
+            'object-cover transition-transform duration-700 ease-out',
+            imageCount > 0 && 'group-hover:scale-110',
+            imageCount === 0 && 'object-contain p-6 opacity-90',
+          )}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+        />
 
         <div
           className="pointer-events-none absolute inset-0 transition-opacity duration-500 group-hover:opacity-90"

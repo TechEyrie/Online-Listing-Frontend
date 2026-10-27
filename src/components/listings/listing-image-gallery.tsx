@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight, Images } from 'lucide-react';
 
 import { cloudinaryImageUrl } from '@/lib/cloudinary';
+import { LISTING_PLACEHOLDER_SRC } from '@/lib/listing-image';
 import { cn } from '@/lib/utils';
 import type { ListingImage } from '@/types/listing';
 
@@ -38,8 +39,15 @@ export function ListingImageGallery({ images, title }: ListingImageGalleryProps)
 
   if (!total) {
     return (
-      <div className="flex aspect-[16/11] items-center justify-center rounded-2xl border border-border/80 bg-muted text-sm text-muted-foreground">
-        No images available
+      <div className="relative aspect-[16/11] overflow-hidden rounded-2xl border border-border/80 bg-muted shadow-elevated">
+        <Image
+          src={LISTING_PLACEHOLDER_SRC}
+          alt={`${title} — no photo`}
+          fill
+          className="object-contain p-8 sm:p-12"
+          sizes="(max-width: 1024px) 100vw, 62vw"
+          priority
+        />
       </div>
     );
   }

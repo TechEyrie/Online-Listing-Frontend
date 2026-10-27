@@ -3,7 +3,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useRef, useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Check,
   ChevronDown,
@@ -81,12 +82,24 @@ export function SiteHeader() {
   const [langMenuOpen, setLangMenuOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState<'EN' | 'AR'>('EN');
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerMounted, setDrawerMounted] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
   const searchBoxRef = useRef<HTMLDivElement>(null);
   const accountRef = useRef<HTMLDivElement>(null);
   const langRef = useRef<HTMLDivElement>(null);
   const locationRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setDrawerMounted(true);
+  }, []);
+
+  const closeDrawerAndNavigate = (href: string) => {
+    setDrawerOpen(false);
+    startTransition(() => {
+      router.push(href);
+    });
+  };
 
   // Load saved city
   useEffect(() => {
@@ -179,8 +192,220 @@ export function SiteHeader() {
     }
   };
 
+  const drawerNavLinkClass =
+    'flex items-center justify-between rounded px-2 py-2 hover:bg-gray-100 dark:hover:bg-white/10';
+
+  const renderDrawerLink = (href: string, children: ReactNode, className?: string) => (
+    <Link
+      href={href}
+      className={cn(drawerNavLinkClass, className)}
+      onClick={(e) => {
+        e.preventDefault();
+        closeDrawerAndNavigate(href);
+      }}
+    >
+      {children}
+    </Link>
+  );
+
+  const drawerMenu =
+    drawerOpen && drawerMounted
+      ? createPortal(
+          <div className="fixed inset-0 z-[200]">
+            <button
+              type="button"
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+              aria-label="Close menu"
+              onClick={() => setDrawerOpen(false)}
+            />
+            <div
+              className="relative z-10 flex h-full w-[360px] max-w-[85vw] flex-col bg-white text-gray-900 shadow-2xl animate-fade-in dark:bg-[#1a222d] dark:text-gray-100"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Main menu"
+            >
+              <div className="flex h-14 items-center justify-between bg-[#232f3e] px-6 text-white">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20">
+                    <User className="h-5 w-5 text-white" />
+                  </div>
+                  <span className="text-base font-bold">
+                    {user ? `Hello, ${user.name}` : 'Hello, Sign In'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setDrawerOpen(false)}
+                  className="rounded p-1 text-white hover:bg-white/10"
+                  aria-label="Close menu"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+
+              <div className="flex-1 space-y-4 overflow-y-auto px-6 py-4 text-sm">
+                <div>
+                  <p className="font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                    Trending
+                  </p>
+                  <div className="mt-2 space-y-1">
+                    {renderDrawerLink(
+                      '/search?featured=true',
+                      <>
+                        <span>Featured Listings</span>
+                        <ChevronRight className="h-4 w-4 text-gray-400" />
+                      </>,
+                    )}
+                    {renderDrawerLink(
+                      '/search?sort=newest',
+                      <>
+                        <span>New Arrivals</span>
+                        <ChevronRight className="h-4 w-4 text-gray-400" />
+                      </>,
+                    )}
+                  </div>
+                </div>
+
+                <hr className="border-gray-200 dark:border-white/10" />
+
+                <div>
+                  <p className="font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                    Shop by Category
+                  </p>
+                  <div className="mt-2 space-y-1">
+                    {renderDrawerLink(
+                      '/categories/vehicles',
+                      <>
+                        <span>Vehicles & Cars</span>
+                        <ChevronRight className="h-4 w-4 text-gray-400" />
+                      </>,
+                    )}
+                    {renderDrawerLink(
+                      '/categories/property',
+                      <>
+                        <span>Property & Apartments</span>
+                        <ChevronRight className="h-4 w-4 text-gray-400" />
+                      </>,
+                    )}
+                    {renderDrawerLink(
+                      '/categories/electronics',
+                      <>
+                        <span>Electronics & Mobiles</span>
+                        <ChevronRight className="h-4 w-4 text-gray-400" />
+                      </>,
+                    )}
+                    {renderDrawerLink(
+                      '/search?type=service',
+                      <>
+                        <span>Services</span>
+                        <ChevronRight className="h-4 w-4 text-gray-400" />
+                      </>,
+                    )}
+                    {renderDrawerLink(
+                      '/search',
+                      <>
+                        <span>See All Categories</span>
+                        <ChevronRight className="h-4 w-4" />
+                      </>,
+                      'font-semibold text-[#007185]',
+                    )}
+                  </div>
+                </div>
+
+                <hr className="border-gray-200 dark:border-white/10" />
+
+                <div>
+                  <p className="font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                    Programs & Features
+                  </p>
+                  <div className="mt-2 space-y-1">
+                    {renderDrawerLink(
+                      '/post',
+                      <>
+                        <span>Post a Free Ad</span>
+                        <ChevronRight className="h-4 w-4" />
+                      </>,
+                      'font-semibold text-[#f08804]',
+                    )}
+                    {renderDrawerLink(
+                      '/my-favorites',
+                      <>
+                        <span>Your Saved Items</span>
+                        <ChevronRight className="h-4 w-4 text-gray-400" />
+                      </>,
+                    )}
+                    {renderDrawerLink(
+                      '/messages',
+                      <>
+                        <span>Direct Messages</span>
+                        <ChevronRight className="h-4 w-4 text-gray-400" />
+                      </>,
+                    )}
+                  </div>
+                </div>
+
+                <hr className="border-gray-200 dark:border-white/10" />
+
+                <div>
+                  <p className="font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                    Help & Settings
+                  </p>
+                  <div className="mt-2 space-y-1">
+                    <Link
+                      href="/profile"
+                      className="block rounded px-2 py-2 hover:bg-gray-100 dark:hover:bg-white/10"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        closeDrawerAndNavigate('/profile');
+                      }}
+                    >
+                      Your Account
+                    </Link>
+                    <Link
+                      href="/dashboard"
+                      className="block rounded px-2 py-2 hover:bg-gray-100 dark:hover:bg-white/10"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        closeDrawerAndNavigate('/dashboard');
+                      }}
+                    >
+                      Customer Service
+                    </Link>
+                    {user ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setDrawerOpen(false);
+                          void handleLogout();
+                        }}
+                        className="block w-full rounded px-2 py-2 text-left font-semibold text-destructive hover:bg-destructive/10"
+                      >
+                        Sign Out
+                      </button>
+                    ) : (
+                      <Link
+                        href="/login"
+                        className="block rounded px-2 py-2 font-semibold text-[#007185] hover:bg-gray-100 dark:hover:bg-white/10"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          closeDrawerAndNavigate('/login');
+                        }}
+                      >
+                        Sign In
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>,
+          document.body,
+        )
+      : null;
+
   return (
-    <header className="sticky top-0 z-50 w-full select-none text-white">
+    <>
+      <header className="sticky top-0 z-50 w-full select-none text-white">
       {/* 1. MAIN TOP BAR (Amazon Dark Charcoal #131921) */}
       <div className="relative z-30 bg-[#131921] px-2 py-1.5 sm:px-4 sm:py-2">
         <div className="mx-auto flex max-w-[1536px] items-center gap-1 sm:gap-2 lg:gap-3">
@@ -581,182 +806,8 @@ export function SiteHeader() {
         </div>
       </div>
 
-      {/* 3. AUTHENTIC AMAZON SIDE DRAWER ("All" Menu) */}
-      {drawerOpen && (
-        <div className="fixed inset-0 z-50 flex">
-          {/* Backdrop overlay */}
-          <div
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
-            onClick={() => setDrawerOpen(false)}
-          />
-
-          {/* Slide-in panel */}
-          <div className="relative z-10 flex h-full w-[360px] max-w-[85vw] flex-col bg-white text-gray-900 shadow-2xl animate-fade-in dark:bg-[#1a222d] dark:text-gray-100">
-            {/* Header */}
-            <div className="flex h-14 items-center justify-between bg-[#232f3e] px-6 text-white">
-              <div className="flex items-center gap-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20">
-                  <User className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-base font-bold">
-                  {user ? `Hello, ${user.name}` : 'Hello, Sign In'}
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={() => setDrawerOpen(false)}
-                className="rounded p-1 text-white hover:bg-white/10"
-                aria-label="Close menu"
-              >
-                <X className="h-6 w-6" />
-              </button>
-            </div>
-
-            {/* Scrollable drawer body */}
-            <div className="flex-1 space-y-4 overflow-y-auto px-6 py-4 text-sm">
-              {/* Section: Trending */}
-              <div>
-                <p className="font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                  Trending
-                </p>
-                <div className="mt-2 space-y-1">
-                  <Link
-                    href="/search?featured=true"
-                    className="flex items-center justify-between rounded px-2 py-2 hover:bg-gray-100 dark:hover:bg-white/10"
-                  >
-                    <span>Featured Listings</span>
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
-                  </Link>
-                  <Link
-                    href="/search?sort=newest"
-                    className="flex items-center justify-between rounded px-2 py-2 hover:bg-gray-100 dark:hover:bg-white/10"
-                  >
-                    <span>New Arrivals</span>
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
-                  </Link>
-                </div>
-              </div>
-
-              <hr className="border-gray-200 dark:border-white/10" />
-
-              {/* Section: Shop By Category */}
-              <div>
-                <p className="font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                  Shop by Category
-                </p>
-                <div className="mt-2 space-y-1">
-                  <Link
-                    href="/categories/vehicles"
-                    className="flex items-center justify-between rounded px-2 py-2 hover:bg-gray-100 dark:hover:bg-white/10"
-                  >
-                    <span>Vehicles & Cars</span>
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
-                  </Link>
-                  <Link
-                    href="/categories/property"
-                    className="flex items-center justify-between rounded px-2 py-2 hover:bg-gray-100 dark:hover:bg-white/10"
-                  >
-                    <span>Property & Apartments</span>
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
-                  </Link>
-                  <Link
-                    href="/categories/electronics"
-                    className="flex items-center justify-between rounded px-2 py-2 hover:bg-gray-100 dark:hover:bg-white/10"
-                  >
-                    <span>Electronics & Mobiles</span>
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
-                  </Link>
-                  <Link
-                    href="/search?type=service"
-                    className="flex items-center justify-between rounded px-2 py-2 hover:bg-gray-100 dark:hover:bg-white/10"
-                  >
-                    <span>Services</span>
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
-                  </Link>
-                  <Link
-                    href="/search"
-                    className="flex items-center justify-between rounded px-2 py-2 font-semibold text-[#007185] hover:bg-gray-100 dark:hover:bg-white/10"
-                  >
-                    <span>See All Categories</span>
-                    <ChevronRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              </div>
-
-              <hr className="border-gray-200 dark:border-white/10" />
-
-              {/* Section: Programs & Features */}
-              <div>
-                <p className="font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                  Programs & Features
-                </p>
-                <div className="mt-2 space-y-1">
-                  <Link
-                    href="/post"
-                    className="flex items-center justify-between rounded px-2 py-2 font-semibold text-[#f08804] hover:bg-gray-100 dark:hover:bg-white/10"
-                  >
-                    <span>Post a Free Ad</span>
-                    <ChevronRight className="h-4 w-4" />
-                  </Link>
-                  <Link
-                    href="/my-favorites"
-                    className="flex items-center justify-between rounded px-2 py-2 hover:bg-gray-100 dark:hover:bg-white/10"
-                  >
-                    <span>Your Saved Items</span>
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
-                  </Link>
-                  <Link
-                    href="/messages"
-                    className="flex items-center justify-between rounded px-2 py-2 hover:bg-gray-100 dark:hover:bg-white/10"
-                  >
-                    <span>Direct Messages</span>
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
-                  </Link>
-                </div>
-              </div>
-
-              <hr className="border-gray-200 dark:border-white/10" />
-
-              {/* Section: Help & Settings */}
-              <div>
-                <p className="font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                  Help & Settings
-                </p>
-                <div className="mt-2 space-y-1">
-                  <Link
-                    href="/profile"
-                    className="block rounded px-2 py-2 hover:bg-gray-100 dark:hover:bg-white/10"
-                  >
-                    Your Account
-                  </Link>
-                  <Link
-                    href="/dashboard"
-                    className="block rounded px-2 py-2 hover:bg-gray-100 dark:hover:bg-white/10"
-                  >
-                    Customer Service
-                  </Link>
-                  {user ? (
-                    <button
-                      type="button"
-                      onClick={() => void handleLogout()}
-                      className="block w-full rounded px-2 py-2 text-left font-semibold text-destructive hover:bg-destructive/10"
-                    >
-                      Sign Out
-                    </button>
-                  ) : (
-                    <Link
-                      href="/login"
-                      className="block rounded px-2 py-2 font-semibold text-[#007185] hover:bg-gray-100 dark:hover:bg-white/10"
-                    >
-                      Sign In
-                    </Link>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </header>
+      {drawerMenu}
+    </>
   );
 }
