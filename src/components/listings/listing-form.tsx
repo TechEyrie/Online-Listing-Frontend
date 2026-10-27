@@ -31,6 +31,8 @@ export function ListingForm({ mode, listing }: ListingFormProps) {
   const router = useRouter();
   const { data: tree = [] } = useCategoryTree();
   const [step, setStep] = useState(0);
+  /** Highest step the user may open (0 = details only until Continue succeeds). */
+  const [unlockedStep, setUnlockedStep] = useState(0);
   const [files, setFiles] = useState<File[]>([]);
   const [attrValues, setAttrValues] = useState<Record<string, string>>(() => {
     const initial: Record<string, string> = {};
@@ -130,25 +132,76 @@ export function ListingForm({ mode, listing }: ListingFormProps) {
     return formData;
   };
 
+  const fieldsByStep: Array<(keyof ListingFormValues)[]> = [
+    ['title', 'description', 'price', 'currency', 'priceType', 'type'],
+    ['category', 'city', 'country', 'state'],
+    [],
+    [],
+  ];
+
+  const validateStep = async (stepIndex: number): Promise<boolean> => {
+    setServerError(null);
+
+    if (stepIndex === 0 || stepIndex === 1) {
+      return trigger(fieldsByStep[stepIndex], { shouldFocus: true });
+    }
+
+    if (stepIndex === 2) {
+      for (const attr of dynamicAttributes) {
+        if (attr.required && !attrValues[attr.name]?.trim()) {
+          setServerError(`"${attr.name}" is required for this category`);
+          return false;
+        }
+      }
+      if (mode === 'create' && files.length === 0) {
+        setServerError('Add at least one image before continuing');
+        return false;
+      }
+      if (mode === 'edit' && files.length === 0 && (listing?.images.length ?? 0) === 0) {
+        setServerError('Add at least one image before continuing');
+        return false;
+      }
+      return true;
+    }
+
+    return true;
+  };
+
+  const goToStep = async (target: number) => {
+    if (target < step) {
+      setStep(target);
+      setServerError(null);
+      return;
+    }
+    if (target > unlockedStep) return;
+
+    if (target === step) return;
+
+    for (let i = step; i < target; i += 1) {
+      const ok = await validateStep(i);
+      if (!ok) {
+        setStep(i);
+        return;
+      }
+      setUnlockedStep((u) => Math.max(u, i + 1));
+    }
+    setStep(target);
+  };
+
   const nextStep = async () => {
-    const fieldsByStep: Array<(keyof ListingFormValues)[]> = [
-      ['title', 'description', 'price', 'currency', 'priceType', 'type', 'condition'],
-      ['category', 'city', 'country', 'state'],
-      [],
-      [],
-    ];
-    if (await trigger(fieldsByStep[step])) setStep((s) => Math.min(3, s + 1));
+    const ok = await validateStep(step);
+    if (!ok) return;
+    const next = Math.min(3, step + 1);
+    setUnlockedStep((u) => Math.max(u, next));
+    setStep(next);
   };
 
   const onSubmit = async (values: ListingFormValues) => {
     setServerError(null);
     try {
-      for (const attr of dynamicAttributes) {
-        if (attr.required && !attrValues[attr.name]) {
-          setServerError(`Attribute "${attr.name}" is required`);
-          setStep(2);
-          return;
-        }
+      if (!(await validateStep(2))) {
+        setStep(2);
+        return;
       }
       const formData = buildFormData(values);
       const res =
@@ -167,25 +220,33 @@ export function ListingForm({ mode, listing }: ListingFormProps) {
   return (
     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
       <div className="flex flex-wrap gap-2">
-        {steps.map((label, index) => (
+        {steps.map((label, index) => {
+          const isLocked = index > unlockedStep;
+          return (
           <button
             key={label}
             type="button"
+            disabled={isLocked}
+            aria-disabled={isLocked}
+            title={isLocked ? 'Complete the previous steps first' : undefined}
             className={`inline-flex items-center gap-2 rounded-[12px] px-3 py-2 text-sm font-semibold transition-colors ${
-              step === index
-                ? 'bg-primary text-primary-foreground shadow-soft'
-                : step > index
-                  ? 'bg-primary-soft text-primary'
-                  : 'bg-muted text-muted-foreground'
+              isLocked
+                ? 'cursor-not-allowed bg-muted/60 text-muted-foreground opacity-60'
+                : step === index
+                  ? 'bg-primary text-primary-foreground shadow-soft'
+                  : step > index
+                    ? 'bg-primary-soft text-primary'
+                    : 'bg-muted text-muted-foreground'
             }`}
-            onClick={() => setStep(index)}
+            onClick={() => void goToStep(index)}
           >
             <span className="flex h-6 w-6 items-center justify-center rounded-[8px] bg-card/25 text-xs tabular-nums">
               {index + 1}
             </span>
             {label}
           </button>
-        ))}
+          );
+        })}
       </div>
 
       {step === 0 && <ListingDetailsStep register={register} errors={errors} />}
@@ -221,7 +282,14 @@ export function ListingForm({ mode, listing }: ListingFormProps) {
 
       <div className="flex gap-2">
         {step > 0 && (
-          <Button type="button" variant="outline" onClick={() => setStep((s) => s - 1)}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => {
+              setServerError(null);
+              setStep((s) => s - 1);
+            }}
+          >
             Back
           </Button>
         )}
