@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
+import { AdminListPagination } from '@/components/admin/admin-list-pagination';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { adminApi } from '@/lib/admin-api';
@@ -14,15 +15,20 @@ export default function AdminUsersPage() {
   const [search, setSearch] = useState('');
   const [role, setRole] = useState('');
   const [banned, setBanned] = useState('');
+  const [page, setPage] = useState(1);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    setPage(1);
+  }, [search, role, banned]);
+
   const query = useQuery({
-    queryKey: ['admin-users', search, role, banned],
+    queryKey: ['admin-users', page, search, role, banned],
     queryFn: () =>
       adminApi.getUsers({
-        page: 1,
-        limit: 50,
+        page,
+        limit: 20,
         search: search || undefined,
         role: role || undefined,
         banned: banned === '' ? undefined : banned === 'true',
@@ -55,6 +61,7 @@ export default function AdminUsersPage() {
   });
 
   const users = query.data?.data ?? [];
+  const meta = query.data?.meta;
 
   return (
     <div className="space-y-4">
@@ -154,9 +161,24 @@ export default function AdminUsersPage() {
                 </td>
               </tr>
             ))}
+            {!query.isLoading && users.length === 0 && (
+              <tr>
+                <td colSpan={5} className="px-3 py-8 text-center text-muted-foreground">
+                  No users match this filter.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
+
+      <AdminListPagination
+        meta={meta}
+        page={page}
+        onPageChange={setPage}
+        isFetching={query.isFetching}
+        itemLabel="users"
+      />
     </div>
   );
 }

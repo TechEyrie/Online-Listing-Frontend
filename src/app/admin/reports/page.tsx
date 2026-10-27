@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
+import { AdminListPagination } from '@/components/admin/admin-list-pagination';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { adminApi } from '@/lib/admin-api';
@@ -13,15 +14,20 @@ export default function AdminReportsPage() {
   const queryClient = useQueryClient();
   const [status, setStatus] = useState('pending');
   const [resolution, setResolution] = useState('Reviewed and actioned by admin');
+  const [page, setPage] = useState(1);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    setPage(1);
+  }, [status]);
+
   const query = useQuery({
-    queryKey: ['admin-reports', status],
+    queryKey: ['admin-reports', page, status],
     queryFn: () =>
       adminApi.getReports({
-        page: 1,
-        limit: 50,
+        page,
+        limit: 20,
         status: status || undefined,
       }),
   });
@@ -45,6 +51,7 @@ export default function AdminReportsPage() {
   });
 
   const reports = query.data?.data ?? [];
+  const meta = query.data?.meta;
 
   return (
     <div className="space-y-4">
@@ -122,6 +129,14 @@ export default function AdminReportsPage() {
           <li className="text-sm text-muted-foreground">No reports for this filter.</li>
         )}
       </ul>
+
+      <AdminListPagination
+        meta={meta}
+        page={page}
+        onPageChange={setPage}
+        isFetching={query.isFetching}
+        itemLabel="reports"
+      />
     </div>
   );
 }

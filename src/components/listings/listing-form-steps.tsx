@@ -68,7 +68,21 @@ export function ListingDetailsStep({ register, errors }: SharedProps) {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="space-y-2">
           <Label htmlFor="price">Price</Label>
-          <Input id="price" type="number" {...register('price', { valueAsNumber: true })} />
+          <Input
+            id="price"
+            type="number"
+            min={0}
+            step="any"
+            inputMode="decimal"
+            onKeyDown={(e) => {
+              if (e.key === '-' || e.key === 'e' || e.key === 'E') e.preventDefault();
+            }}
+            {...register('price', {
+              valueAsNumber: true,
+              min: { value: 0, message: 'Price cannot be negative' },
+            })}
+          />
+          {errors.price && <p className="text-sm text-destructive">{errors.price.message}</p>}
         </div>
         <div className="space-y-2">
           <Label htmlFor="currency">Currency</Label>

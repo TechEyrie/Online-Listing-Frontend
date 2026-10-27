@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
+import { AdminListPagination } from '@/components/admin/admin-list-pagination';
 import { ReviewCard } from '@/components/reviews/review-card';
 import { StarRating } from '@/components/reviews/star-rating';
 import { Button } from '@/components/ui/button';
@@ -16,15 +17,20 @@ export default function AdminReviewsPage() {
   const user = useAuthStore((s) => s.user);
   const queryClient = useQueryClient();
   const [filter, setFilter] = useState<'all' | 'approved' | 'hidden'>('all');
+  const [page, setPage] = useState(1);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const isApproved =
     filter === 'approved' ? true : filter === 'hidden' ? false : undefined;
 
+  useEffect(() => {
+    setPage(1);
+  }, [filter]);
+
   const reviewsQuery = useQuery({
-    queryKey: ['admin-reviews', filter],
-    queryFn: () => reviewApi.listAdmin({ page: 1, limit: 50, isApproved }),
+    queryKey: ['admin-reviews', filter, page],
+    queryFn: () => reviewApi.listAdmin({ page, limit: 20, isApproved }),
     enabled: user?.role === 'admin',
   });
 
@@ -50,6 +56,7 @@ export default function AdminReviewsPage() {
   }
 
   const reviews = reviewsQuery.data?.data ?? [];
+  const meta = reviewsQuery.data?.meta;
 
   return (
     <div className="space-y-4">
@@ -65,7 +72,10 @@ export default function AdminReviewsPage() {
             type="button"
             size="sm"
             variant={filter === key ? 'default' : 'outline'}
-            onClick={() => setFilter(key)}
+            onClick={() => {
+              setFilter(key);
+              setPage(1);
+            }}
           >
             {key}
           </Button>
@@ -126,6 +136,14 @@ export default function AdminReviewsPage() {
           <li className="text-sm text-muted-foreground">No reviews in this filter.</li>
         )}
       </ul>
+
+      <AdminListPagination
+        meta={meta}
+        page={page}
+        onPageChange={setPage}
+        isFetching={reviewsQuery.isFetching}
+        itemLabel="reviews"
+      />
     </div>
   );
 }

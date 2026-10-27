@@ -7,7 +7,10 @@ export const listingFormSchema = z
   .object({
     title: z.string().min(5, 'Title must be at least 5 characters').max(120),
     description: z.string().min(20, 'Description must be at least 20 characters').max(5000),
-    price: z.number().min(0, 'Price must be 0 or more'),
+    price: z
+      .number({ error: 'Enter a valid price' })
+      .finite('Enter a valid price')
+      .min(0, 'Price cannot be negative'),
     currency: z.custom<ListingCurrency>(
       (value): value is ListingCurrency => typeof value === 'string' && isListingCurrency(value),
       { message: 'Invalid currency' },

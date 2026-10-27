@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
+import { AdminListPagination } from '@/components/admin/admin-list-pagination';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { adminApi } from '@/lib/admin-api';
@@ -19,15 +20,20 @@ export default function AdminListingsPage() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
+  const [page, setPage] = useState(1);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    setPage(1);
+  }, [search, status]);
+
   const query = useQuery({
-    queryKey: ['admin-listings', search, status],
+    queryKey: ['admin-listings', page, search, status],
     queryFn: () =>
       adminApi.getListings({
-        page: 1,
-        limit: 50,
+        page,
+        limit: 20,
         search: search || undefined,
         status: status || undefined,
       }),
@@ -61,6 +67,7 @@ export default function AdminListingsPage() {
   });
 
   const listings = query.data?.data ?? [];
+  const meta = query.data?.meta;
 
   return (
     <div className="space-y-4">
@@ -162,9 +169,24 @@ export default function AdminListingsPage() {
                 </td>
               </tr>
             ))}
+            {!query.isLoading && listings.length === 0 && (
+              <tr>
+                <td colSpan={5} className="px-3 py-8 text-center text-muted-foreground">
+                  No listings match this filter.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
+
+      <AdminListPagination
+        meta={meta}
+        page={page}
+        onPageChange={setPage}
+        isFetching={query.isFetching}
+        itemLabel="listings"
+      />
     </div>
   );
 }

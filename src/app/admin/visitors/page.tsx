@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
+import { AdminListPagination } from '@/components/admin/admin-list-pagination';
 import { BreakdownBars } from '@/components/admin/breakdown-bars';
 import { StatCard } from '@/components/admin/stat-card';
 import { TrendChart } from '@/components/admin/trend-chart';
@@ -221,34 +222,13 @@ export default function AdminVisitorsPage() {
           </table>
         </div>
 
-        {meta && (
-          <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
-            <p className="text-muted-foreground">
-              Page {meta.page} of {meta.totalPages} · {meta.total.toLocaleString()} visitor
-              {meta.total === 1 ? '' : 's'}
-            </p>
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                disabled={page <= 1 || listQuery.isFetching}
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
-              >
-                Previous
-              </Button>
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                disabled={page >= meta.totalPages || listQuery.isFetching}
-                onClick={() => setPage((p) => p + 1)}
-              >
-                Next
-              </Button>
-            </div>
-          </div>
-        )}
+        <AdminListPagination
+          meta={meta}
+          page={page}
+          onPageChange={setPage}
+          isFetching={listQuery.isFetching}
+          itemLabel="visitors"
+        />
       </section>
     </div>
   );
