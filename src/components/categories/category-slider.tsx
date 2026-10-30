@@ -44,6 +44,7 @@ export function CategorySlider() {
   const lastPointerX = useRef(0);
   const lastPointerTime = useRef(0);
   const velocity = useRef(0);
+  const wheelSnapTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [isDragging, setIsDragging] = useState(false);
   const [cardWidth, setCardWidth] = useState(260);
@@ -195,6 +196,46 @@ export function CategorySlider() {
 
   useEffect(() => () => cancelAnimationFrame(rafRef.current), []);
 
+  useEffect(() => {
+    const vp = viewportRef.current;
+    if (!vp) return;
+
+    const onWheel = (e: WheelEvent) => {
+      let dx = e.deltaX;
+      if (e.shiftKey && Math.abs(e.deltaY) > Math.abs(dx)) {
+        dx = e.deltaY;
+      }
+
+      if (e.deltaMode === WheelEvent.DOM_DELTA_LINE) {
+        dx *= 16;
+      } else if (e.deltaMode === WheelEvent.DOM_DELTA_PAGE) {
+        dx *= vp.clientWidth;
+      }
+
+      if (Math.abs(dx) < 0.5) return;
+      if (Math.abs(e.deltaY) > Math.abs(dx) && !e.shiftKey) return;
+
+      e.preventDefault();
+      cancelAnimationFrame(rafRef.current);
+      if (trackRef.current) trackRef.current.style.transition = 'none';
+
+      const next = clamp(offsetRef.current - dx);
+      applyOffset(next, false);
+
+      if (wheelSnapTimerRef.current) clearTimeout(wheelSnapTimerRef.current);
+      wheelSnapTimerRef.current = setTimeout(() => {
+        applyOffset(snapNearest(offsetRef.current), true);
+        wheelSnapTimerRef.current = null;
+      }, 140);
+    };
+
+    vp.addEventListener('wheel', onWheel, { passive: false });
+    return () => {
+      vp.removeEventListener('wheel', onWheel);
+      if (wheelSnapTimerRef.current) clearTimeout(wheelSnapTimerRef.current);
+    };
+  }, [applyOffset, clamp, snapNearest]);
+
   return (
     <div className="relative min-w-0 max-w-full">
       <button
@@ -219,7 +260,7 @@ export function CategorySlider() {
 
       <div
         ref={viewportRef}
-        className="overflow-hidden"
+        className="overflow-hidden overscroll-x-contain"
         style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
       >
         <div
