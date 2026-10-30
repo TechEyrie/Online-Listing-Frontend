@@ -106,12 +106,12 @@ export default function LoginForm() {
           </>
         )}
         <div className="mt-4 flex flex-col gap-2 text-sm text-muted-foreground">
-          <Link href="/forgot-password" className="hover:text-foreground">
+          <Link href="/forgot-password" className="text-primary hover:text-primary-hover">
             Forgot password?
           </Link>
           <p>
             No account?{' '}
-            <Link href="/register" className="font-medium text-foreground hover:underline">
+            <Link href="/register" className="font-medium text-primary hover:text-primary-hover hover:underline">
               Register
             </Link>
           </p>

@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
   alternates: { canonical: appUrl },
   icons: {
-    icon: '/suqora-mark.png',
-    apple: '/suqora-mark.png',
+    icon: [{ url: '/icon.png', type: 'image/png', sizes: '32x32' }],
+    apple: '/apple-touch-icon.png',
   },
 };
 

@@ -2,8 +2,6 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -20,8 +18,8 @@ interface BrandLogoProps {
 
 /** Transparent cropped mark — icon + wordmark only (no black plate). */
 const MARK = {
-  light: { src: '/suqora-mark.png', width: 650, height: 192 },
-  dark: { src: '/suqora-mark-dark.png', width: 650, height: 192 },
+  light: { src: '/suqora-mark.png', width: 1476, height: 518 },
+  dark: { src: '/suqora-mark-dark.png', width: 1476, height: 518 },
 } as const;
 
 const sizeClass: Record<'default' | 'header', Record<NonNullable<BrandLogoProps['size']>, string>> = {
@@ -45,17 +43,9 @@ export function BrandLogo({
   size = 'md',
   variant = 'default',
   priority = false,
-  forceDark = false,
+  forceDark: _forceDark = false,
 }: BrandLogoProps) {
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const useDark = forceDark || (mounted && resolvedTheme === 'dark');
-  const asset = useDark ? MARK.dark : MARK.light;
+  const asset = MARK.light;
 
   const image = (
     <Image

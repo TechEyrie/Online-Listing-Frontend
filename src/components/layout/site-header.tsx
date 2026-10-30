@@ -12,7 +12,6 @@ import {
   LogOut,
   MapPin,
   Menu,
-  MessageSquare,
   Plus,
   Search,
   Sparkles,
@@ -53,10 +52,10 @@ const SUB_NAV_LINKS = [
   { label: 'Vehicles', href: '/categories/vehicles' },
   { label: 'Property', href: '/categories/property' },
   { label: 'Electronics', href: '/categories/electronics' },
-  { label: 'Today’s Deals', href: '/search?featured=true' },
+  { label: 'Featured', href: '/search?featured=true' },
   { label: 'Services', href: '/search?type=service' },
-  { label: 'Customer Service', href: '/dashboard' },
-  { label: 'Registry', href: '/search' },
+  { label: 'Help', href: '/dashboard' },
+  { label: 'Browse all', href: '/search' },
   { label: 'Sell', href: '/post' },
 ];
 
@@ -224,7 +223,7 @@ export function SiteHeader() {
               aria-modal="true"
               aria-label="Main menu"
             >
-              <div className="flex h-14 items-center justify-between bg-[#232f3e] px-6 text-white">
+              <div className="flex h-14 items-center justify-between bg-primary px-6 text-white">
                 <div className="flex items-center gap-3">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20">
                     <User className="h-5 w-5 text-white" />
@@ -307,7 +306,7 @@ export function SiteHeader() {
                         <span>See All Categories</span>
                         <ChevronRight className="h-4 w-4" />
                       </>,
-                      'font-semibold text-[#007185]',
+                      'font-semibold text-primary',
                     )}
                   </div>
                 </div>
@@ -325,7 +324,7 @@ export function SiteHeader() {
                         <span>Post a Free Ad</span>
                         <ChevronRight className="h-4 w-4" />
                       </>,
-                      'font-semibold text-[#f08804]',
+                      'font-semibold text-accent',
                     )}
                     {renderDrawerLink(
                       '/my-favorites',
@@ -369,7 +368,7 @@ export function SiteHeader() {
                         closeDrawerAndNavigate('/dashboard');
                       }}
                     >
-                      Customer Service
+                      Help
                     </Link>
                     {user ? (
                       <button
@@ -385,7 +384,7 @@ export function SiteHeader() {
                     ) : (
                       <Link
                         href="/login"
-                        className="block rounded px-2 py-2 font-semibold text-[#007185] hover:bg-gray-100 dark:hover:bg-white/10"
+                        className="block rounded px-2 py-2 font-semibold text-primary hover:bg-gray-100 dark:hover:bg-white/10"
                         onClick={(e) => {
                           e.preventDefault();
                           closeDrawerAndNavigate('/login');
@@ -405,14 +404,13 @@ export function SiteHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full select-none text-white">
-      {/* 1. MAIN TOP BAR (Amazon Dark Charcoal #131921) */}
-      <div className="relative z-30 bg-[#131921] px-2 py-1.5 sm:px-4 sm:py-2">
+      <header className="sticky top-0 z-50 w-full select-none">
+      <div className="relative z-30 border-b border-border bg-card px-2 py-1.5 text-foreground sm:px-4 sm:py-2">
         <div className="mx-auto flex max-w-[1536px] items-center gap-1 sm:gap-2 lg:gap-3">
           {/* Logo */}
           <div className="flex shrink-0 items-center">
-            <div className="cursor-pointer rounded-[2px] border border-transparent p-1 transition-colors duration-fast hover:border-white">
-              <BrandLogo href="/" variant="header" size="md" priority forceDark />
+            <div className="cursor-pointer rounded-[2px] border border-transparent p-1 transition-colors duration-fast hover:border-border">
+              <BrandLogo href="/" variant="header" size="md" priority />
             </div>
           </div>
 
@@ -421,36 +419,35 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setLocationModalOpen((v) => !v)}
-              className="flex items-center rounded-[2px] border border-transparent px-2 py-1.5 text-left transition-colors duration-fast hover:border-white"
+              className="flex items-center rounded-[2px] border border-transparent px-2 py-1.5 text-left transition-colors duration-fast hover:border-border"
               aria-label={`Deliver to ${selectedCity}`}
             >
-              <MapPin className="mr-1 h-4 w-4 shrink-0 text-white" aria-hidden />
+              <MapPin className="mr-1 h-4 w-4 shrink-0 text-primary" aria-hidden />
               <div className="leading-tight">
-                <span className="block text-[11px] font-normal leading-tight text-[#cccccc]">
+                <span className="block text-[11px] font-normal leading-tight text-muted-foreground">
                   Deliver to
                 </span>
-                <span className="block text-[13px] font-bold leading-tight text-white">
+                <span className="block text-[13px] font-bold leading-tight text-foreground">
                   {selectedCity}
                 </span>
               </div>
             </button>
 
-            {/* Location selector dropdown / modal */}
             {locationModalOpen && (
-              <div className="absolute left-0 top-full z-50 mt-2 w-72 rounded-lg border border-[#333] bg-[#1a222d] p-3 text-white shadow-2xl animate-fade-up">
-                <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                  <p className="text-xs font-bold uppercase tracking-wider text-[#febd69]">
+              <div className="absolute left-0 top-full z-50 mt-2 w-72 rounded-lg border border-border bg-popover p-3 text-popover-foreground shadow-2xl animate-fade-up">
+                <div className="flex items-center justify-between border-b border-border pb-2">
+                  <p className="text-xs font-bold uppercase tracking-wider text-primary">
                     Choose your location
                   </p>
                   <button
                     type="button"
                     onClick={() => setLocationModalOpen(false)}
-                    className="text-gray-400 hover:text-white"
+                    className="text-muted-foreground hover:text-foreground"
                   >
                     <X className="h-4 w-4" />
                   </button>
                 </div>
-                <p className="mt-2 text-[12px] text-gray-300">
+                <p className="mt-2 text-[12px] text-muted-foreground">
                   Select a municipality in Qatar to see local listings and delivery options:
                 </p>
                 <div className="mt-2.5 max-h-56 space-y-1 overflow-y-auto pr-1">
@@ -462,8 +459,8 @@ export function SiteHeader() {
                       className={cn(
                         'flex w-full items-center justify-between rounded px-2.5 py-1.5 text-left text-xs transition-colors',
                         selectedCity === city
-                          ? 'bg-[#febd69] font-bold text-[#131921]'
-                          : 'text-gray-200 hover:bg-white/10',
+                          ? 'bg-accent font-bold text-accent-foreground'
+                          : 'text-foreground hover:bg-muted',
                       )}
                     >
                       <span>{city}</span>
@@ -475,41 +472,38 @@ export function SiteHeader() {
             )}
           </div>
 
-          {/* Central Search Bar (Amazon 3-part layout) */}
           <div ref={searchBoxRef} className="relative mx-1 flex flex-1 items-center">
             <form
               onSubmit={handleSearchSubmit}
               className={cn(
-                'flex h-10 w-full items-center rounded-[4px] bg-white transition-all',
+                'flex h-10 w-full items-center rounded-md border border-border bg-card transition-all',
                 searchFocused
-                  ? 'ring-3 ring-[#febd69] ring-offset-0 shadow-[0_0_8px_rgba(254,189,105,0.7)]'
-                  : 'hover:ring-1 hover:ring-white/40',
+                  ? 'ring-3 ring-accent ring-offset-0 shadow-[0_0_8px_hsl(var(--accent)/0.7)]'
+                  : 'hover:ring-1 hover:ring-border',
               )}
             >
-              {/* Category pill on left */}
               <div className="relative shrink-0">
                 <button
                   type="button"
                   onClick={() => setCategoryDropdownOpen((v) => !v)}
-                  className="flex h-10 items-center gap-1 rounded-l-[4px] border-r border-[#cdcdcd] bg-[#e6e6e6] px-2.5 text-[12px] font-medium text-[#333333] transition-colors hover:bg-[#d8d8d8] focus-visible:outline-none"
+                  className="flex h-10 items-center gap-1 rounded-l-md border-r border-border bg-muted px-2.5 text-[12px] font-medium text-foreground transition-colors hover:bg-muted/80 focus-visible:outline-none"
                   aria-expanded={categoryDropdownOpen}
                 >
                   <span className="max-w-[70px] truncate sm:max-w-[100px]">
                     {selectedCategory.name}
                   </span>
-                  <ChevronDown className="h-3 w-3 text-[#555]" />
+                  <ChevronDown className="h-3 w-3 text-muted-foreground" />
                 </button>
 
-                {/* Categories menu */}
                 {categoryDropdownOpen && (
-                  <ul className="absolute left-0 top-full z-50 mt-1 max-h-64 w-44 overflow-y-auto rounded-md border border-gray-200 bg-white py-1 text-xs text-gray-800 shadow-xl">
+                  <ul className="absolute left-0 top-full z-50 mt-1 max-h-64 w-44 overflow-y-auto rounded-md border border-border bg-popover py-1 text-xs text-popover-foreground shadow-xl">
                     {SEARCH_CATEGORIES.map((cat) => (
                       <li key={cat.id}>
                         <button
                           type="button"
                           className={cn(
-                            'w-full px-3 py-1.5 text-left transition-colors hover:bg-[#febd69] hover:text-[#131921]',
-                            selectedCategory.id === cat.id && 'font-bold bg-gray-100',
+                            'w-full px-3 py-1.5 text-left transition-colors hover:bg-accent hover:text-accent-foreground',
+                            selectedCategory.id === cat.id && 'bg-muted font-bold',
                           )}
                           onClick={() => {
                             setSelectedCategory(cat);
@@ -524,7 +518,6 @@ export function SiteHeader() {
                 )}
               </div>
 
-              {/* Main input */}
               <input
                 type="text"
                 value={query}
@@ -538,28 +531,26 @@ export function SiteHeader() {
                 }}
                 onBlur={() => setSearchFocused(false)}
                 placeholder="Search Suqora..."
-                className="h-10 flex-1 bg-transparent px-3 text-[14px] text-[#111111] placeholder:text-[#555555] focus:outline-none"
+                className="h-10 flex-1 bg-transparent px-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:outline-none"
                 aria-label="Search listings"
               />
 
-              {/* Amber Search Submit Button */}
               <button
                 type="submit"
-                className="flex h-10 w-11 shrink-0 items-center justify-center rounded-r-[4px] bg-[#febd69] transition-colors duration-fast hover:bg-[#f3a847] active:bg-[#e77600]"
+                className="flex h-10 w-11 shrink-0 items-center justify-center rounded-r-md bg-accent transition-colors duration-fast hover:bg-accent-hover active:bg-accent-hover"
                 aria-label="Submit Search"
               >
-                <Search className="h-5 w-5 text-[#131921]" />
+                <Search className="h-5 w-5 text-accent-foreground" />
               </button>
             </form>
 
-            {/* Suggestions flyout */}
             {suggestionsOpen && suggestions.length > 0 && (
-              <ul className="absolute left-0 right-0 top-full z-50 mt-1 overflow-hidden rounded-md border border-gray-200 bg-white shadow-xl animate-fade-up">
+              <ul className="absolute left-0 right-0 top-full z-50 mt-1 overflow-hidden rounded-md border border-border bg-popover shadow-xl animate-fade-up">
                 {suggestions.map((item) => (
                   <li key={item}>
                     <button
                       type="button"
-                      className="flex w-full items-center gap-2.5 px-4 py-2 text-left text-sm text-[#111111] transition-colors hover:bg-gray-100"
+                      className="flex w-full items-center gap-2.5 px-4 py-2 text-left text-sm text-foreground transition-colors hover:bg-muted"
                       onClick={() => {
                         setQuery(item);
                         setSuggestionsOpen(false);
@@ -584,15 +575,15 @@ export function SiteHeader() {
               <button
                 type="button"
                 onClick={() => setLangMenuOpen((v) => !v)}
-                className="flex items-center gap-1 rounded-[2px] border border-transparent px-2 py-1.5 transition-colors duration-fast hover:border-white"
+                className="flex items-center gap-1 rounded-[2px] border border-transparent px-2 py-1.5 transition-colors duration-fast hover:border-border"
                 aria-expanded={langMenuOpen}
                 aria-label="Language selector"
               >
-                <span className="flex h-4 w-5 items-center justify-center rounded-[2px] bg-[#8A1538] text-[9px] font-bold text-white shadow-sm">
+                <span className="flex h-4 w-5 items-center justify-center rounded-[2px] bg-primary text-[9px] font-bold text-primary-foreground shadow-sm">
                   QA
                 </span>
-                <span className="text-[13px] font-bold text-white">{currentLang}</span>
-                <ChevronDown className="h-3 w-3 text-[#a7acb2]" />
+                <span className="text-[13px] font-bold text-foreground">{currentLang}</span>
+                <ChevronDown className="h-3 w-3 text-muted-foreground" />
               </button>
 
               {langMenuOpen && (
@@ -609,7 +600,7 @@ export function SiteHeader() {
                     className={cn(
                       'flex w-full items-center justify-between rounded px-2.5 py-1.5 text-xs transition-colors',
                       currentLang === 'EN'
-                        ? 'bg-[#febd69] font-bold text-[#131921]'
+                        ? 'bg-accent font-bold text-accent-foreground'
                         : 'hover:bg-gray-100',
                     )}
                   >
@@ -625,7 +616,7 @@ export function SiteHeader() {
                     className={cn(
                       'flex w-full items-center justify-between rounded px-2.5 py-1.5 text-xs transition-colors',
                       currentLang === 'AR'
-                        ? 'bg-[#febd69] font-bold text-[#131921]'
+                        ? 'bg-accent font-bold text-accent-foreground'
                         : 'hover:bg-gray-100',
                     )}
                   >
@@ -641,18 +632,18 @@ export function SiteHeader() {
               <button
                 type="button"
                 onClick={() => setAccountMenuOpen((v) => !v)}
-                className="flex items-center rounded-[2px] border border-transparent px-2 py-1.5 text-left transition-colors duration-fast hover:border-white"
+                className="flex items-center rounded-[2px] border border-transparent px-2 py-1.5 text-left transition-colors duration-fast hover:border-border"
                 aria-expanded={accountMenuOpen}
               >
                 <div className="leading-tight">
-                  <span className="block truncate text-[11px] font-normal leading-tight text-[#cccccc]">
+                  <span className="block truncate text-[11px] font-normal leading-tight text-muted-foreground">
                     {user ? `Hello, ${user.name}` : 'Hello, sign in'}
                   </span>
                   <div className="flex items-center gap-0.5">
-                    <span className="block text-[13px] font-bold leading-tight text-white">
+                    <span className="block text-[13px] font-bold leading-tight text-foreground">
                       Account & Lists
                     </span>
-                    <ChevronDown className="h-3 w-3 text-[#a7acb2]" />
+                    <ChevronDown className="h-3 w-3 text-muted-foreground" />
                   </div>
                 </div>
               </button>
@@ -664,13 +655,13 @@ export function SiteHeader() {
                     <div className="border-b border-gray-200 pb-3 text-center">
                       <Link
                         href="/login"
-                        className="block w-full rounded-[4px] bg-[#febd69] py-1.5 text-center text-xs font-bold text-[#131921] shadow-sm transition hover:bg-[#f3a847]"
+                        className="block w-full rounded-[4px] bg-accent py-1.5 text-center text-xs font-bold text-accent-foreground shadow-sm transition hover:bg-accent-hover"
                       >
                         Sign in
                       </Link>
                       <p className="mt-2 text-[11px] text-gray-600">
                         New customer?{' '}
-                        <Link href="/register" className="text-[#007185] hover:underline">
+                        <Link href="/register" className="text-primary hover:underline">
                           Start here.
                         </Link>
                       </p>
@@ -747,7 +738,7 @@ export function SiteHeader() {
             {/* Post Ad CTA Pill */}
             <Link
               href="/post"
-              className="hidden items-center gap-1 rounded-[3px] bg-[#febd69] px-2.5 py-1.5 text-[13px] font-bold text-[#131921] transition hover:bg-[#f3a847] active:bg-[#e77600] xl:flex"
+              className="hidden items-center gap-1 rounded-[3px] bg-accent px-2.5 py-1.5 text-[13px] font-bold text-accent-foreground transition hover:bg-accent-hover active:bg-accent-hover xl:flex"
             >
               <Plus className="h-3.5 w-3.5 stroke-[3]" />
               <span>Post Ad</span>
@@ -766,8 +757,7 @@ export function SiteHeader() {
         </div>
       </div>
 
-      {/* 2. SECONDARY SUB-NAVIGATION BAR (Amazon Dark Slate #232f3e) */}
-      <div className="bg-[#232f3e] px-2 text-white sm:px-4">
+      <div className="bg-primary-hover px-2 text-primary-foreground sm:px-4">
         <div className="mx-auto flex h-[39px] max-w-[1536px] items-center justify-between text-[14px]">
           {/* Left links */}
           <div className="flex items-center space-x-1 overflow-x-auto whitespace-nowrap scrollbar-none">
@@ -775,7 +765,7 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setDrawerOpen(true)}
-              className="flex items-center rounded-[2px] border border-transparent px-2 py-1 font-bold text-white transition-colors duration-fast hover:border-white"
+              className="flex items-center rounded-[2px] border border-transparent px-2 py-1 font-bold text-primary-foreground transition-colors duration-fast hover:border-primary-foreground/40"
             >
               <Menu className="mr-1 h-5 w-5" />
               <span>All</span>
@@ -786,7 +776,7 @@ export function SiteHeader() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="rounded-[2px] border border-transparent px-2.5 py-1 text-[13px] text-white transition-colors duration-fast hover:border-white"
+                className="rounded-[2px] border border-transparent px-2.5 py-1 text-[13px] text-primary-foreground transition-colors duration-fast hover:border-primary-foreground/40"
               >
                 {item.label}
               </Link>
@@ -797,7 +787,7 @@ export function SiteHeader() {
           <div className="hidden shrink-0 items-center gap-3 md:flex">
             <Link
               href="/post"
-              className="flex items-center gap-1.5 rounded-[2px] border border-transparent px-2 py-1 text-[13px] font-bold text-[#febd69] transition hover:border-white"
+              className="flex items-center gap-1.5 rounded-[2px] border border-transparent px-2 py-1 text-[13px] font-bold text-accent dark:text-amber-200 transition hover:border-primary-foreground/40"
             >
               <Sparkles className="h-3.5 w-3.5" />
               <span>Free Ad Posting in Qatar</span>

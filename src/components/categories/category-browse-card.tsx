@@ -48,7 +48,7 @@ export function CategoryBrowseCard({ item, isDragging }: CategoryBrowseCardProps
         />
 
         <div className="absolute inset-x-0 top-0 z-10 px-5 pb-4 pt-5 sm:px-6 sm:pt-6">
-          <h3 className="max-w-[13ch] text-[1.5rem] font-bold leading-[1.12] tracking-tight text-[#111827] sm:text-[1.75rem]">
+          <h3 className="max-w-[13ch] text-[1.5rem] font-bold leading-[1.12] tracking-tight text-foreground sm:text-[1.75rem]">
             {item.headline}
           </h3>
         </div>

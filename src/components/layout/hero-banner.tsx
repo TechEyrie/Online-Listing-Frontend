@@ -89,7 +89,7 @@ export function HeroBanner() {
     <section className="relative w-full px-4 pt-6 pb-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-[1400px]">
         {/* Rounded Main Banner Card */}
-        <div className="relative overflow-hidden rounded-3xl bg-[#f5f6f8] shadow-sm">
+        <div className="surface-hero relative overflow-hidden rounded-3xl bg-brand-subtle shadow-sm">
           {/* Background Image Container */}
           <div className="absolute inset-0 z-0">
             <Image
@@ -101,32 +101,37 @@ export function HeroBanner() {
               sizes="(max-width: 1400px) 100vw, 1400px"
             />
             {/* Smooth left gradient overlay to guarantee text legibility */}
-            <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent sm:via-white/60 lg:w-3/5" />
+            <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent sm:via-white/60 lg:w-3/5 dark:from-background/95 dark:via-background/80 dark:to-transparent sm:dark:via-background/55" />
           </div>
 
           {/* Banner Content */}
           <div className="relative z-10 flex min-h-[440px] flex-col justify-center px-6 py-16 sm:min-h-[520px] sm:px-14 lg:min-h-[580px] lg:px-20">
             <div className="max-w-xl">
               {/* Heading */}
-              <h1 className="text-3xl font-bold tracking-tight text-[#111827] sm:text-4xl lg:text-[50px] lg:leading-[1.18]">
-                Buy <span className="font-light text-gray-400">|</span> Sell{' '}
-                <span className="font-light text-gray-400">|</span> Find Jobs
+              <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-[50px] lg:leading-[1.18]">
+                <span className="text-primary dark:text-foreground">Buy</span>{' '}
+                <span className="font-light text-muted-foreground">|</span>{' '}
+                <span className="text-primary dark:text-foreground">Sell</span>{' '}
+                <span className="font-light text-muted-foreground">|</span>{' '}
+                <span className="text-primary dark:text-foreground">Find Jobs</span>
                 <br />
-                All in one Place.
+                <span className="text-foreground">All in one Place.</span>
               </h1>
 
               {/* Subheading */}
-              <p className="mt-4 text-lg font-medium text-[#374151] sm:text-xl">
-                Post your ad <span className="font-bold text-[#febd69]">FREE</span>
+              <p className="mt-4 text-lg font-medium text-muted-foreground sm:text-xl">
+                Post your ad <span className="font-bold text-accent">FREE</span>
                 <br />
-                <span className="text-base text-[#4b5563] sm:text-lg">fast, easy, no cost.</span>
+                <span className="text-base text-primary sm:text-lg dark:text-foreground/90">
+                  fast, easy, no cost.
+                </span>
               </p>
 
               {/* CTA Button */}
               <div className="mt-7">
                 <Link
                   href="/post"
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#febd69] px-6 py-3.5 text-sm font-semibold text-[#131921] shadow-md transition-all duration-200 hover:bg-[#f3a847] hover:shadow-lg active:scale-[0.98] active:bg-[#e77600]"
+                  className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-md transition-all duration-200 hover:bg-accent-hover hover:shadow-lg active:scale-[0.98] active:bg-accent-hover"
                 >
                   <span>Post Free Ad</span>
                   <ArrowRight className="h-4 w-4 stroke-[2.5]" />
@@ -140,11 +145,11 @@ export function HeroBanner() {
         <div className="relative -mt-8 z-20 px-3 sm:px-6">
           <form
             onSubmit={handleSearch}
-            className="mx-auto flex max-w-5xl flex-col items-center rounded-2xl border border-gray-200/90 bg-white p-2 shadow-xl md:flex-row md:rounded-full md:p-2"
+            className="mx-auto flex max-w-5xl flex-col items-center rounded-2xl border border-border/90 bg-card p-2 shadow-xl md:flex-row md:rounded-full md:p-2"
           >
             {/* 1. Keyword search input with prompt icon */}
             <div ref={searchBoxRef} className="relative flex w-full flex-1 items-center px-3 py-2">
-              <Search className="mr-3 h-5 w-5 shrink-0 text-[#febd69]" />
+              <Search className="mr-3 h-5 w-5 shrink-0 text-accent" />
               <input
                 type="text"
                 value={searchTerm}
@@ -162,17 +167,17 @@ export function HeroBanner() {
                   border: 'none',
                   backgroundColor: 'transparent',
                 }}
-                className="hero-search-input w-full bg-transparent text-sm text-[#111827] placeholder:text-[#9ca3af]"
+                className="hero-search-input w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground"
               />
 
               {/* Suggestions flyout */}
               {suggestionsOpen && suggestions.length > 0 && (
-                <ul className="absolute left-0 right-0 top-full z-50 mt-2 max-h-56 overflow-y-auto rounded-xl border border-gray-100 bg-white py-1 shadow-2xl animate-fade-up">
+                <ul className="absolute left-0 right-0 top-full z-50 mt-2 max-h-56 overflow-y-auto rounded-xl border border-border bg-card py-1 shadow-2xl animate-fade-up">
                   {suggestions.map((item) => (
                     <li key={item}>
                       <button
                         type="button"
-                        className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-gray-800 transition hover:bg-[#fff6e8] hover:text-[#131921]"
+                        className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-foreground transition hover:bg-accent-soft hover:text-foreground"
                         onClick={() => {
                           setSearchTerm(item);
                           setSuggestionsOpen(false);
@@ -183,7 +188,7 @@ export function HeroBanner() {
                           router.push(`/search?${params.toString()}`);
                         }}
                       >
-                        <Search className="h-3.5 w-3.5 text-gray-400" />
+                        <Search className="h-3.5 w-3.5 text-muted-foreground" />
                         <span>{item}</span>
                       </button>
                     </li>
@@ -193,7 +198,7 @@ export function HeroBanner() {
             </div>
 
             {/* Divider */}
-            <div className="hidden h-7 w-[1px] bg-gray-200 md:block" />
+            <div className="hidden h-7 w-[1px] bg-border md:block" />
 
             {/* 2. All Categories Dropdown */}
             <div ref={catRef} className="relative w-full md:w-auto">
@@ -203,17 +208,17 @@ export function HeroBanner() {
                   setCatOpen((v) => !v);
                   setCityOpen(false);
                 }}
-                className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left text-sm text-[#374151] hover:text-[#111827] md:w-48"
+                className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left text-sm text-muted-foreground hover:text-foreground md:w-48"
               >
                 <div className="flex items-center gap-2 truncate">
-                  <LayoutGrid className="h-4 w-4 shrink-0 text-[#febd69]" />
+                  <LayoutGrid className="h-4 w-4 shrink-0 text-accent" />
                   <span className="truncate font-medium">{selectedCat.name}</span>
                 </div>
-                <ChevronDown className="h-4 w-4 shrink-0 text-gray-400" />
+                <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
               </button>
 
               {catOpen && (
-                <div className="absolute left-0 top-full z-50 mt-2 max-h-60 w-56 overflow-y-auto rounded-xl border border-gray-100 bg-white py-1.5 shadow-2xl animate-fade-up">
+                <div className="absolute left-0 top-full z-50 mt-2 max-h-60 w-56 overflow-y-auto rounded-xl border border-border bg-card py-1.5 shadow-2xl animate-fade-up">
                   {HERO_CATEGORIES.map((cat) => (
                     <button
                       key={cat.id}
@@ -223,10 +228,10 @@ export function HeroBanner() {
                         setCatOpen(false);
                       }}
                       className={cn(
-                        'flex w-full px-4 py-2 text-left text-xs font-medium transition hover:bg-[#febd69] hover:text-[#131921]',
+                        'flex w-full px-4 py-2 text-left text-xs font-medium transition hover:bg-accent-soft hover:text-foreground',
                         selectedCat.id === cat.id
-                          ? 'bg-[#febd69] font-bold text-[#131921]'
-                          : 'text-gray-700',
+                          ? 'bg-accent font-bold text-accent-foreground'
+                          : 'text-foreground',
                       )}
                     >
                       {cat.name}
@@ -237,7 +242,7 @@ export function HeroBanner() {
             </div>
 
             {/* Divider */}
-            <div className="hidden h-7 w-[1px] bg-gray-200 md:block" />
+            <div className="hidden h-7 w-[1px] bg-border md:block" />
 
             {/* 3. All Cities / Locations Dropdown */}
             <div ref={cityRef} className="relative w-full md:w-auto">
@@ -247,17 +252,17 @@ export function HeroBanner() {
                   setCityOpen((v) => !v);
                   setCatOpen(false);
                 }}
-                className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left text-sm text-[#374151] hover:text-[#111827] md:w-44"
+                className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left text-sm text-muted-foreground hover:text-foreground md:w-44"
               >
                 <div className="flex items-center gap-2 truncate">
-                  <MapPin className="h-4 w-4 shrink-0 text-[#febd69]" />
+                  <MapPin className="h-4 w-4 shrink-0 text-accent" />
                   <span className="truncate font-medium">{selectedCity}</span>
                 </div>
-                <ChevronDown className="h-4 w-4 shrink-0 text-gray-400" />
+                <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
               </button>
 
               {cityOpen && (
-                <div className="absolute left-0 top-full z-50 mt-2 max-h-60 w-52 overflow-y-auto rounded-xl border border-gray-100 bg-white py-1.5 shadow-2xl animate-fade-up">
+                <div className="absolute left-0 top-full z-50 mt-2 max-h-60 w-52 overflow-y-auto rounded-xl border border-border bg-card py-1.5 shadow-2xl animate-fade-up">
                   {HERO_CITIES.map((city) => (
                     <button
                       key={city}
@@ -267,10 +272,10 @@ export function HeroBanner() {
                         setCityOpen(false);
                       }}
                       className={cn(
-                        'flex w-full px-4 py-2 text-left text-xs font-medium transition hover:bg-[#febd69] hover:text-[#131921]',
+                        'flex w-full px-4 py-2 text-left text-xs font-medium transition hover:bg-accent-soft hover:text-foreground',
                         selectedCity === city
-                          ? 'bg-[#febd69] font-bold text-[#131921]'
-                          : 'text-gray-700',
+                          ? 'bg-accent font-bold text-accent-foreground'
+                          : 'text-foreground',
                       )}
                     >
                       {city}
@@ -280,11 +285,11 @@ export function HeroBanner() {
               )}
             </div>
 
-            {/* 4. Amber Search Submit Button */}
+            {/* 4. Search submit */}
             <div className="w-full shrink-0 p-1 md:w-auto">
               <button
                 type="submit"
-                className="flex w-full items-center justify-center rounded-xl bg-[#febd69] px-7 py-3 text-sm font-semibold text-[#131921] shadow-sm transition hover:bg-[#f3a847] active:bg-[#e77600] md:rounded-full"
+                className="flex w-full items-center justify-center rounded-xl bg-accent px-7 py-3 text-sm font-semibold text-accent-foreground shadow-sm transition hover:bg-accent-hover active:bg-accent-hover md:rounded-full"
               >
                 Search
               </button>

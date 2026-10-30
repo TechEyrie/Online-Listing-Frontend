@@ -44,34 +44,34 @@
 
 @layer base {
   :root {
-    /* Warm sand — clearly not gray */
-    --background: 34 46% 91%;
-    --foreground: 192 35% 10%;
-    --card: 40 60% 99.6%;
-    --card-foreground: 192 35% 10%;
-    --popover: 40 60% 99.5%;
-    --popover-foreground: 192 35% 10%;
-    --muted: 33 36% 86%;
-    --muted-foreground: 192 14% 34%;
-    --border: 33 30% 80%;
-    --input: 33 30% 80%;
-    --ring: 214 27% 10%;
+    /* Suqora light surfaces — warm off-white */
+    --background: 30 22% 97%;
+    --foreground: 346 20% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 346 20% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 346 20% 11%;
+    --muted: 346 18% 92%;
+    --muted-foreground: 346 10% 38%;
+    --border: 346 15% 88%;
+    --input: 346 15% 88%;
+    --ring: 346 74% 31%;
 
-    /* Header navy (#131921) — site primary */
-    --primary: 214 27% 10%;
-    --primary-foreground: 40 50% 99%;
-    --primary-hover: 214 28% 19%;
-    --brand-soft: 214 18% 92%;
-    --brand-subtle: 40 38% 95%;
+    /* Maroon primary (#8B1538) */
+    --primary: 346 74% 31%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 346 75% 24%;
+    --brand-soft: 346 35% 94%;
+    --brand-subtle: 346 30% 97%;
 
-    /* Saffron accent */
-    --accent: 22 94% 52%;
-    --accent-foreground: 0 0% 100%;
-    --accent-hover: 20 90% 44%;
-    --accent-soft: 28 100% 93%;
+    /* Gold accent (#F5C400) */
+    --accent: 47 100% 48%;
+    --accent-foreground: 346 75% 18%;
+    --accent-hover: 45 92% 42%;
+    --accent-soft: 47 100% 92%;
 
-    --secondary: 34 30% 90%;
-    --secondary-foreground: 192 35% 12%;
+    --secondary: 346 20% 94%;
+    --secondary-foreground: 346 20% 11%;
 
     --destructive: 0 68% 48%;
     --destructive-foreground: 0 0% 100%;
@@ -86,9 +86,9 @@
     --info-soft: 198 55% 93%;
 
     --radius: 1rem;
-    --shadow-sm: 0 1px 2px rgba(28, 48, 44, 0.04), 0 2px 6px rgba(28, 48, 44, 0.05);
-    --shadow-md: 0 8px 24px rgba(28, 48, 44, 0.1), 0 2px 8px rgba(28, 48, 44, 0.05);
-    --shadow-lg: 0 18px 44px rgba(28, 48, 44, 0.14), 0 6px 16px rgba(28, 48, 44, 0.06);
+    --shadow-sm: 0 1px 2px rgba(26, 18, 20, 0.04), 0 2px 6px rgba(26, 18, 20, 0.05);
+    --shadow-md: 0 8px 24px rgba(26, 18, 20, 0.1), 0 2px 8px rgba(26, 18, 20, 0.05);
+    --shadow-lg: 0 18px 44px rgba(26, 18, 20, 0.14), 0 6px 16px rgba(26, 18, 20, 0.06);
   }
 
   .dark {
@@ -163,9 +163,9 @@
     line-height: 1.55;
     background-color: hsl(var(--background));
     background-image:
-      radial-gradient(ellipse 120% 80% at 0% -10%, hsl(168 48% 88% / 0.55) 0%, transparent 50%),
-      radial-gradient(ellipse 90% 60% at 100% 0%, hsl(28 100% 93% / 0.45) 0%, transparent 42%),
-      linear-gradient(180deg, hsl(36 42% 95%) 0%, hsl(var(--background)) 28%, hsl(var(--background)) 100%);
+      radial-gradient(ellipse 120% 80% at 0% -10%, hsl(346 40% 88% / 0.4) 0%, transparent 50%),
+      radial-gradient(ellipse 90% 60% at 100% 0%, hsl(47 100% 90% / 0.35) 0%, transparent 42%),
+      linear-gradient(180deg, hsl(30 22% 98%) 0%, hsl(var(--background)) 28%, hsl(var(--background)) 100%);
     background-attachment: fixed;
   }
 
@@ -231,9 +231,9 @@
 
   .surface-hero {
     background:
-      radial-gradient(ellipse 70% 55% at 8% 15%, hsl(168 55% 86% / 0.95) 0%, transparent 55%),
-      radial-gradient(ellipse 55% 45% at 92% 8%, hsl(28 100% 90% / 0.9) 0%, transparent 48%),
-      linear-gradient(160deg, hsl(40 45% 96%) 0%, hsl(36 42% 93%) 55%, hsl(168 30% 92% / 0.5) 100%);
+      radial-gradient(ellipse 70% 55% at 8% 15%, hsl(346 40% 88% / 0.95) 0%, transparent 55%),
+      radial-gradient(ellipse 55% 45% at 92% 8%, hsl(47 100% 90% / 0.9) 0%, transparent 48%),
+      linear-gradient(160deg, hsl(30 22% 98%) 0%, hsl(346 30% 97%) 55%, hsl(346 35% 94% / 0.5) 100%);
   }
 
   .dark .surface-hero {

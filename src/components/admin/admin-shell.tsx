@@ -68,8 +68,8 @@ export function AdminShell({ children }: AdminShellProps) {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'rounded-[10px] px-3 py-1.5 font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground',
-                    pathname === item.href && 'bg-primary-soft font-semibold text-primary',
+                    'rounded-[10px] px-3 py-1.5 font-medium text-muted-foreground transition-colors hover:bg-primary-soft hover:text-primary',
+                    pathname === item.href && 'bg-primary/10 font-semibold text-primary',
                   )}
                 >
                   {item.label}

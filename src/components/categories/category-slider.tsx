@@ -201,7 +201,7 @@ export function CategorySlider() {
         type="button"
         onClick={goLeft}
         aria-label="Previous categories"
-        className="absolute -left-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-xl border border-black/5 bg-white text-[#111827] shadow-[0_6px_18px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_24px_rgba(0,0,0,0.16)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:-left-4"
+        className="absolute -left-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-xl border border-black/5 bg-white text-foreground shadow-[0_6px_18px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_24px_rgba(0,0,0,0.16)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:-left-4"
         style={{ opacity: atStart ? 0 : 1, pointerEvents: atStart ? 'none' : 'auto' }}
       >
         <ChevronLeft className="h-5 w-5" />
@@ -211,7 +211,7 @@ export function CategorySlider() {
         type="button"
         onClick={goRight}
         aria-label="Next categories"
-        className="absolute -right-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-xl border border-black/5 bg-white text-[#111827] shadow-[0_6px_18px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_24px_rgba(0,0,0,0.16)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:-right-4"
+        className="absolute -right-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-xl border border-black/5 bg-white text-foreground shadow-[0_6px_18px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_24px_rgba(0,0,0,0.16)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:-right-4"
         style={{ opacity: atEnd ? 0 : 1, pointerEvents: atEnd ? 'none' : 'auto' }}
       >
         <ChevronRight className="h-5 w-5" />

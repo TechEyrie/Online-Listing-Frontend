@@ -24,6 +24,7 @@ import type { LucideIcon } from 'lucide-react';
 
 import { useCategoryTree } from '@/hooks/use-categories';
 import { categoryApi } from '@/lib/category-api';
+import { BRAND_COLORS } from '@/lib/brand-colors';
 import { cn } from '@/lib/utils';
 
 interface CategoryVisual {
@@ -50,7 +51,11 @@ const VISUALS: Record<string, CategoryVisual> = {
   other: { icon: Package, from: '#78716c', to: '#a8a29e' },
 };
 
-const FALLBACK: CategoryVisual = { icon: Building2, from: '#131921', to: '#374151' };
+const FALLBACK: CategoryVisual = {
+  icon: Building2,
+  from: BRAND_COLORS.maroon,
+  to: BRAND_COLORS.maroonMid,
+};
 
 function formatAdCount(count: number): string {
   return `${count.toLocaleString()} ad${count === 1 ? '' : 's'}`;

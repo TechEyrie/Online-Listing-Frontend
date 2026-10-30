@@ -55,8 +55,8 @@ export function DashboardShell({ children }: DashboardShellProps) {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'rounded-[10px] px-3 py-2 font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground',
-                    pathname === item.href && 'bg-primary-soft font-semibold text-primary',
+                    'rounded-[10px] px-3 py-2 font-medium text-muted-foreground transition-colors hover:bg-primary-soft hover:text-primary',
+                    pathname === item.href && 'bg-primary/10 font-semibold text-primary',
                   )}
                 >
                   {item.label}
@@ -81,8 +81,8 @@ export function DashboardShell({ children }: DashboardShellProps) {
               key={item.href}
               href={item.href}
               className={cn(
-                'shrink-0 rounded-[10px] px-3 py-1.5 text-xs font-semibold text-muted-foreground',
-                pathname === item.href && 'bg-primary-soft text-primary',
+                'shrink-0 rounded-[10px] px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:bg-primary-soft hover:text-primary',
+                pathname === item.href && 'bg-primary/10 text-primary',
               )}
             >
               {item.label}

@@ -88,13 +88,13 @@ function VerifyEmailForm() {
         <div className="mt-4 flex flex-col gap-2 text-sm">
           <button
             type="button"
-            className="text-left text-muted-foreground hover:text-foreground"
+            className="text-left text-primary hover:text-primary-hover"
             onClick={() => void onResend()}
             disabled={resending}
           >
             {resending ? 'Sending...' : 'Resend code'}
           </button>
-          <Link href="/login" className="text-muted-foreground hover:text-foreground">
+          <Link href="/login" className="text-primary hover:text-primary-hover">
             Back to login
           </Link>
         </div>

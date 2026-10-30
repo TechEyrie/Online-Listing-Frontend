@@ -1,5 +1,7 @@
 import { ImageResponse } from 'next/og';
 
+import { BRAND_COLORS } from '@/lib/brand-colors';
+
 export const alt = 'Suqora — Buy & Sell Anything';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
@@ -15,7 +17,7 @@ export default function OpenGraphImage() {
           flexDirection: 'column',
           justifyContent: 'center',
           padding: 72,
-          background: 'linear-gradient(145deg, #0d7377 0%, #14919b 40%, #22c55e 100%)',
+          background: `linear-gradient(145deg, ${BRAND_COLORS.maroon} 0%, ${BRAND_COLORS.maroonMid} 45%, ${BRAND_COLORS.gold} 100%)`,
           color: 'white',
         }}
       >
