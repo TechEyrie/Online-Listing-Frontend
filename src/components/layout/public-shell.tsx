@@ -8,7 +8,7 @@ interface PublicShellProps {
 
 export function PublicShell({ children }: PublicShellProps) {
   return (
-    <div className="flex min-h-screen flex-col bg-background pb-16 md:pb-0">
+    <div className="flex min-h-screen w-full min-w-0 flex-col overflow-x-clip bg-background pb-16 md:pb-0">
       <SiteHeader />
       <div className="flex-1">{children}</div>
       <SiteFooter />

@@ -82,8 +82,6 @@ export function SiteHeader() {
   const [currentLang, setCurrentLang] = useState<'EN' | 'AR'>('EN');
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerMounted, setDrawerMounted] = useState(false);
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
-
   const searchBoxRef = useRef<HTMLDivElement>(null);
   const accountRef = useRef<HTMLDivElement>(null);
   const langRef = useRef<HTMLDivElement>(null);
@@ -127,7 +125,6 @@ export function SiteHeader() {
     setAccountMenuOpen(false);
     setLangMenuOpen(false);
     setDrawerOpen(false);
-    setMobileSearchOpen(false);
   }, [pathname]);
 
   // Outside click listener
@@ -404,9 +401,9 @@ export function SiteHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full select-none">
+      <header className="sticky top-0 z-50 w-full min-w-0 select-none overflow-x-clip">
       <div className="relative z-30 border-b border-border bg-card px-2 py-1.5 text-foreground sm:px-4 sm:py-2">
-        <div className="mx-auto flex max-w-[1536px] items-center gap-1 sm:gap-2 lg:gap-3">
+        <div className="mx-auto flex w-full min-w-0 max-w-[1536px] items-center gap-1 sm:gap-2 lg:gap-3">
           {/* Logo */}
           <div className="flex shrink-0 items-center">
             <div className="cursor-pointer rounded-[2px] border border-transparent p-1 transition-colors duration-fast hover:border-border">
@@ -472,7 +469,7 @@ export function SiteHeader() {
             )}
           </div>
 
-          <div ref={searchBoxRef} className="relative mx-1 flex flex-1 items-center">
+          <div ref={searchBoxRef} className="relative mx-1 hidden min-w-0 flex-1 items-center md:flex">
             <form
               onSubmit={handleSearchSubmit}
               className={cn(
@@ -569,7 +566,14 @@ export function SiteHeader() {
           </div>
 
           {/* Right Action Items */}
-          <div className="flex shrink-0 items-center gap-0.5 sm:gap-1">
+          <div className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-1 md:ml-0">
+            <Link
+              href="/search"
+              className="flex h-10 w-10 items-center justify-center rounded-md border border-transparent text-foreground transition-colors hover:border-border md:hidden"
+              aria-label="Search listings"
+            >
+              <Search className="h-5 w-5" />
+            </Link>
             {/* Language / Region */}
             <div className="relative hidden md:block" ref={langRef}>
               <button
@@ -632,10 +636,14 @@ export function SiteHeader() {
               <button
                 type="button"
                 onClick={() => setAccountMenuOpen((v) => !v)}
-                className="flex items-center rounded-[2px] border border-transparent px-2 py-1.5 text-left transition-colors duration-fast hover:border-border"
+                className="flex items-center rounded-[2px] border border-transparent px-2 py-1.5 text-left transition-colors duration-fast hover:border-border md:px-2"
                 aria-expanded={accountMenuOpen}
+                aria-label={user ? 'Account menu' : 'Sign in'}
               >
-                <div className="leading-tight">
+                <span className="flex h-8 w-8 items-center justify-center md:hidden">
+                  <User className="h-5 w-5 text-foreground" />
+                </span>
+                <div className="hidden leading-tight md:block">
                   <span className="block truncate text-[11px] font-normal leading-tight text-muted-foreground">
                     {user ? `Hello, ${user.name}` : 'Hello, sign in'}
                   </span>
@@ -758,9 +766,9 @@ export function SiteHeader() {
       </div>
 
       <div className="bg-primary-hover px-2 text-primary-foreground sm:px-4">
-        <div className="mx-auto flex h-[39px] max-w-[1536px] items-center justify-between text-[14px]">
+        <div className="mx-auto flex h-[39px] w-full min-w-0 max-w-[1536px] items-center justify-between text-[14px]">
           {/* Left links */}
-          <div className="flex items-center space-x-1 overflow-x-auto whitespace-nowrap scrollbar-none">
+          <div className="flex min-w-0 flex-1 items-center space-x-1 overflow-x-auto whitespace-nowrap scrollbar-none">
             {/* "All" button */}
             <button
               type="button"

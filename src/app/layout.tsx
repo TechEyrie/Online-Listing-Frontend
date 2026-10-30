@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 import { AssistantWidget } from '@/components/assistant/assistant-widget';
 import { MosqueArchClip } from '@/components/common/mosque-arch-clip';
@@ -39,14 +39,19 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen antialiased">
+    <html lang="en" suppressHydrationWarning className="overflow-x-clip">
+      <body className="min-h-screen w-full overflow-x-clip antialiased">
         <MosqueArchClip />
         <AppProviders>
           {children}

@@ -44,7 +44,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-16 md:pb-0">
+    <div className="min-h-screen w-full min-w-0 overflow-x-clip bg-background pb-16 md:pb-0">
       <header className="sticky top-0 z-30 border-b border-border bg-card/95 backdrop-blur-md">
         <div className="mx-auto flex max-w-app items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-6">

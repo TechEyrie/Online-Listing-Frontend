@@ -196,7 +196,7 @@ export function CategorySlider() {
   useEffect(() => () => cancelAnimationFrame(rafRef.current), []);
 
   return (
-    <div className="relative">
+    <div className="relative min-w-0 max-w-full">
       <button
         type="button"
         onClick={goLeft}
@@ -236,7 +236,7 @@ export function CategorySlider() {
                 <div
                   key={i}
                   className="shrink-0"
-                  style={{ width: `${cardWidth}px`, minWidth: '240px' }}
+                  style={{ width: `${cardWidth}px`, minWidth: cardWidth < 240 ? 0 : 240 }}
                 >
                   <CategoryBrowseSkeleton />
                 </div>
@@ -245,7 +245,7 @@ export function CategorySlider() {
                 <div
                   key={cat._id}
                   className="shrink-0"
-                  style={{ width: `${cardWidth}px`, minWidth: '240px' }}
+                  style={{ width: `${cardWidth}px`, minWidth: cardWidth < 240 ? 0 : 240 }}
                 >
                   <CategoryBrowseCard item={cat} isDragging={isDragging} />
                 </div>
