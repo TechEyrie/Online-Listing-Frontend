@@ -296,7 +296,15 @@ interface PreviewStepProps {
 
 export function ListingPreviewStep({ watch, fileCount, mode, listing }: PreviewStepProps) {
   return (
-    <div className="space-y-2 rounded-lg border p-4 text-sm">
+    <div className="space-y-4">
+      <p className="text-sm text-muted-foreground">
+        Review your listing below. Nothing is sent to the server until you choose{' '}
+        <strong className="font-semibold text-foreground">
+          {mode === 'create' ? 'Publish listing' : 'Update listing'}
+        </strong>{' '}
+        or <strong className="font-semibold text-foreground">Save as draft</strong>.
+      </p>
+      <div className="space-y-2 rounded-lg border p-4 text-sm">
       <p>
         <strong>Title:</strong> {watch('title')}
       </p>
@@ -315,6 +323,7 @@ export function ListingPreviewStep({ watch, fileCount, mode, listing }: PreviewS
         {mode === 'edit' ? ` + ${listing?.images.length ?? 0} existing` : ''}
       </p>
       <p className="whitespace-pre-wrap text-muted-foreground">{watch('description')}</p>
+      </div>
     </div>
   );
 }

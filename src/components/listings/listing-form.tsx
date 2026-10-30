@@ -28,6 +28,8 @@ interface ListingFormProps {
   listing?: Listing;
 }
 
+type SaveIntent = 'publish' | 'draft' | 'update';
+
 export function ListingForm({ mode, listing }: ListingFormProps) {
   const router = useRouter();
   const { data: tree = [] } = useCategoryTree();
@@ -105,7 +107,7 @@ export function ListingForm({ mode, listing }: ListingFormProps) {
     setAttrValues({});
   };
 
-  const buildFormData = (values: ListingFormValues) => {
+  const buildFormData = (values: ListingFormValues, intent: SaveIntent) => {
     const formData = new FormData();
     formData.append('title', values.title);
     formData.append('description', values.description);
@@ -130,6 +132,11 @@ export function ListingForm({ mode, listing }: ListingFormProps) {
     }
     formData.append('attributes', JSON.stringify(attrs));
     for (const file of files) formData.append('images', file);
+    if (intent === 'publish') {
+      formData.append('status', 'active');
+    } else if (intent === 'draft') {
+      formData.append('status', 'pending');
+    }
     return formData;
   };
 
@@ -197,14 +204,16 @@ export function ListingForm({ mode, listing }: ListingFormProps) {
     setStep(next);
   };
 
-  const onSubmit = async (values: ListingFormValues) => {
+  const persistListing = async (values: ListingFormValues, intent: SaveIntent) => {
+    if (step !== 3) return;
+
     setServerError(null);
     try {
       if (!(await validateStep(2))) {
         setStep(2);
         return;
       }
-      const formData = buildFormData(values);
+      const formData = buildFormData(values, intent);
       const res =
         mode === 'create'
           ? await listingApi.create(formData)
@@ -216,12 +225,38 @@ export function ListingForm({ mode, listing }: ListingFormProps) {
     }
   };
 
+  const runPersist = (intent: SaveIntent) => {
+    void handleSubmit((values) => persistListing(values, intent))();
+  };
+
+  const primaryIntent: SaveIntent =
+    mode === 'create' || listing?.status === 'pending' ? 'publish' : 'update';
+
+  const primaryActionLabel = isSubmitting
+    ? 'Saving...'
+    : mode === 'create'
+      ? 'Publish listing'
+      : listing?.status === 'pending'
+        ? 'Publish listing'
+        : 'Update listing';
+
   const steps = ['Details', 'Category & location', 'Attributes & images', 'Preview'];
   const lockedStepHint =
     'Complete the current section fully before you can open this step.';
 
   return (
-    <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form
+      className="space-y-6"
+      noValidate
+      onSubmit={(event) => event.preventDefault()}
+      onKeyDown={(event) => {
+        if (event.key !== 'Enter') return;
+        const target = event.target;
+        if (!(target instanceof HTMLElement)) return;
+        if (target.tagName === 'TEXTAREA') return;
+        event.preventDefault();
+      }}
+    >
       <div className="flex flex-wrap gap-2">
         {steps.map((label, index) => {
           const isLocked = index > unlockedStep;
@@ -311,9 +346,24 @@ export function ListingForm({ mode, listing }: ListingFormProps) {
             Continue
           </Button>
         ) : (
-          <Button type="submit" variant="accent" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving...' : mode === 'create' ? 'Publish listing' : 'Save changes'}
-          </Button>
+          <>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isSubmitting}
+              onClick={() => runPersist('draft')}
+            >
+              {isSubmitting ? 'Saving...' : 'Save as draft'}
+            </Button>
+            <Button
+              type="button"
+              variant="accent"
+              disabled={isSubmitting}
+              onClick={() => runPersist(primaryIntent)}
+            >
+              {primaryActionLabel}
+            </Button>
+          </>
         )}
       </div>
     </form>
