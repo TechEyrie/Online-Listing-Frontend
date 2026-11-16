@@ -2,60 +2,11 @@
 
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import {
-  Briefcase,
-  Building2,
-  Car,
-  Cpu,
-  GraduationCap,
-  Hammer,
-  Home,
-  Landmark,
-  Package,
-  PawPrint,
-  Phone,
-  Shirt,
-  ShoppingBag,
-  Tractor,
-  TreePalm,
-  Watch,
-} from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
 
+import { getSuqoraCategoryVisual } from '@/components/icons/suqora-category-icon';
 import { useCategoryTree } from '@/hooks/use-categories';
 import { categoryApi } from '@/lib/category-api';
-import { BRAND_COLORS } from '@/lib/brand-colors';
 import { cn } from '@/lib/utils';
-
-interface CategoryVisual {
-  icon: LucideIcon;
-  from: string;
-  to: string;
-}
-
-const VISUALS: Record<string, CategoryVisual> = {
-  vehicles: { icon: Car, from: '#1d9bf0', to: '#0ea5e9' },
-  property: { icon: Home, from: '#f97316', to: '#fb7185' },
-  electronics: { icon: Cpu, from: '#6366f1', to: '#8b5cf6' },
-  mobiles: { icon: Phone, from: '#0ea5e9', to: '#22d3ee' },
-  'home-garden': { icon: TreePalm, from: '#10b981', to: '#34d399' },
-  services: { icon: Hammer, from: '#f59e0b', to: '#fbbf24' },
-  'business-industry': { icon: Landmark, from: '#475569', to: '#64748b' },
-  jobs: { icon: Briefcase, from: '#2563eb', to: '#3b82f6' },
-  animals: { icon: PawPrint, from: '#d97706', to: '#f59e0b' },
-  'hobby-sport-kids': { icon: ShoppingBag, from: '#14b8a6', to: '#22c55e' },
-  'fashion-beauty': { icon: Shirt, from: '#e11d48', to: '#fb7185' },
-  education: { icon: GraduationCap, from: '#7c3aed', to: '#a78bfa' },
-  agriculture: { icon: Tractor, from: '#ca8a04', to: '#eab308' },
-  essentials: { icon: Watch, from: '#059669', to: '#34d399' },
-  other: { icon: Package, from: '#78716c', to: '#a8a29e' },
-};
-
-const FALLBACK: CategoryVisual = {
-  icon: Building2,
-  from: BRAND_COLORS.maroon,
-  to: BRAND_COLORS.maroonMid,
-};
 
 function formatAdCount(count: number): string {
   return `${count.toLocaleString()} ad${count === 1 ? '' : 's'}`;
@@ -108,8 +59,8 @@ export function CategoryBrowseGrid() {
       ) : treeError || !tree?.length ? null : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
           {tree.map((category) => {
-            const visual = VISUALS[category.slug] ?? FALLBACK;
-            const Icon = visual.icon;
+            const visual = getSuqoraCategoryVisual(category.slug);
+            const Icon = visual.Icon;
             const adCount = countsSuccess ? (counts[category.slug] ?? 0) : undefined;
 
             return (
@@ -124,13 +75,15 @@ export function CategoryBrowseGrid() {
                 )}
               >
                 <span
-                  className="relative flex h-[3.35rem] w-[3.35rem] shrink-0 items-center justify-center rounded-2xl text-white transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[-4deg]"
-                  style={{
-                    background: `linear-gradient(145deg, ${visual.from} 0%, ${visual.to} 100%)`,
-                  }}
+                  className={cn(
+                    'relative flex h-[3.35rem] w-[3.35rem] shrink-0 items-center justify-center rounded-2xl text-white',
+                    'bg-[linear-gradient(145deg,#6B0F2A_0%,#A61E45_100%)]',
+                    'shadow-[0_4px_14px_rgba(139,21,56,0.35)] ring-1 ring-white/20',
+                    'transition-all duration-300 group-hover:scale-110 group-hover:rotate-[-4deg] group-hover:ring-accent/45',
+                  )}
                   aria-hidden
                 >
-                  <Icon className="h-[1.35rem] w-[1.35rem] stroke-[2.2]" />
+                  <Icon className="h-[1.4rem] w-[1.4rem]" />
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-[15px] font-bold leading-snug text-foreground">

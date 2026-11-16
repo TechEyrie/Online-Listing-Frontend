@@ -200,7 +200,13 @@ export function ListingDetailClient({ slug, initialListing = null }: ListingDeta
 
                 {showContact && seller && (
                   <div className="hidden lg:block">
-                    <ContactSellerButton listingId={data._id} sellerId={seller._id} />
+                    <ContactSellerButton
+                      listingId={data._id}
+                      sellerId={seller._id}
+                      listingTitle={data.title}
+                      listingSlug={data.slug}
+                      sellerPhone={seller.phone}
+                    />
                   </div>
                 )}
 
@@ -275,8 +281,11 @@ export function ListingDetailClient({ slug, initialListing = null }: ListingDeta
             <ContactSellerButton
               listingId={data._id}
               sellerId={seller._id}
+              listingTitle={data.title}
+              listingSlug={data.slug}
+              sellerPhone={seller.phone}
               size="default"
-              className="w-auto shrink-0 [&_button]:w-auto"
+              className="w-auto max-w-[11rem] shrink-0 [&_a]:w-full [&_button]:w-full"
             />
             <Button asChild variant="outline" size="icon" aria-label="Open messages">
               <Link href="/messages">

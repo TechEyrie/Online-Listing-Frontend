@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
+import { ChevronRight } from 'lucide-react';
 
 import { CategoryBrowseGrid } from '@/components/categories/category-browse-grid';
 import { CategorySlider } from '@/components/categories/category-slider';
@@ -60,14 +61,17 @@ export default function Home() {
         <CategoryBrowseGrid />
 
         <section className="space-y-6">
-          <div className="flex items-end justify-between gap-4">
+          <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="page-eyebrow">Categories</p>
               <h2 className="text-section-title mt-1">Browse by need</h2>
               <p className="mt-1 text-sm text-muted-foreground">Start with what you need.</p>
             </div>
-            <Button asChild variant="ghost" size="sm">
-              <Link href="/search">View all</Link>
+            <Button asChild variant="accent" size="default" className="shrink-0 font-bold">
+              <Link href="/search">
+                View all
+                <ChevronRight className="h-4 w-4" aria-hidden />
+              </Link>
             </Button>
           </div>
           <CategorySlider />

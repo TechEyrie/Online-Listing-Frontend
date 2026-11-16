@@ -14,7 +14,6 @@ import {
   Menu,
   Plus,
   Search,
-  Sparkles,
   User,
   X,
 } from 'lucide-react';
@@ -56,7 +55,6 @@ const SUB_NAV_LINKS = [
   { label: 'Services', href: '/search?type=service' },
   { label: 'Help', href: '/dashboard' },
   { label: 'Browse all', href: '/search' },
-  { label: 'Sell', href: '/post' },
 ];
 
 export function SiteHeader() {
@@ -660,85 +658,87 @@ export function SiteHeader() {
               {accountMenuOpen && (
                 <div className="absolute right-0 top-full z-50 mt-2 w-64 rounded-md border border-gray-200 bg-white p-3 text-gray-900 shadow-2xl animate-fade-up">
                   {!user ? (
-                    <div className="border-b border-gray-200 pb-3 text-center">
+                    <div className="flex flex-col gap-2">
                       <Link
                         href="/login"
-                        className="block w-full rounded-[4px] bg-accent py-1.5 text-center text-xs font-bold text-accent-foreground shadow-sm transition hover:bg-accent-hover"
+                        onClick={() => setAccountMenuOpen(false)}
+                        className="block w-full rounded-[10px] bg-accent py-2.5 text-center text-sm font-bold text-accent-foreground shadow-sm transition hover:bg-accent-hover"
                       >
                         Sign in
                       </Link>
-                      <p className="mt-2 text-[11px] text-gray-600">
-                        New customer?{' '}
-                        <Link href="/register" className="text-primary hover:underline">
-                          Start here.
-                        </Link>
-                      </p>
+                      <Link
+                        href="/register"
+                        onClick={() => setAccountMenuOpen(false)}
+                        className="block w-full rounded-[10px] border border-primary bg-card py-2.5 text-center text-sm font-bold text-primary shadow-sm transition hover:bg-primary-soft"
+                      >
+                        Register
+                      </Link>
                     </div>
                   ) : (
-                    <div className="border-b border-gray-200 pb-2">
-                      <p className="text-xs font-bold text-gray-900">{user.name}</p>
-                      <p className="truncate text-[11px] text-gray-500">{user.email}</p>
-                      <span className="mt-1 inline-block rounded bg-primary-soft px-1.5 py-0.5 text-[10px] font-semibold uppercase text-primary">
-                        {user.role}
-                      </span>
-                    </div>
-                  )}
+                    <>
+                      <div className="border-b border-gray-200 pb-2">
+                        <p className="text-xs font-bold text-gray-900">{user.name}</p>
+                        <p className="truncate text-[11px] text-gray-500">{user.email}</p>
+                        <span className="mt-1 inline-block rounded bg-primary-soft px-1.5 py-0.5 text-[10px] font-semibold uppercase text-primary">
+                          {user.role}
+                        </span>
+                      </div>
 
-                  <div className="pt-2">
-                    <p className="px-1 text-[11px] font-bold uppercase tracking-wider text-gray-500">
-                      Your Account
-                    </p>
-                    <div className="mt-1 space-y-0.5 text-xs">
-                      <Link
-                        href="/dashboard"
-                        className="block rounded px-2 py-1.5 text-gray-700 transition hover:bg-gray-100 hover:text-black"
-                      >
-                        Your Dashboard
-                      </Link>
-                      <Link
-                        href="/my-listings"
-                        className="block rounded px-2 py-1.5 text-gray-700 transition hover:bg-gray-100 hover:text-black"
-                      >
-                        Your Listings
-                      </Link>
-                      <Link
-                        href="/my-favorites"
-                        className="block rounded px-2 py-1.5 text-gray-700 transition hover:bg-gray-100 hover:text-black"
-                      >
-                        Saved & Favorites
-                      </Link>
-                      <Link
-                        href="/messages"
-                        className="block rounded px-2 py-1.5 text-gray-700 transition hover:bg-gray-100 hover:text-black"
-                      >
-                        Messages
-                      </Link>
-                      <Link
-                        href="/profile"
-                        className="block rounded px-2 py-1.5 text-gray-700 transition hover:bg-gray-100 hover:text-black"
-                      >
-                        Account Settings
-                      </Link>
-                      {user && (user.role === 'admin' || user.role === 'moderator') && (
-                        <Link
-                          href="/admin"
-                          className="block rounded px-2 py-1.5 font-semibold text-primary transition hover:bg-primary-soft"
-                        >
-                          Admin Console
-                        </Link>
-                      )}
-                      {user && (
-                        <button
-                          type="button"
-                          onClick={() => void handleLogout()}
-                          className="flex w-full items-center gap-1.5 rounded px-2 py-1.5 text-left text-destructive transition hover:bg-destructive/10"
-                        >
-                          <LogOut className="h-3.5 w-3.5" />
-                          Sign Out
-                        </button>
-                      )}
-                    </div>
-                  </div>
+                      <div className="pt-2">
+                        <p className="px-1 text-[11px] font-bold uppercase tracking-wider text-gray-500">
+                          Your Account
+                        </p>
+                        <div className="mt-1 space-y-0.5 text-xs">
+                          <Link
+                            href="/dashboard"
+                            className="block rounded px-2 py-1.5 text-gray-700 transition hover:bg-gray-100 hover:text-black"
+                          >
+                            Your Dashboard
+                          </Link>
+                          <Link
+                            href="/my-listings"
+                            className="block rounded px-2 py-1.5 text-gray-700 transition hover:bg-gray-100 hover:text-black"
+                          >
+                            Your Listings
+                          </Link>
+                          <Link
+                            href="/my-favorites"
+                            className="block rounded px-2 py-1.5 text-gray-700 transition hover:bg-gray-100 hover:text-black"
+                          >
+                            Saved & Favorites
+                          </Link>
+                          <Link
+                            href="/messages"
+                            className="block rounded px-2 py-1.5 text-gray-700 transition hover:bg-gray-100 hover:text-black"
+                          >
+                            Messages
+                          </Link>
+                          <Link
+                            href="/profile"
+                            className="block rounded px-2 py-1.5 text-gray-700 transition hover:bg-gray-100 hover:text-black"
+                          >
+                            Account Settings
+                          </Link>
+                          {(user.role === 'admin' || user.role === 'moderator') && (
+                            <Link
+                              href="/admin"
+                              className="block rounded px-2 py-1.5 font-semibold text-primary transition hover:bg-primary-soft"
+                            >
+                              Admin Console
+                            </Link>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => void handleLogout()}
+                            className="flex w-full items-center gap-1.5 rounded px-2 py-1.5 text-left text-destructive transition hover:bg-destructive/10"
+                          >
+                            <LogOut className="h-3.5 w-3.5" />
+                            Sign Out
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
             </div>
@@ -791,14 +791,14 @@ export function SiteHeader() {
             ))}
           </div>
 
-          {/* Right banner / highlight */}
-          <div className="hidden shrink-0 items-center gap-3 md:flex">
+          {/* Post CTA — not a category link */}
+          <div className="ml-2 flex shrink-0 items-center pl-1 sm:pl-2">
             <Link
               href="/post"
-              className="flex items-center gap-1.5 rounded-[2px] border border-transparent px-2 py-1 text-[13px] font-bold text-accent dark:text-amber-200 transition hover:border-primary-foreground/40"
+              className="inline-flex items-center justify-center gap-1.5 rounded-lg border-2 border-accent-foreground/25 bg-accent px-3 py-1.5 text-[12px] font-bold leading-tight text-accent-foreground shadow-[0_2px_8px_rgba(0,0,0,0.2)] transition hover:bg-accent-hover active:scale-[0.98] sm:px-4 sm:text-[13px]"
             >
-              <Sparkles className="h-3.5 w-3.5" />
-              <span>Free Ad Posting in Qatar</span>
+              <Plus className="h-4 w-4 shrink-0 stroke-[2.5]" aria-hidden />
+              <span className="whitespace-nowrap">Post a free Ad in Qatar</span>
             </Link>
           </div>
         </div>
