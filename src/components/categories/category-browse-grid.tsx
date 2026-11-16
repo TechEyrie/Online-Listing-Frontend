@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 
-import { getSuqoraCategoryVisual } from '@/components/icons/suqora-category-icon';
+import { getApeqCategoryVisual } from '@/components/icons/apeq-category-icon';
 import { useCategoryTree } from '@/hooks/use-categories';
 import { categoryApi } from '@/lib/category-api';
 import { cn } from '@/lib/utils';
@@ -59,7 +59,7 @@ export function CategoryBrowseGrid() {
       ) : treeError || !tree?.length ? null : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
           {tree.map((category) => {
-            const visual = getSuqoraCategoryVisual(category.slug);
+            const visual = getApeqCategoryVisual(category.slug);
             const Icon = visual.Icon;
             const adCount = countsSuccess ? (counts[category.slug] ?? 0) : undefined;
 

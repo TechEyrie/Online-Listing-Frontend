@@ -1,6 +1,6 @@
-# Suqora Web
+# Apeq Web
 
-Next.js frontend for Suqora.
+Next.js frontend for Apeq.
 
 ## Local
 

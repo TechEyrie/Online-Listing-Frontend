@@ -4,10 +4,12 @@ import { AssistantWidget } from '@/components/assistant/assistant-widget';
 import { MosqueArchClip } from '@/components/common/mosque-arch-clip';
 import { AppProviders } from '@/providers/app-providers';
 
+import { APP_DISPLAY_NAME } from '@/lib/app-brand';
+
 import './globals.css';
 
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-const appName = process.env.NEXT_PUBLIC_APP_NAME || 'Suqora';
+const appName = APP_DISPLAY_NAME;
 
 export const metadata: Metadata = {
   metadataBase: new URL(appUrl),
@@ -17,7 +19,7 @@ export const metadata: Metadata = {
   },
   description:
     "Qatar's classifieds marketplace. Buy, sell, rent, or offer services. Vehicles, property, electronics, jobs and more.",
-  keywords: ['Suqora', 'classifieds', 'marketplace', 'buy', 'sell', 'Qatar', 'listings', 'Doha'],
+  keywords: [appName, 'classifieds', 'marketplace', 'buy', 'sell', 'Qatar', 'listings', 'Doha'],
   openGraph: {
     type: 'website',
     locale: 'en_US',

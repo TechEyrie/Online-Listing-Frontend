@@ -23,6 +23,7 @@ import { ThemeToggle } from '@/components/layout/theme-toggle';
 import { NotificationBell } from '@/components/notifications/notification-bell';
 import { authApi } from '@/lib/auth-api';
 import { searchApi } from '@/lib/search-api';
+import { APP_DISPLAY_NAME, APP_STORAGE_PREFIX, LEGACY_APP_STORAGE_PREFIX } from '@/lib/app-brand';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth-store';
 
@@ -99,7 +100,9 @@ export function SiteHeader() {
   // Load saved city
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('suqora_deliver_city');
+      const saved =
+        localStorage.getItem(`${APP_STORAGE_PREFIX}_deliver_city`) ??
+        localStorage.getItem(`${LEGACY_APP_STORAGE_PREFIX}_deliver_city`);
       if (saved) setSelectedCity(saved);
     } catch {
       // ignore
@@ -109,7 +112,7 @@ export function SiteHeader() {
   const handleSelectCity = (city: string) => {
     setSelectedCity(city);
     try {
-      localStorage.setItem('suqora_deliver_city', city);
+      localStorage.setItem(`${APP_STORAGE_PREFIX}_deliver_city`, city);
     } catch {
       // ignore
     }
@@ -525,7 +528,7 @@ export function SiteHeader() {
                   if (suggestions.length > 0) setSuggestionsOpen(true);
                 }}
                 onBlur={() => setSearchFocused(false)}
-                placeholder="Search Suqora..."
+                placeholder={`Search ${APP_DISPLAY_NAME}...`}
                 className="h-10 flex-1 bg-transparent px-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:outline-none"
                 aria-label="Search listings"
               />

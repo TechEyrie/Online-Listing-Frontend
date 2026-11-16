@@ -6,7 +6,7 @@
  * Path: two cubic Béziers meet at a sharp peak (0.5, 0) with near-vertical
  * tangents so the tip stays pointed rather than rounded.
  */
-export const MOSQUE_ARCH_CLIP_ID = 'suqora-mosque-arch';
+export const MOSQUE_ARCH_CLIP_ID = 'apeq-mosque-arch';
 
 export const MOSQUE_ARCH_CLIP_PATH = `url(#${MOSQUE_ARCH_CLIP_ID})`;
 

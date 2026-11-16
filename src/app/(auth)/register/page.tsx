@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { APP_DISPLAY_NAME } from '@/lib/app-brand';
 import { authApi } from '@/lib/auth-api';
 import { isGoogleSignInConfigured } from '@/lib/google-auth';
 import { registerSchema, type RegisterFormValues } from '@/lib/validators';
@@ -65,7 +66,7 @@ export default function RegisterPage() {
     <Card>
       <CardHeader>
         <CardTitle>Create an account</CardTitle>
-        <CardDescription>Join Suqora to buy, sell, and rent.</CardDescription>
+        <CardDescription>Join {APP_DISPLAY_NAME} to buy, sell, and rent.</CardDescription>
       </CardHeader>
       <CardContent>
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)} noValidate>

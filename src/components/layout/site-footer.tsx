@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { BrandLogo } from '@/components/layout/brand-logo';
+import { APP_DISPLAY_NAME } from '@/lib/app-brand';
 
 export function SiteFooter() {
   return (
@@ -40,7 +41,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-border/70 py-4 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Suqora. Built for local commerce.
+        © {new Date().getFullYear()} {APP_DISPLAY_NAME}. Built for local commerce.
       </div>
     </footer>
   );

@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { APP_DISPLAY_NAME } from '@/lib/app-brand';
 import { cn } from '@/lib/utils';
 
 interface BrandLogoProps {
@@ -18,8 +19,8 @@ interface BrandLogoProps {
 
 /** Transparent cropped mark — icon + wordmark only (no black plate). */
 const MARK = {
-  light: { src: '/suqora-mark.png', width: 1476, height: 518 },
-  dark: { src: '/suqora-mark-dark.png', width: 1476, height: 518 },
+  light: { src: '/apeq-mark.png', width: 1476, height: 518 },
+  dark: { src: '/apeq-mark-dark.png', width: 1476, height: 518 },
 } as const;
 
 const sizeClass: Record<'default' | 'header', Record<NonNullable<BrandLogoProps['size']>, string>> = {
@@ -50,7 +51,7 @@ export function BrandLogo({
   const image = (
     <Image
       src={asset.src}
-      alt="Suqora"
+      alt={APP_DISPLAY_NAME}
       width={asset.width}
       height={asset.height}
       priority={priority}
@@ -71,7 +72,7 @@ export function BrandLogo({
     <Link
       href={href}
       className={cn('inline-flex shrink-0 items-center focus-visible:outline-none', className)}
-      aria-label="Suqora home"
+      aria-label={`${APP_DISPLAY_NAME} home`}
     >
       {image}
     </Link>

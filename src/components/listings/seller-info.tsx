@@ -48,7 +48,7 @@ export function SellerInfo({ seller }: SellerInfoProps) {
       <p className="mt-3 flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
         <ShieldCheck className="h-3.5 w-3.5 text-primary" aria-hidden />
         {seller.phone
-          ? 'Use Suqora chat or WhatsApp when the seller has shared a number.'
+          ? 'Use Apeq chat or WhatsApp when the seller has shared a number.'
           : 'Contact through the platform for safer deals'}
       </p>
     </div>

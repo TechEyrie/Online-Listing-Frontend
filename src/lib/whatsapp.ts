@@ -37,5 +37,5 @@ export function buildWhatsAppSellerUrl(phone: string, message: string): string |
 }
 
 export function buildListingWhatsAppMessage(title: string, listingUrl: string): string {
-  return `Hi, I'm interested in your Suqora listing: "${title}". ${listingUrl}`;
+  return `Hi, I'm interested in your Apeq listing: "${title}". ${listingUrl}`;
 }

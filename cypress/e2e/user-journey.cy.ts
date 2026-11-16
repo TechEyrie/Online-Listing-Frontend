@@ -1,10 +1,10 @@
 describe('Production polish smoke journey', () => {
   it('loads public homepage with SEO-ready structure', () => {
     cy.visit('/');
-    cy.get('img[alt="Suqora"]').should('be.visible');
+    cy.get('img[alt="Apeq"]').should('be.visible');
     cy.contains('h1', /Buy, sell, and rent with confidence/i).should('be.visible');
     cy.contains('a', /Browse listings/i).should('be.visible');
-    cy.title().should('match', /Suqora/i);
+    cy.title().should('match', /Apeq/i);
   });
 
   it('logs in seeded buyer and opens messages', () => {

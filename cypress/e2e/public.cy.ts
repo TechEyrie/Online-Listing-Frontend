@@ -1,11 +1,11 @@
 describe('Public surfaces & SEO', () => {
   it('renders homepage brand, hero, and browse CTA', () => {
     cy.visit('/');
-    cy.get('img[alt="Suqora"]').should('be.visible');
+    cy.get('img[alt="Apeq"]').should('be.visible');
     cy.contains('h1', /Buy, sell, and rent with confidence/i).should('be.visible');
     cy.contains('a', /Browse listings/i).should('be.visible');
     cy.contains(/Browse by need/i).should('be.visible');
-    cy.title().should('match', /Suqora/i);
+    cy.title().should('match', /Apeq/i);
   });
 
   it('exposes robots.txt and sitemap.xml with admin blocked', () => {

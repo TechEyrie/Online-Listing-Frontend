@@ -1,5 +1,7 @@
 'use client';
 
+import { APP_DISPLAY_NAME } from '@/lib/app-brand';
+
 import { useEffect, useRef, useState } from 'react';
 
 import { AssistantMessageBubble } from '@/components/assistant/assistant-message-bubble';
@@ -13,7 +15,7 @@ const PHASE_MESSAGES: Record<string, string[]> = {
     'Analysing your request…',
   ],
   searching: [
-    'Searching Suqora for matching listings…',
+    `Searching ${APP_DISPLAY_NAME} for matching listings…`,
     'Scanning the marketplace…',
     'Looking through active listings…',
     'Finding the best matches in Qatar…',
@@ -79,7 +81,7 @@ export function AssistantMessageList({
     return (
       <div className="flex h-full flex-col justify-center gap-3 p-4">
         <p className="text-sm text-muted-foreground">
-          Tell me what you need — I will search Suqora and show up to 5 listings.
+          Tell me what you need — I will search {APP_DISPLAY_NAME} and show up to 5 listings.
         </p>
         <div className="flex flex-col gap-2">
           {EXAMPLES.map((example) => (

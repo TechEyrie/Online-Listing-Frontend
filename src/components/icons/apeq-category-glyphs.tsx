@@ -10,8 +10,8 @@ const strokeProps = {
   strokeLinejoin: 'round' as const,
 };
 
-/** Shared Suqora glyph style: rounded strokes, 24×24, meant on maroon/gold tiles. */
-export function SuqoraVehiclesIcon(props: GlyphProps) {
+/** Shared Apeq glyph style: rounded strokes, 24×24, meant on maroon/gold tiles. */
+export function ApeqVehiclesIcon(props: GlyphProps) {
   return (
     <svg viewBox="0 0 24 24" {...strokeProps} {...props}>
       <path d="M4 14h16l-1.2-4.2a2 2 0 0 0-1.9-1.3H7.1a2 2 0 0 0-1.9 1.3L4 14z" />
@@ -22,7 +22,7 @@ export function SuqoraVehiclesIcon(props: GlyphProps) {
   );
 }
 
-export function SuqoraPropertyIcon(props: GlyphProps) {
+export function ApeqPropertyIcon(props: GlyphProps) {
   return (
     <svg viewBox="0 0 24 24" {...strokeProps} {...props}>
       <path d="M4.5 10.5 12 4l7.5 6.5V20a1 1 0 0 1-1 1h-5v-6H10.5v6h-5a1 1 0 0 1-1-1v-9.5z" />
@@ -31,7 +31,7 @@ export function SuqoraPropertyIcon(props: GlyphProps) {
   );
 }
 
-export function SuqoraElectronicsIcon(props: GlyphProps) {
+export function ApeqElectronicsIcon(props: GlyphProps) {
   return (
     <svg viewBox="0 0 24 24" {...strokeProps} {...props}>
       <rect x="5" y="5" width="14" height="14" rx="2.5" />
@@ -41,7 +41,7 @@ export function SuqoraElectronicsIcon(props: GlyphProps) {
   );
 }
 
-export function SuqoraMobilesIcon(props: GlyphProps) {
+export function ApeqMobilesIcon(props: GlyphProps) {
   return (
     <svg viewBox="0 0 24 24" {...strokeProps} {...props}>
       <rect x="8" y="3.5" width="8" height="17" rx="2" />
@@ -51,7 +51,7 @@ export function SuqoraMobilesIcon(props: GlyphProps) {
   );
 }
 
-export function SuqoraHomeGardenIcon(props: GlyphProps) {
+export function ApeqHomeGardenIcon(props: GlyphProps) {
   return (
     <svg viewBox="0 0 24 24" {...strokeProps} {...props}>
       <path d="M12 20V10" />
@@ -62,7 +62,7 @@ export function SuqoraHomeGardenIcon(props: GlyphProps) {
   );
 }
 
-export function SuqoraServicesIcon(props: GlyphProps) {
+export function ApeqServicesIcon(props: GlyphProps) {
   return (
     <svg viewBox="0 0 24 24" {...strokeProps} {...props}>
       <path d="M14.5 6.5 18 3l3 3-3.5 3.5" />
@@ -72,7 +72,7 @@ export function SuqoraServicesIcon(props: GlyphProps) {
   );
 }
 
-export function SuqoraBusinessIcon(props: GlyphProps) {
+export function ApeqBusinessIcon(props: GlyphProps) {
   return (
     <svg viewBox="0 0 24 24" {...strokeProps} {...props}>
       <path d="M5 20V8l7-4 7 4v12" />
@@ -82,7 +82,7 @@ export function SuqoraBusinessIcon(props: GlyphProps) {
   );
 }
 
-export function SuqoraJobsIcon(props: GlyphProps) {
+export function ApeqJobsIcon(props: GlyphProps) {
   return (
     <svg viewBox="0 0 24 24" {...strokeProps} {...props}>
       <rect x="4" y="8" width="16" height="11" rx="2" />
@@ -92,7 +92,7 @@ export function SuqoraJobsIcon(props: GlyphProps) {
   );
 }
 
-export function SuqoraAnimalsIcon(props: GlyphProps) {
+export function ApeqAnimalsIcon(props: GlyphProps) {
   return (
     <svg viewBox="0 0 24 24" {...strokeProps} {...props}>
       <ellipse cx="8.5" cy="8" rx="1.6" ry="2" />
@@ -104,7 +104,7 @@ export function SuqoraAnimalsIcon(props: GlyphProps) {
   );
 }
 
-export function SuqoraHobbyIcon(props: GlyphProps) {
+export function ApeqHobbyIcon(props: GlyphProps) {
   return (
     <svg viewBox="0 0 24 24" {...strokeProps} {...props}>
       <circle cx="9" cy="15" r="4.5" />
@@ -114,7 +114,7 @@ export function SuqoraHobbyIcon(props: GlyphProps) {
   );
 }
 
-export function SuqoraFashionIcon(props: GlyphProps) {
+export function ApeqFashionIcon(props: GlyphProps) {
   return (
     <svg viewBox="0 0 24 24" {...strokeProps} {...props}>
       <path d="M8 6 12 3l4 3" />
@@ -124,7 +124,7 @@ export function SuqoraFashionIcon(props: GlyphProps) {
   );
 }
 
-export function SuqoraEducationIcon(props: GlyphProps) {
+export function ApeqEducationIcon(props: GlyphProps) {
   return (
     <svg viewBox="0 0 24 24" {...strokeProps} {...props}>
       <path d="M4 8.5 12 4l8 4.5-8 4.5-8-4.5z" />
@@ -134,7 +134,7 @@ export function SuqoraEducationIcon(props: GlyphProps) {
   );
 }
 
-export function SuqoraEssentialsIcon(props: GlyphProps) {
+export function ApeqEssentialsIcon(props: GlyphProps) {
   return (
     <svg viewBox="0 0 24 24" {...strokeProps} {...props}>
       <path d="M6 9h12l-1 10H7L6 9z" />
@@ -143,7 +143,7 @@ export function SuqoraEssentialsIcon(props: GlyphProps) {
   );
 }
 
-export function SuqoraAgricultureIcon(props: GlyphProps) {
+export function ApeqAgricultureIcon(props: GlyphProps) {
   return (
     <svg viewBox="0 0 24 24" {...strokeProps} {...props}>
       <path d="M12 20V10" />
@@ -154,7 +154,7 @@ export function SuqoraAgricultureIcon(props: GlyphProps) {
   );
 }
 
-export function SuqoraOtherIcon(props: GlyphProps) {
+export function ApeqOtherIcon(props: GlyphProps) {
   return (
     <svg viewBox="0 0 24 24" {...strokeProps} {...props}>
       <rect x="5" y="5" width="6" height="6" rx="1.2" />
@@ -165,7 +165,7 @@ export function SuqoraOtherIcon(props: GlyphProps) {
   );
 }
 
-export function SuqoraDefaultIcon(props: GlyphProps) {
+export function ApeqDefaultIcon(props: GlyphProps) {
   return (
     <svg viewBox="0 0 24 24" {...strokeProps} {...props}>
       <path d="M12 3c4 0 7 3 7 7s-3 7-7 7-7-3-7-7 3-7 7-7z" />
