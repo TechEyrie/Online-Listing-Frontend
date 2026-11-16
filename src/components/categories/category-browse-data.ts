@@ -7,6 +7,9 @@ export interface CategoryBrowseItem {
   tint: string;
 }
 
+/** Homepage “Browse by need” slider — first two cards use local creatives. */
+export const BROWSE_NEED_SLIDE_IMAGES = ['/slides/pr1.jpg', '/slides/pr2.jpg'] as const;
+
 /** Marketing headlines + lifestyle imagery for the homepage browse slider. */
 const CATALOG: Record<string, { headline: string; image: string; tint: string }> = {
   vehicles: {
@@ -110,6 +113,7 @@ const TINTS = [
 
 export const STATIC_BROWSE_CATEGORIES: CategoryBrowseItem[] = FALLBACK_ORDER.map((slug, i) => {
   const entry = CATALOG[slug];
+  const slideImage = BROWSE_NEED_SLIDE_IMAGES[i];
   return {
     _id: `static-${slug}`,
     name: slug
@@ -118,7 +122,7 @@ export const STATIC_BROWSE_CATEGORIES: CategoryBrowseItem[] = FALLBACK_ORDER.map
       .join(' '),
     slug,
     headline: entry.headline,
-    image: entry.image,
+    image: slideImage ?? entry.image,
     tint: entry.tint || TINTS[i % TINTS.length],
   };
 });
@@ -130,12 +134,14 @@ export function toBrowseItem(
   const entry = CATALOG[category.slug];
   const fallback = STATIC_BROWSE_CATEGORIES[index % STATIC_BROWSE_CATEGORIES.length];
 
+  const slideImage = BROWSE_NEED_SLIDE_IMAGES[index];
+
   return {
     _id: category._id,
     name: category.name,
     slug: category.slug,
     headline: entry?.headline ?? category.name,
-    image: category.image || entry?.image || fallback.image,
+    image: slideImage ?? category.image ?? entry?.image ?? fallback.image,
     tint: entry?.tint || TINTS[index % TINTS.length],
   };
 }
