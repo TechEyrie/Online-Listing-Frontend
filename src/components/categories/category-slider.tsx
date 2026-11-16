@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { CategoryBrowseCard } from '@/components/categories/category-browse-card';
 import {
+  BROWSE_NEED_SLIDE_COUNT,
   STATIC_BROWSE_CATEGORIES,
   toBrowseItem,
   type CategoryBrowseItem,
@@ -54,7 +55,7 @@ export function CategorySlider() {
   const [totalCards, setTotalCards] = useState(0);
 
   const categories: CategoryBrowseItem[] = tree?.length
-    ? tree.map((c, i) => toBrowseItem(c, i))
+    ? tree.slice(0, BROWSE_NEED_SLIDE_COUNT).map((c, i) => toBrowseItem(c, i))
     : STATIC_BROWSE_CATEGORIES;
 
   useEffect(() => {
@@ -273,7 +274,7 @@ export function CategorySlider() {
           style={{ gap: `${GAP}px`, touchAction: 'pan-y', paddingBlock: '6px' }}
         >
           {isLoading
-            ? Array.from({ length: 6 }).map((_, i) => (
+            ? Array.from({ length: BROWSE_NEED_SLIDE_COUNT }).map((_, i) => (
                 <div
                   key={i}
                   className="shrink-0"
