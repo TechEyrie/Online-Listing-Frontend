@@ -39,16 +39,8 @@ export function CategoryBrowseCard({ item, isDragging }: CategoryBrowseCardProps
           />
         ) : null}
 
-        <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-[46%]"
-          style={{
-            background:
-              'linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.55) 55%, rgba(255,255,255,0) 100%)',
-          }}
-        />
-
         <div className="absolute inset-x-0 top-0 z-10 px-5 pb-4 pt-5 sm:px-6 sm:pt-6">
-          <h3 className="max-w-[13ch] text-[1.5rem] font-bold leading-[1.12] tracking-tight text-foreground sm:text-[1.75rem]">
+          <h3 className="max-w-[13ch] text-[1.5rem] font-bold leading-[1.12] tracking-tight text-white sm:text-[1.75rem]">
             {item.headline}
           </h3>
         </div>
