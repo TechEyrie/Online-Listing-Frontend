@@ -7,8 +7,20 @@ export interface CategoryBrowseItem {
   tint: string;
 }
 
-/** Homepage “Browse by need” slider — first two cards use local creatives. */
-export const BROWSE_NEED_SLIDE_IMAGES = ['/slides/pr1.jpg', '/slides/pr2.jpg'] as const;
+/** Homepage “Browse by need” slider — local slides map to cards from index 0 onward. */
+const BROWSE_NEED_SLIDE_FILENAMES = [
+  'Glossy Red Supercar on Burgundy Reflection.webp',
+  'Maroon Sky Villa Façade.webp',
+  'Modern Tech Collection on Burgundy.webp',
+  'Smartphone and Laptop on Burgundy Surface.webp',
+  'Burgundy Fashion Shopper with Bags.webp',
+  'Toddler’s Colourful Toytime Adventure.webp',
+  'Burgundy Reading Nook with Mustard Chair.webp',
+] as const;
+
+export const BROWSE_NEED_SLIDE_IMAGES: readonly string[] = BROWSE_NEED_SLIDE_FILENAMES.map(
+  (file) => `/slides/${encodeURI(file)}`,
+);
 
 /** Marketing headlines + lifestyle imagery for the homepage browse slider. */
 const CATALOG: Record<string, { headline: string; image: string; tint: string }> = {
