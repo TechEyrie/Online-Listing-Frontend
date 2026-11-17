@@ -1,11 +1,17 @@
 'use client';
 
+import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 
-import { CategoryBrowseGridItem } from '@/components/categories/category-browse-grid-item';
+import { getApeqCategoryVisual } from '@/components/icons/apeq-category-icon';
 import { HomeSectionHeader } from '@/components/layout/home-section-header';
 import { useCategoryTree } from '@/hooks/use-categories';
 import { categoryApi } from '@/lib/category-api';
+import { cn } from '@/lib/utils';
+
+function formatAdCount(count: number): string {
+  return `${count.toLocaleString()} ad${count === 1 ? '' : 's'}`;
+}
 
 export function CategoryBrowseGrid() {
   const { data: tree, isLoading: treeLoading, isError: treeError } = useCategoryTree();
@@ -54,16 +60,54 @@ export function CategoryBrowseGrid() {
         </div>
       ) : treeError || !tree?.length ? null : (
         <div className={gridClassName}>
-          {tree.map((category) => (
-            <CategoryBrowseGridItem
-              key={category._id}
-              category={category}
-              parentAdCount={countsSuccess ? (counts[category.slug] ?? 0) : undefined}
-              counts={counts}
-              countsPending={countsPending}
-              countsReady={countsSuccess}
-            />
-          ))}
+          {tree.map((category) => {
+            const visual = getApeqCategoryVisual(category.slug);
+            const Icon = visual.Icon;
+            const adCount = countsSuccess ? (counts[category.slug] ?? 0) : undefined;
+
+            return (
+              <Link
+                key={category._id}
+                href={`/categories/${category.slug}`}
+                className={cn(
+                  'group relative flex w-full min-w-0 items-center gap-3 overflow-hidden rounded-2xl px-2 py-2.5 sm:gap-3.5 sm:px-3 sm:py-3',
+                  'outline-none transition-all duration-300',
+                  'hover:-translate-y-0.5 hover:bg-card hover:shadow-[0_14px_32px_rgba(19,25,33,0.10)]',
+                  'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                )}
+              >
+                <span
+                  className={cn(
+                    'relative flex h-[3.35rem] w-[3.35rem] shrink-0 items-center justify-center rounded-2xl text-white',
+                    'bg-[linear-gradient(145deg,#6B0F2A_0%,#A61E45_100%)]',
+                    'shadow-[0_4px_14px_rgba(139,21,56,0.35)] ring-1 ring-white/20',
+                    'transition-all duration-300 group-hover:scale-110 group-hover:rotate-[-4deg] group-hover:ring-accent/45',
+                  )}
+                  aria-hidden
+                >
+                  <Icon className="h-[1.4rem] w-[1.4rem]" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-[15px] font-bold leading-snug text-foreground">
+                    {category.name}
+                  </span>
+                  {countsPending ? (
+                    <span className="mt-1.5 block h-3 w-14 animate-pulse rounded bg-muted" />
+                  ) : adCount !== undefined ? (
+                    <span className="mt-1 block text-[13px] font-medium tabular-nums leading-none text-muted-foreground">
+                      {formatAdCount(adCount)}
+                    </span>
+                  ) : null}
+                </span>
+                <span
+                  className="ml-auto shrink-0 text-xl font-light text-muted-foreground/40 transition-all duration-300 group-hover:translate-x-1 group-hover:text-foreground sm:hidden"
+                  aria-hidden
+                >
+                  →
+                </span>
+              </Link>
+            );
+          })}
         </div>
       )}
     </section>

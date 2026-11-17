@@ -2,13 +2,12 @@
 
 import { useMemo } from 'react';
 import { useParams } from 'next/navigation';
-import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 
 import { CategoryBreadcrumb } from '@/components/categories/category-breadcrumb';
 import { CategorySidebar } from '@/components/categories/category-sidebar';
 import { ListingCard } from '@/components/listings/listing-card';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useCategoryBySlug, useCategoryTree } from '@/hooks/use-categories';
 import { listingApi } from '@/lib/listing-api';
 import type { CategoryTreeNode } from '@/types/category';
@@ -35,7 +34,6 @@ export default function CategoryPage() {
 
   const path = useMemo(() => findPath(tree, slug) ?? [], [tree, slug]);
   const node = path[path.length - 1];
-  const children = node?.children ?? [];
   const isRoot = Boolean(node && !node.parent);
 
   const listingsQuery = useQuery({
@@ -64,10 +62,10 @@ export default function CategoryPage() {
         ]}
       />
 
-      <div className="grid gap-8 md:grid-cols-[240px_1fr]">
-        <CategorySidebar tree={tree} activeSlug={slug} className="hidden md:block" />
+      <div className="grid gap-6 md:grid-cols-[minmax(240px,280px)_1fr] md:gap-8">
+        <CategorySidebar tree={tree} activeSlug={slug} className="md:sticky md:top-24 md:self-start" />
 
-        <div className="space-y-6">
+        <div className="min-w-0 space-y-6">
           {isLoading && <p className="text-sm text-muted-foreground">Loading category...</p>}
           {isError && <p className="text-destructive">Category not found</p>}
 
@@ -82,24 +80,6 @@ export default function CategoryPage() {
                   <CardDescription>{category.description}</CardDescription>
                 )}
               </CardHeader>
-              <CardContent className="space-y-4">
-                {children.length > 0 && (
-                  <div>
-                    <p className="mb-2 text-sm font-medium">Subcategories</p>
-                    <div className="flex flex-wrap gap-2">
-                      {children.map((child) => (
-                        <Link
-                          key={child._id}
-                          href={`/categories/${child.slug}`}
-                          className="rounded-lg border border-border bg-card px-3 py-1.5 text-sm transition hover:border-primary/30 hover:bg-muted"
-                        >
-                          {child.name}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </CardContent>
             </Card>
           )}
 
