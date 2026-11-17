@@ -6,8 +6,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { CategoryBrowseCard } from '@/components/categories/category-browse-card';
 import {
   BROWSE_NEED_SLIDE_COUNT,
-  STATIC_BROWSE_CATEGORIES,
-  toBrowseItem,
+  buildBrowseNeedItems,
   type CategoryBrowseItem,
 } from '@/components/categories/category-browse-data';
 import { useCategoryTree } from '@/hooks/use-categories';
@@ -24,11 +23,12 @@ function CategoryBrowseSkeleton() {
   );
 }
 
+/** Integer counts on tablet+ avoid uneven card widths and gutter drift. */
 function visibleCardCount(width: number): number {
-  if (width < 640) return 1.2;
-  if (width < 900) return 2.15;
-  if (width < 1200) return 2.9;
-  return 3.55;
+  if (width < 640) return 1.12;
+  if (width < 1024) return 2;
+  if (width < 1280) return 3;
+  return 3.2;
 }
 
 export function CategorySlider() {
@@ -54,9 +54,7 @@ export function CategorySlider() {
   const [atEnd, setAtEnd] = useState(false);
   const [totalCards, setTotalCards] = useState(0);
 
-  const categories: CategoryBrowseItem[] = tree?.length
-    ? tree.slice(0, BROWSE_NEED_SLIDE_COUNT).map((c, i) => toBrowseItem(c, i))
-    : STATIC_BROWSE_CATEGORIES;
+  const categories: CategoryBrowseItem[] = buildBrowseNeedItems(tree);
 
   useEffect(() => {
     setTotalCards(categories.length);
@@ -66,8 +64,9 @@ export function CategorySlider() {
     const vp = viewportRef.current;
     if (!vp) return;
     const slides = visibleCardCount(window.innerWidth);
-    const cw = (vp.clientWidth - GAP * Math.floor(slides)) / slides;
-    setCardWidth(cw);
+    const gapCount = Math.max(0, Math.ceil(slides) - 1);
+    const cw = (vp.clientWidth - GAP * gapCount) / slides;
+    setCardWidth(Math.max(0, cw));
     setViewportWidth(vp.clientWidth);
   }, []);
 
@@ -238,12 +237,12 @@ export function CategorySlider() {
   }, [applyOffset, clamp, snapNearest]);
 
   return (
-    <div className="relative min-w-0 max-w-full">
+    <div className="relative min-w-0 max-w-full px-11 sm:px-12 md:px-0">
       <button
         type="button"
         onClick={goLeft}
         aria-label="Previous categories"
-        className="absolute -left-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-xl border border-black/5 bg-white text-foreground shadow-[0_6px_18px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_24px_rgba(0,0,0,0.16)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:-left-4"
+        className="absolute left-0 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl border border-black/5 bg-white text-foreground shadow-[0_6px_18px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_24px_rgba(0,0,0,0.16)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:-left-3 lg:h-11 lg:w-11 lg:-left-4"
         style={{ opacity: atStart ? 0 : 1, pointerEvents: atStart ? 'none' : 'auto' }}
       >
         <ChevronLeft className="h-5 w-5" />
@@ -253,7 +252,7 @@ export function CategorySlider() {
         type="button"
         onClick={goRight}
         aria-label="Next categories"
-        className="absolute -right-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-xl border border-black/5 bg-white text-foreground shadow-[0_6px_18px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_24px_rgba(0,0,0,0.16)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:-right-4"
+        className="absolute right-0 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl border border-black/5 bg-white text-foreground shadow-[0_6px_18px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_24px_rgba(0,0,0,0.16)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:-right-3 lg:h-11 lg:w-11 lg:-right-4"
         style={{ opacity: atEnd ? 0 : 1, pointerEvents: atEnd ? 'none' : 'auto' }}
       >
         <ChevronRight className="h-5 w-5" />
@@ -261,7 +260,7 @@ export function CategorySlider() {
 
       <div
         ref={viewportRef}
-        className="overflow-hidden overscroll-x-contain"
+        className="overflow-hidden overscroll-x-contain md:px-12 lg:px-14"
         style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
       >
         <div

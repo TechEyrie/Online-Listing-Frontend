@@ -9,6 +9,7 @@ import { CategorySlider } from '@/components/categories/category-slider';
 import { MOSQUE_ARCH_CLIP_PATH } from '@/components/common/mosque-arch-clip';
 import { HeroBanner } from '@/components/layout/hero-banner';
 import { Container } from '@/components/layout/container';
+import { HomeSectionHeader } from '@/components/layout/home-section-header';
 import { ListingCard } from '@/components/listings/listing-card';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -57,35 +58,33 @@ export default function Home() {
     <main className="min-h-screen">
       <HeroBanner />
 
-      <Container className="space-y-16 py-10 sm:py-12">
+      <Container className="space-y-12 py-8 sm:space-y-14 sm:py-10 md:space-y-16 md:py-12">
         <CategoryBrowseGrid />
 
-        <section className="space-y-6">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="page-eyebrow">Categories</p>
-              <h2 className="text-section-title mt-1">Browse by need</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Start with what you need.</p>
-            </div>
-            <Button asChild variant="accent" size="default" className="shrink-0 font-bold">
-              <Link href="/search">
-                View all
-                <ChevronRight className="h-4 w-4" aria-hidden />
-              </Link>
-            </Button>
-          </div>
+        <section className="space-y-6 md:space-y-8">
+          <HomeSectionHeader
+            eyebrow="Categories"
+            title="Browse by need"
+            description="Start with what you need."
+            actions={
+              <Button asChild variant="accent" size="default" className="font-bold">
+                <Link href="/search">
+                  View all
+                  <ChevronRight className="h-4 w-4" aria-hidden />
+                </Link>
+              </Button>
+            }
+          />
           <CategorySlider />
         </section>
 
         {featured.data && featured.data.length > 0 && (
-          <section className="space-y-6">
-            <div>
-              <p className="page-eyebrow">Spotlight</p>
-              <h2 className="text-section-title mt-1">Featured listings</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Highlighted by sellers for extra visibility.
-              </p>
-            </div>
+          <section className="space-y-6 md:space-y-8">
+            <HomeSectionHeader
+              eyebrow="Spotlight"
+              title="Featured listings"
+              description="Highlighted by sellers for extra visibility."
+            />
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {featured.data.map((listing) => (
                 <ListingCard key={listing._id} listing={listing} />
@@ -94,19 +93,17 @@ export default function Home() {
           </section>
         )}
 
-        <section className="space-y-6">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <p className="page-eyebrow">Just in</p>
-              <h2 className="text-section-title mt-1">Latest listings</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Fresh posts from across the marketplace.
-              </p>
-            </div>
-            <Button asChild variant="ghost" size="sm">
-              <Link href="/search">See more</Link>
-            </Button>
-          </div>
+        <section className="space-y-6 md:space-y-8">
+          <HomeSectionHeader
+            eyebrow="Just in"
+            title="Latest listings"
+            description="Fresh posts from across the marketplace."
+            actions={
+              <Button asChild variant="ghost" size="sm">
+                <Link href="/search">See more</Link>
+              </Button>
+            }
+          />
           {recent.isLoading && <ListingSkeletonGrid />}
           {recent.isError && (
             <EmptyState
