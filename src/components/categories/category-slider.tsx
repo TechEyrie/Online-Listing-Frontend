@@ -237,12 +237,12 @@ export function CategorySlider() {
   }, [applyOffset, clamp, snapNearest]);
 
   return (
-    <div className="relative min-w-0 max-w-full px-11 sm:px-12 md:px-0">
+    <div className="relative min-w-0 w-full max-w-full">
       <button
         type="button"
         onClick={goLeft}
         aria-label="Previous categories"
-        className="absolute left-0 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl border border-black/5 bg-white text-foreground shadow-[0_6px_18px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_24px_rgba(0,0,0,0.16)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:-left-3 lg:h-11 lg:w-11 lg:-left-4"
+        className="absolute left-0 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl border border-black/5 bg-white/95 text-foreground shadow-[0_6px_18px_rgba(0,0,0,0.12)] backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_24px_rgba(0,0,0,0.16)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:-left-3 lg:h-11 lg:w-11 lg:-left-4"
         style={{ opacity: atStart ? 0 : 1, pointerEvents: atStart ? 'none' : 'auto' }}
       >
         <ChevronLeft className="h-5 w-5" />
@@ -252,7 +252,7 @@ export function CategorySlider() {
         type="button"
         onClick={goRight}
         aria-label="Next categories"
-        className="absolute right-0 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl border border-black/5 bg-white text-foreground shadow-[0_6px_18px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_24px_rgba(0,0,0,0.16)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:-right-3 lg:h-11 lg:w-11 lg:-right-4"
+        className="absolute right-0 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl border border-black/5 bg-white/95 text-foreground shadow-[0_6px_18px_rgba(0,0,0,0.12)] backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_24px_rgba(0,0,0,0.16)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:-right-3 lg:h-11 lg:w-11 lg:-right-4"
         style={{ opacity: atEnd ? 0 : 1, pointerEvents: atEnd ? 'none' : 'auto' }}
       >
         <ChevronRight className="h-5 w-5" />
@@ -260,7 +260,7 @@ export function CategorySlider() {
 
       <div
         ref={viewportRef}
-        className="overflow-hidden overscroll-x-contain md:px-12 lg:px-14"
+        className="overflow-hidden overscroll-x-contain"
         style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
       >
         <div

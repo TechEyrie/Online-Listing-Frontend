@@ -1,7 +1,6 @@
 import Link from 'next/link';
 
 import { BrandLogo } from '@/components/layout/brand-logo';
-import { APP_DISPLAY_NAME } from '@/lib/app-brand';
 
 export function SiteFooter() {
   return (
@@ -14,7 +13,7 @@ export function SiteFooter() {
             sellers, worldwide reach.
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-8">
           <div className="space-y-3">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-foreground">Explore</p>
             <Link href="/search" className="block text-sm text-muted-foreground hover:text-primary">
@@ -33,15 +32,19 @@ export function SiteFooter() {
               Create account
             </Link>
           </div>
-          <div className="space-y-3">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-foreground">Trust</p>
-            <p className="text-sm text-muted-foreground">Moderated listings</p>
-            <p className="text-sm text-muted-foreground">Secure promotions</p>
-          </div>
         </div>
       </div>
       <div className="border-t border-border/70 py-4 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} {APP_DISPLAY_NAME}. Built for local commerce.
+        ©2026 ApeQ - Built by{' '}
+        <Link
+          href="https://www.saqrih.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium text-foreground underline-offset-2 transition-colors hover:text-primary hover:underline"
+        >
+          Saqrih
+        </Link>{' '}
+        for the local community
       </div>
     </footer>
   );
