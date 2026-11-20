@@ -17,6 +17,7 @@ import type { ApiErrorResponse } from '@/types/api';
 export default function ForgotPasswordPage() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [unknownEmail, setUnknownEmail] = useState(false);
 
   const {
     register,
@@ -30,11 +31,20 @@ export default function ForgotPasswordPage() {
   const onSubmit = async (values: ForgotPasswordFormValues) => {
     setServerError(null);
     setSuccess(null);
+    setUnknownEmail(false);
     try {
       const res = await authApi.forgotPassword(values);
       setSuccess(res.message);
     } catch (error) {
       const axiosError = error as AxiosError<ApiErrorResponse>;
+      if (axiosError.response?.status === 404) {
+        setUnknownEmail(true);
+        setServerError(
+          axiosError.response.data?.message ||
+            'This email is not registered. Please create a new account.',
+        );
+        return;
+      }
       setServerError(axiosError.response?.data?.message || 'Request failed');
     }
   };
@@ -43,7 +53,7 @@ export default function ForgotPasswordPage() {
     <Card>
       <CardHeader>
         <CardTitle>Forgot password</CardTitle>
-        <CardDescription>We will email you a reset link if the account exists.</CardDescription>
+        <CardDescription>Enter your email and we will send a reset link if you have an account.</CardDescription>
       </CardHeader>
       <CardContent>
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -52,8 +62,13 @@ export default function ForgotPasswordPage() {
             <Input id="email" type="email" autoComplete="email" {...register('email')} />
             {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
           </div>
-          {serverError && <p className="text-sm text-destructive">{serverError}</p>}
           {success && <p className="text-sm text-green-600">{success}</p>}
+          {serverError && <p className="text-sm text-destructive">{serverError}</p>}
+          {unknownEmail && (
+            <Button asChild variant="accent" className="w-full font-semibold">
+              <Link href="/register">Create a new account</Link>
+            </Button>
+          )}
           <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? 'Sending...' : 'Send reset link'}
           </Button>
