@@ -11,7 +11,9 @@ import type {
 
 export const authApi = {
   register: async (payload: RegisterFormValues) => {
-    const { data } = await api.post<ApiSuccessResponse<AuthTokensData>>('/auth/register', payload);
+    const { data } = await api.post<ApiSuccessResponse<AuthTokensData>>('/auth/register', payload, {
+      timeout: 30_000,
+    });
     return data;
   },
   login: async (payload: LoginFormValues) => {
@@ -37,14 +39,17 @@ export const authApi = {
     return data;
   },
   resendVerification: async (email: string) => {
-    const { data } = await api.post<ApiSuccessResponse<null>>('/auth/resend-verification', {
-      email,
-    });
+    const { data } = await api.post<ApiSuccessResponse<null>>(
+      '/auth/resend-verification',
+      { email },
+      { timeout: 30_000,
+      },
+    );
     return data;
   },
   forgotPassword: async (payload: ForgotPasswordFormValues) => {
     const { data } = await api.post<ApiSuccessResponse<null>>('/auth/forgot-password', payload, {
-      timeout: 20_000,
+      timeout: 30_000,
     });
     return data;
   },

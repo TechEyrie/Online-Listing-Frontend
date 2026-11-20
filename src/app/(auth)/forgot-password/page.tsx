@@ -57,7 +57,10 @@ export default function ForgotPasswordPage() {
     <Card>
       <CardHeader>
         <CardTitle>Forgot password</CardTitle>
-        <CardDescription>Enter your email and we will send a reset link if you have an account.</CardDescription>
+        <CardDescription>
+          Enter your email. We only confirm success after the reset email is accepted by our mail
+          server.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)} noValidate>

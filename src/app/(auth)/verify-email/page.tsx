@@ -51,8 +51,8 @@ function VerifyEmailForm() {
     setServerError(null);
     setSuccess(null);
     try {
-      await authApi.resendVerification(getValues('email'));
-      setSuccess('If eligible, a new verification code has been sent.');
+      const res = await authApi.resendVerification(getValues('email'));
+      setSuccess(res.message);
     } catch (error) {
       const axiosError = error as AxiosError<ApiErrorResponse>;
       setServerError(axiosError.response?.data?.message || 'Could not resend code');
