@@ -45,6 +45,10 @@ export default function ForgotPasswordPage() {
         );
         return;
       }
+      if (axiosError.code === 'ECONNABORTED') {
+        setServerError('Request timed out. Check your connection and try again.');
+        return;
+      }
       setServerError(axiosError.response?.data?.message || 'Request failed');
     }
   };

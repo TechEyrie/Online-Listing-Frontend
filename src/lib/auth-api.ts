@@ -43,7 +43,9 @@ export const authApi = {
     return data;
   },
   forgotPassword: async (payload: ForgotPasswordFormValues) => {
-    const { data } = await api.post<ApiSuccessResponse<null>>('/auth/forgot-password', payload);
+    const { data } = await api.post<ApiSuccessResponse<null>>('/auth/forgot-password', payload, {
+      timeout: 20_000,
+    });
     return data;
   },
   resetPassword: async (payload: Omit<ResetPasswordFormValues, 'confirmPassword'>) => {
